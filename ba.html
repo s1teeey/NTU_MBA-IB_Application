@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="商研師資陣容：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261110231054">
+<link rel="stylesheet" href="assets/site.css?v=20261110231339">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -102,7 +102,7 @@ textarea{width:100%;min-height:72px;margin-top:6px;font:inherit;font-size:14px;p
 .name{font-size:23px;font-weight:900;letter-spacing:-.01em}
 .tags{display:block;line-height:1.7}
 .tag{display:inline;background:none!important;border:0;padding:0;border-radius:0;font-size:13.5px;color:var(--muted);font-weight:600}
-.tag+.tag::before{content:"·";margin:0 7px;color:var(--faint);font-weight:400}
+.tag+.tag::before{content:"｜";margin:0 4px;color:var(--faint);font-weight:400}
 .tag.sc{color:var(--sc)}.tag.ec{color:var(--ec)}.tag.iv{color:var(--stamp);font-weight:800}
 .links a{font-weight:700;font-size:13.5px}
 .lbl{font-size:12.5px;font-weight:800;color:var(--faint);letter-spacing:.02em;margin-bottom:2px}
@@ -163,16 +163,11 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
   <div class="tabs" role="tablist" aria-label="檢視">
     <button class="tab" role="tab" id="tab-cards" aria-controls="panel-cards" aria-selected="true">教授卡片</button>
     <button class="tab" role="tab" id="tab-tl" aria-controls="panel-tl" aria-selected="false">歷年面試官</button>
-    <button class="tab" role="tab" id="tab-src" aria-controls="panel-src" aria-selected="false">歷年心得文</button>
   </div>
 
   <section id="panel-tl" role="tabpanel" aria-labelledby="tab-tl" hidden>
     <div class="own" id="y116"></div>
     <div class="tl-scroll"><table class="tl" id="tl"></table></div>
-  </section>
-
-  <section id="panel-src" role="tabpanel" aria-labelledby="tab-src" hidden>
-    <div id="src"></div>
   </section>
 
   <section id="panel-cards" role="tabpanel" aria-labelledby="tab-cards">
@@ -186,7 +181,6 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
   </section>
 </main>
 
-<script src="assets/sources.js?v=20261110231054"></script>
 <script>
 const D="https://www.dcard.tw/f/graduate_school/p/";
 const SRC={115:D+"260371156",114:D+"257296058",113:D+"254109162",112:D+"240534805",111:D+"239956512",
@@ -301,8 +295,6 @@ function goOwn(){
   b.classList.add("flash");setTimeout(()=>b.classList.remove("flash"),1600);
 }
 
-/* sources */
-renderSources($("#src"),{dept:DEPT,ownHref:"#y116",onOwn:()=>goOwn()});
 
 /* state */
 const state={filter:"all"};
@@ -386,7 +378,7 @@ function card(p){
   return c;
 }
 
-const TABS=["cards","tl","src"];
+const TABS=["cards","tl"];
 function showTab(which){
   TABS.forEach(t=>{$("#tab-"+t).setAttribute("aria-selected",String(t===which));$("#panel-"+t).hidden=t!==which});
   store.set(DEPT+"-tab",which);
@@ -417,12 +409,13 @@ render();
 
 /* deep links: #y116 #tl #src #cards #p-<key> */
 function follow(){const h=decodeURIComponent(location.hash.slice(1));
+  if(h==="src"){location.replace("interview.html#src-sec");return}
   if(h==="y116")setTimeout(goOwn,50);
   else if(TABS.includes(h))showTab(h);
   else if(h.startsWith("p-")){const p=PROFS.find(x=>"p-"+x.k===h);if(p)setTimeout(()=>jump(p.n),50)}
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261110231054"></script>
+<script src="assets/site.js?v=20261110231339"></script>
 </body>
 </html>

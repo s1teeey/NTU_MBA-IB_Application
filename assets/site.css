@@ -28,20 +28,20 @@
   color-scheme:dark}
 
 /* 商研 = 紫、國企 = 青綠。國企頁把 accent 換成青綠。 */
-:root{--ba:#B83A35;--ib:#0B7A69}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ba:#F08C84;--ib:#5FD3BC}}
-:root[data-theme="dark"]{--ba:#F08C84;--ib:#5FD3BC}
-:root[data-dept="ba"]{--accent:#D2483F;--accent-ink:#A8322C;--accent-soft:#FBEAE8;--mark:rgba(226,82,72,.24)}
-@media (prefers-color-scheme:dark){:root[data-dept="ba"]:not([data-theme="light"]){--accent:#E8746B;--accent-ink:#F4A39C;--accent-soft:#3A2020;--mark:rgba(240,110,100,.38)}}
-:root[data-dept="ba"][data-theme="dark"]{--accent:#E8746B;--accent-ink:#F4A39C;--accent-soft:#3A2020;--mark:rgba(240,110,100,.38)}
+:root{--ba:#B1203F;--ib:#0B7A69}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ba:#F27D93;--ib:#5FD3BC}}
+:root[data-theme="dark"]{--ba:#F27D93;--ib:#5FD3BC}
+:root[data-dept="ba"]{--accent:#C8264A;--accent-ink:#A11D3A;--accent-soft:#FBE8ED;--mark:rgba(214,38,72,.20)}
+@media (prefers-color-scheme:dark){:root[data-dept="ba"]:not([data-theme="light"]){--accent:#EC6A86;--accent-ink:#F5A2B4;--accent-soft:#3A1E26;--mark:rgba(240,100,130,.36)}}
+:root[data-dept="ba"][data-theme="dark"]{--accent:#EC6A86;--accent-ink:#F5A2B4;--accent-soft:#3A1E26;--mark:rgba(240,100,130,.36)}
 :root[data-dept="ib"]{--accent:#16A08A;--accent-ink:#0B7563;--accent-soft:#E0F3EF;--mark:rgba(22,160,138,.24)}
 @media (prefers-color-scheme:dark){:root[data-dept="ib"]:not([data-theme="light"]){--accent:#3FBFA6;--accent-ink:#6FD8C3;--accent-soft:#15302B;--mark:rgba(63,191,166,.35)}}
 :root[data-dept="ib"][data-theme="dark"]{--accent:#3FBFA6;--accent-ink:#6FD8C3;--accent-soft:#15302B;--mark:rgba(63,191,166,.35)}
 .d-ba{color:var(--ba)}.d-ib{color:var(--ib)}
 /* 半截螢光筆：商研紫、國企青綠 */
-:root{--mark-ba:rgba(226,82,72,.24);--mark-ib:rgba(22,170,145,.26)}
-:root[data-theme="dark"]{--mark-ba:rgba(240,110,100,.38);--mark-ib:rgba(63,191,166,.38)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mark-ba:rgba(240,110,100,.38);--mark-ib:rgba(63,191,166,.38)}}
+:root{--mark-ba:rgba(214,38,72,.20);--mark-ib:rgba(22,170,145,.26)}
+:root[data-theme="dark"]{--mark-ba:rgba(240,100,130,.36);--mark-ib:rgba(63,191,166,.38)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mark-ba:rgba(240,100,130,.36);--mark-ib:rgba(63,191,166,.38)}}
 .hl-ba{background:linear-gradient(transparent 55%,var(--mark-ba) 55%);padding:0 2px}
 .hl-ib{background:linear-gradient(transparent 55%,var(--mark-ib) 55%);padding:0 2px}
 
