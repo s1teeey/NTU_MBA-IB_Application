@@ -17,9 +17,8 @@ table.cmp{border-collapse:collapse;width:100%;min-width:540px;font-size:15px}
 .cmp tbody th{width:132px;color:var(--muted);font-weight:700;font-size:14px}
 .cmp .sub{display:block;color:var(--muted);font-size:13.5px}
 .cmp.yrs td{font-variant-numeric:tabular-nums}
-.cmp.yrs thead th:nth-child(2),.cmp.yrs td:nth-child(2){color:var(--accent-ink)}
-.cmp.yrs td:nth-child(n+3){color:var(--muted)}
-table.cmp.yrs{min-width:500px}
+table.cmp.yrs{min-width:0}
+@media (max-width:560px){.cmp.yrs th,.cmp.yrs td{padding-right:8px;font-size:14px}.cmp.yrs tbody th{width:76px;font-size:13px}}
 @media (max-width:560px){.cmp tbody th{width:84px}}
 
 .files{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px 48px}
@@ -33,7 +32,7 @@ table.cmp.yrs{min-width:500px}
   <header class="page-head">
     <p class="crumb"><a href="./">首頁</a> / 推甄須知</p>
     <h1>推甄須知</h1>
-    <p class="lede">整理自 115、116 學年度簡章，兩年規定相同，日期只差一兩天。117 學年度簡章預計 2027 年 9 月公告。</p>
+    <p class="lede">整理自 114–116 學年度簡章，三年規定相同，日期只差幾天。</p>
   </header>
 
   <div class="stack">
@@ -45,13 +44,13 @@ table.cmp.yrs{min-width:500px}
         <tbody>
           <tr><th scope="row">一般生名額</th><td>33</td><td>33</td></tr>
           <tr><th scope="row">誰能進口試</th><td>書審排名前 66 名</td><td>書審排名前 66 名</td></tr>
-          <tr><th scope="row">口試日期</th><td><mark>11 月第一個週五</mark><span class="sub">115：11/7・116：11/6・管理學院一號館</span></td><td><mark>10 月最後一個週五</mark><span class="sub">115：10/31・116：10/30・管理學院壹號館</span></td></tr>
-          <tr><th scope="row">口試名單</th><td>口試前的週一上午 10 點前<span class="sub">115：11/3・116：11/2，公布在系網，不另通知</span></td><td>口試前 4–7 天<span class="sub">115：10/27・116：10/23，公布在系網，同時開始繳口試費</span></td></tr>
+          <tr><th scope="row">口試日期</th><td><mark>11 月初，週五</mark><span class="sub">116：11/6・115：11/7・114：11/8<br>管理學院一號館</span></td><td><mark>10 月底到 11 月初，週五</mark><span class="sub">116：10/30・115：10/31・114：11/1<br>管理學院壹號館</span></td></tr>
+          <tr><th scope="row">口試名單</th><td>口試當週週一上午 10 點前<span class="sub">116：11/2・115：11/3・114：11/4<br>公布在系網，不另通知</span></td><td>口試前 4–7 天<span class="sub">116：10/23・115：10/27・114：10/28<br>公布在系網，同時開始繳口試費</span></td></tr>
           <tr><th scope="row">成績</th><td>在校成績前 30% 優先考慮</td><td>簡章沒有特別寫</td></tr>
           <tr><th scope="row">口試門檻</th><td>口試原始成績未滿 70 分不錄取</td><td>口試成績未滿 70 分不錄取</td></tr>
           <tr><th scope="row">人在國外</th><td>簡章未說明</td><td>交換或在外讀書者，報名時附證明，可安排網路面試</td></tr>
           <tr><th scope="row">計分</th><td>書審、口試各半，沒有筆試</td><td>書審、口試各半，沒有筆試</td></tr>
-          <tr><th scope="row">放榜</th><td>第 2 梯次，11 月中旬<span class="sub">115：11/20・116：11/19</span></td><td>第 2 梯次，11 月中旬<span class="sub">115：11/20・116：11/19</span></td></tr>
+          <tr><th scope="row">放榜</th><td>第 2 梯次，11 月中旬<span class="sub">116：11/19・115：11/20・114：11/20</span></td><td>第 2 梯次，11 月中旬<span class="sub">116：11/19・115：11/20・114：11/20</span></td></tr>
           <tr><th scope="row">系辦</th><td>(02) 3366-1062</td><td>(02) 3366-4991</td></tr>
         </tbody>
       </table>
@@ -88,21 +87,21 @@ table.cmp.yrs{min-width:500px}
   </section>
 
   <section>
-    <div class="sec-head"><h2><span class="no">03</span>歷年時程</h2><p class="muted">117 欄是依前兩年推估的，以 2027 年 9 月公告的簡章為準。</p></div>
+    <div class="sec-head"><h2><span class="no">03</span>近三年時程</h2></div>
     <div class="cmp-scroll">
       <table class="cmp yrs">
-        <thead><tr><th scope="col"></th><th scope="col"><small>2027 預估</small>117</th><th scope="col"><small>2026</small>116</th><th scope="col"><small>2025</small>115</th></tr></thead>
+        <thead><tr><th scope="col"></th><th scope="col"><small>2026</small>116</th><th scope="col"><small>2025</small>115</th><th scope="col"><small>2024</small>114</th></tr></thead>
         <tbody>
-          <tr><th scope="row">簡章公告</th><td>9 月中</td><td>9/11</td><td>9/11</td></tr>
-          <tr><th scope="row">繳費、填報名資料</th><td>9 月底–10 月第一週</td><td>9/30–10/7</td><td>10/1–10/8</td></tr>
-          <tr><th scope="row">上傳審查資料截止</th><td>10 月初</td><td>10/8 17:00</td><td>10/9</td></tr>
-          <tr><th scope="row">國企口試名單</th><td>10 月下旬</td><td>10/23（五）</td><td>10/27（一）</td></tr>
-          <tr><th scope="row">國企口試</th><td><mark>約 10/29（五）</mark></td><td>10/30（五）</td><td>10/31（五）</td></tr>
-          <tr><th scope="row">商研口試名單</th><td>約 11/1（一）</td><td>11/2（一）</td><td>11/3（一）</td></tr>
-          <tr><th scope="row">商研口試</th><td><mark>約 11/5（五）</mark></td><td>11/6（五）</td><td>11/7（五）</td></tr>
-          <tr><th scope="row">放榜（第 2 梯次）</th><td>約 11/18（四）</td><td>11/19（四）</td><td>11/20（四）</td></tr>
-          <tr><th scope="row">網路報到</th><td>放榜後的週二到週四</td><td>11/24–11/26</td><td>11/25–11/27</td></tr>
-          <tr><th scope="row">備取遞補</th><td>12 月初到隔年 1 月下旬</td><td>12/2 起，到 1/21</td><td>12/3 起，到 1/22</td></tr>
+          <tr><th scope="row">簡章公告</th><td>9/11</td><td>9/11</td><td>9/13</td></tr>
+          <tr><th scope="row">繳費、填報名資料</th><td>9/30–10/7</td><td>10/1–10/8</td><td>10/3–10/10</td></tr>
+          <tr><th scope="row">上傳審查資料截止</th><td>10/8 17:00</td><td>10/9 17:00</td><td>10/11 17:00</td></tr>
+          <tr><th scope="row">國企口試名單</th><td>10/23（五）</td><td>10/27（一）</td><td>10/28（一）</td></tr>
+          <tr><th scope="row">國企口試</th><td><mark>10/30（五）</mark></td><td><mark>10/31（五）</mark></td><td><mark>11/1（五）</mark></td></tr>
+          <tr><th scope="row">商研口試名單</th><td>11/2（一）</td><td>11/3（一）</td><td>11/4（一）</td></tr>
+          <tr><th scope="row">商研口試</th><td><mark>11/6（五）</mark></td><td><mark>11/7（五）</mark></td><td><mark>11/8（五）</mark></td></tr>
+          <tr><th scope="row">放榜（第 2 梯次）</th><td>11/19（四）</td><td>11/20（四）</td><td>11/20（三）</td></tr>
+          <tr><th scope="row">網路報到</th><td>11/24–11/26</td><td>11/25–11/27</td><td>11/26–11/28</td></tr>
+          <tr><th scope="row">備取遞補</th><td>12/2 起，到 1/21</td><td>12/3 起，到 1/22</td><td>12/4 起，到 1/22</td></tr>
         </tbody>
       </table>
     </div>
