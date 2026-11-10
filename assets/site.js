@@ -16,6 +16,7 @@
   const bar=document.createElement("header");bar.className="topbar";
   bar.innerHTML='<div class="wrap"><a class="brand" href="./">台大商研、國企<span>推甄分享</span></a>'+
     '<nav class="menu" aria-label="主選單">'+PAGES.map(([h,t])=>'<a href="'+h+'"'+(h===here?' aria-current="page"':"")+'>'+t+'</a>').join("")+'</nav>'+
+    '<div class="search" role="search"><input type="search" placeholder="搜尋" aria-label="搜尋全站" autocomplete="off"><div class="sresults" hidden></div></div>'+
     '<button class="theme-btn" type="button"></button></div>';
   document.body.prepend(bar);
   const btn=bar.querySelector(".theme-btn");
@@ -28,4 +29,5 @@
   foot.innerHTML='<div class="wrap"><span>面試題目為考生事後回憶；招生規定依台大當年簡章。</span>'+
     '<a href="https://github.com/s1teeey/NTU_MBA-IB_Application">GitHub</a></div>';
   document.body.appendChild(foot);
+  const sc=document.createElement("script");sc.src="assets/search.js";document.body.appendChild(sc);
 })();

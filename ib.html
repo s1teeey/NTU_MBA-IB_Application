@@ -393,11 +393,13 @@ document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",Stri
 render();
 
 
-/* deep links: #y116 #tl #src #cards */
-(function(){const h=location.hash.slice(1);
+/* deep links: #y116 #tl #src #cards #p-<key> */
+function follow(){const h=decodeURIComponent(location.hash.slice(1));
   if(h==="y116")setTimeout(goOwn,50);
   else if(TABS.includes(h))showTab(h);
-})();
+  else if(h.startsWith("p-")){const p=PROFS.find(x=>"p-"+x.k===h);if(p)setTimeout(()=>jump(p.n),50)}
+}
+follow();window.addEventListener("hashchange",follow);
 </script>
 <script src="assets/site.js"></script>
 </body>

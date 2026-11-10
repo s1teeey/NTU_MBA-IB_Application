@@ -42,6 +42,7 @@ const DEPT_NAME={ba:"商研",ib:"國企"};
 /* opts: {dept:"ba"|"ib"|null, ownHref:"#y116", onOwn:fn} */
 function renderSources(box,opts){
   opts=opts||{};
+  box.classList.add("src-cols");
   const rows=SOURCES.filter(s=>!opts.dept||s.d.includes(opts.dept));
   const years=[...new Set(rows.map(s=>s.y))].sort((a,b)=>b-a);
   const mk=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
