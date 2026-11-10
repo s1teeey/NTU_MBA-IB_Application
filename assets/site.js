@@ -26,8 +26,7 @@
   const cur=bar.querySelector('[aria-current="page"]');if(cur)cur.scrollIntoView({block:"nearest",inline:"center"});
 
   const foot=document.createElement("footer");foot.className="foot";
-  foot.innerHTML='<div class="wrap"><span>面試題目為考生事後回憶；招生規定依台大當年簡章。</span>'+
-    '<a href="https://github.com/s1teeey/NTU_MBA-IB_Application">GitHub</a></div>';
+  foot.innerHTML='<div class="wrap"><span>面試題目為考生事後回憶；招生規定依台大當年簡章。</span>'+'</div>';
   document.body.appendChild(foot);
   const sc=document.createElement("script");sc.src="assets/search.js";document.body.appendChild(sc);
 })();
