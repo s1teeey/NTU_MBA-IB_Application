@@ -35,5 +35,5 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     if(!FORM_URL){el.hidden=true;return}
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
-  const sc=document.createElement("script");sc.src="assets/search.js";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=202611101530";document.body.appendChild(sc);
 })();
