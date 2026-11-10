@@ -35,6 +35,12 @@
 .dates .d{font-weight:900;font-variant-numeric:tabular-nums}
 .dates .hl .d{color:var(--accent-ink)}
 .side p{font-size:14.5px;color:var(--muted)}
+.send{display:grid;gap:12px;padding:20px;background:var(--bg-soft);border-top:3px solid var(--accent)}
+.send h2{border:0;padding:0;font-size:17px}
+.send p{color:var(--ink);font-size:14.5px}
+.send .note{color:var(--faint);font-size:12.5px}
+.btn-send{justify-self:start;font-weight:800;font-size:14.5px;text-decoration:none;color:var(--on-accent);background:var(--accent);padding:9px 16px;border-radius:4px}
+.btn-send:hover{color:var(--on-accent);filter:brightness(1.08)}
 </style>
 </head>
 <body>
@@ -69,6 +75,12 @@
         </ol>
       </div>
       <p>依 114–116 學年度簡章整理，各年日期見<a href="sharing.html">推甄須知</a>。</p>
+      <div class="send" data-form>
+        <h2>投稿・提問</h2>
+        <p>網站上沒有的心得文、自己的面試紀錄、想找人看的書審，或任何問題，都可以從這裡傳給我。</p>
+        <a class="form-link btn-send" href="#">填寫表單 ↗</a>
+        <p class="note">透過 Google 表單收件；上傳檔案需要登入 Google。</p>
+      </div>
     </aside>
   </div>
 </main>

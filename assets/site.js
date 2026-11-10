@@ -1,4 +1,6 @@
 /* Header, theme switch and footer shared by every page. */
+/* 投稿・提問表單（Google 表單）。留空時，網站上的投稿區塊和頁尾連結都不會顯示。 */
+const FORM_URL="";
 (function(){
   const PAGES=[
     ["sharing.html","推甄須知"],
@@ -26,7 +28,12 @@
   const cur=bar.querySelector('[aria-current="page"]');if(cur)cur.scrollIntoView({block:"nearest",inline:"center"});
 
   const foot=document.createElement("footer");foot.className="foot";
-  foot.innerHTML='<div class="wrap"><span>面試題目為考生事後回憶；招生規定依台大當年簡章。</span>'+'</div>';
+  foot.innerHTML='<div class="wrap"><span>面試題目為考生事後回憶；招生規定依台大當年簡章。</span>'+
+    (FORM_URL?'<a href="'+FORM_URL+'" target="_blank" rel="noopener">投稿・提問</a>':'')+'</div>';
   document.body.appendChild(foot);
+  document.querySelectorAll("[data-form]").forEach(el=>{
+    if(!FORM_URL){el.hidden=true;return}
+    el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
+  });
   const sc=document.createElement("script");sc.src="assets/search.js";document.body.appendChild(sc);
 })();
