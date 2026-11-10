@@ -2,7 +2,7 @@
    109 學年度（含）以前每所一篇，用簡單列表；110 以後可能多篇，用卡片。 */
 const DC="https://www.dcard.tw/f/graduate_school/p/";
 const SOURCES=[
-  {y:116,d:["ba","ib"],site:"own",t:"116 學年度面試題目（網站作者）",u:"#y116",note:"只列題目"},
+  {y:116,d:["ba","ib"],site:"own",t:"116 學年度面試題目",u:"#y116",note:"網站作者的紀錄，只列題目"},
 
   {y:115,d:["ba","ib"],site:"dcard",t:"115 商管推甄正取分享：台大商研／台大國企",u:DC+"260371156"},
   {y:115,d:["ba","ib"],site:"dcard",t:"商研／企研／國企複試懶人包＋連結",u:DC+"261008223",note:"整理多篇連結"},
@@ -39,7 +39,7 @@ const SOURCES=[
 const SITE_NAME={dcard:"Dcard",ptt:"PTT",medium:"Medium",notion:"Notion",own:"本站"};
 const DEPT_NAME={ba:"商研",ib:"國企"};
 
-/* opts: {dept:"ba"|"ib"|null, ownHref:"#y116"|"ba.html#y116", onOwn:fn} */
+/* opts: {dept:"ba"|"ib"|null, ownHref:"#y116", onOwn:fn} */
 function renderSources(box,opts){
   opts=opts||{};
   const rows=SOURCES.filter(s=>!opts.dept||s.d.includes(opts.dept));
@@ -49,19 +49,21 @@ function renderSources(box,opts){
 
   recent.forEach(y=>{
     const g=mk("div","src-year");
-    const yr=mk("div","yr",String(y));yr.appendChild(mk("small",null,(y+1910)+" 秋面試"));g.appendChild(yr);
-    const grid=mk("div","src-grid");
+    const yr=mk("div","yr",String(y));yr.appendChild(mk("small",null,(y+1910)+" 秋天面試"));g.appendChild(yr);
+    const ul=mk("ul","src-items");
     rows.filter(s=>s.y===y).forEach(s=>{
-      const a=mk("a","src-card");
+      const li=mk("li");const a=mk("a",null,s.t);
       if(s.site==="own"){a.href=opts.ownHref||s.u;if(opts.onOwn)a.onclick=e=>{e.preventDefault();opts.onOwn()}}
       else{a.href=s.u;a.target="_blank";a.rel="noopener"}
-      const m=mk("div","meta");m.appendChild(mk("span","site "+s.site,SITE_NAME[s.site]));
-      if(!opts.dept)s.d.forEach(d=>m.appendChild(mk("span","pill",DEPT_NAME[d])));
-      if(s.note)m.appendChild(mk("span","tag",s.note));
-      a.appendChild(m);a.appendChild(mk("span","t",s.t+(s.site==="own"?"":" ↗")));
-      grid.appendChild(a);
+      li.appendChild(a);
+      const bits=[SITE_NAME[s.site]];
+      if(!opts.dept)bits.push(s.d.map(d=>DEPT_NAME[d]).join("、"));
+      if(s.note)bits.push(s.note);
+      const m=mk("span","meta");m.appendChild(mk("span","site",bits[0]));
+      if(bits.length>1)m.appendChild(document.createTextNode(" · "+bits.slice(1).join(" · ")));
+      li.appendChild(m);ul.appendChild(li);
     });
-    g.appendChild(grid);box.appendChild(g);
+    g.appendChild(ul);box.appendChild(g);
   });
 
   if(old.length){
@@ -71,7 +73,7 @@ function renderSources(box,opts){
     old.forEach(y=>rows.filter(s=>s.y===y).forEach(s=>{
       const li=mk("li");const a=mk("a");a.href=s.u;a.target="_blank";a.rel="noopener";a.title=s.t;
       a.appendChild(mk("span","y",y+" 學年度"+(opts.dept?"":"・"+s.d.map(d=>DEPT_NAME[d]).join("／"))));
-      a.appendChild(mk("span","h",SITE_NAME[s.site]+" ↗"));
+      a.appendChild(mk("span","h",SITE_NAME[s.site]));
       li.appendChild(a);ul.appendChild(li);
     }));
     g.appendChild(ul);box.appendChild(g);

@@ -3,81 +3,84 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>書審準備｜台大商研・國企</title>
+<title>書審準備｜台大商研、國企推甄分享</title>
 <meta name="author" content="Royee Chu">
 <meta name="description" content="台大商研所、國企所推甄書審：應繳資料、頁數限制、寫法與參考心得。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="stylesheet" href="assets/site.css">
 <style>
-.limits{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.limit{padding:18px;border-radius:var(--radius);border:1px solid var(--line);background:var(--surface);display:grid;gap:4px}
-.limit .n{font-size:28px;font-weight:900;letter-spacing:-.02em;color:var(--accent-ink);line-height:1.1}
-.limit .k{font-weight:700}
-.limit .s{color:var(--muted);font-size:13.5px}
-.tips{display:grid;gap:12px;counter-reset:tip}
-.tip{display:grid;grid-template-columns:36px 1fr;gap:14px;padding:18px;border-radius:var(--radius);border:1px solid var(--line);background:var(--surface)}
-.tip::before{counter-increment:tip;content:counter(tip,decimal-leading-zero);font-weight:900;color:var(--accent-ink);font-size:18px;line-height:1.5}
-.tip h3{margin-bottom:4px}
-.tip p{color:var(--muted);font-size:14.5px}
-.tip .from{display:inline-block;margin-top:8px;font-size:12.5px;font-weight:700;text-decoration:none}
-.tip .from:hover{text-decoration:underline}
-.check{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.check li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:14.5px}
-.check li::before{content:"";width:18px;height:18px;margin-top:3px;border-radius:6px;border:2px solid var(--accent)}
+.limits{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));border-top:2px solid var(--rule);border-bottom:1px solid var(--line)}
+.limit{padding:18px 18px 18px 0;display:grid;gap:2px;align-content:start}
+.limit+.limit{padding-left:18px;border-left:1px solid var(--line)}
+.limit .n{font-size:34px;font-weight:900;letter-spacing:-.03em;line-height:1.1}
+.limit .k{font-weight:800}
+.limit .s{color:var(--muted);font-size:13.5px;line-height:1.6}
+@media (max-width:640px){.limit+.limit{border-left:0;padding-left:0;border-top:1px solid var(--line)}}
+
+.tips{list-style:none;margin:0;padding:0;counter-reset:tip}
+.tips li{display:grid;grid-template-columns:52px 1fr;gap:4px 12px;padding:22px 0;border-top:1px solid var(--line)}
+.tips li:last-child{border-bottom:1px solid var(--line)}
+.tips li::before{counter-increment:tip;content:counter(tip,decimal-leading-zero);grid-row:span 3;font-size:26px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.tips p{color:var(--muted)}
+.tips .from{font-size:13.5px;font-weight:700}
+
+.check{list-style:none;margin:0;padding:0}
+.check li{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.check li::before{content:"";width:16px;height:16px;margin-top:6px;border:2px solid var(--ink);border-radius:3px}
 </style>
 </head>
 <body>
-<main class="wrap stack">
+<main class="wrap narrow">
   <header class="page-head">
-    <span class="eyebrow">書審準備</span>
-    <h1>書審佔一半，也決定你能不能進口試</h1>
-    <p class="lede">兩所都是書審排名前 66 名才能口試，書審分數又佔總分 50%。面試時教授手上通常也只有你的個人資料表，所以書審其實會一路影響到口試。</p>
+    <p class="crumb"><a href="./">首頁</a> / 書審準備</p>
+    <h1>書審準備</h1>
+    <p class="lede">兩所都要書審排名前 66 名才能進口試；進了口試，教授手上多半也只有你的個人資料表。<mark>書審寫的每一行，口試都可能被問到。</mark></p>
   </header>
 
+  <div class="stack">
   <section>
-    <div class="sec-head"><h2>先記住這幾個限制</h2><p class="muted">116 學年度簡章；完整清單在<a href="guide.html">推甄須知</a>。</p></div>
+    <div class="sec-head"><h2><span class="no">01</span>先記住這幾個限制</h2><p class="muted">116 學年度簡章，完整清單在<a href="guide.html">推甄須知</a>。</p></div>
     <div class="limits">
-      <div class="limit"><span class="n">2 頁</span><span class="k">商研個人資料表</span><span class="s">A4，到系網下載當年格式</span></div>
-      <div class="limit"><span class="n">1 頁</span><span class="k">國企個人資料表</span><span class="s">A4 單面，報名前到系網下載</span></div>
-      <div class="limit"><span class="n">15 頁</span><span class="k">商研學習計畫書</span><span class="s">自傳、動機與計畫、社團或工作經驗、自我能力評估</span></div>
-      <div class="limit"><span class="n">10/8 17:00</span><span class="k">上傳截止</span><span class="s">確認後不能補件或更新（116）</span></div>
+      <div class="limit"><span class="n">2 頁</span><span class="k">商研個人資料表</span><span class="s">A4，用當年系網格式</span></div>
+      <div class="limit"><span class="n">1 頁</span><span class="k">國企個人資料表</span><span class="s">A4 單面</span></div>
+      <div class="limit"><span class="n">15 頁</span><span class="k">商研學習計畫書</span><span class="s">國企沒有寫頁數</span></div>
+      <div class="limit"><span class="n">10/8</span><span class="k">上傳截止</span><span class="s">17:00，確認後不能改</span></div>
     </div>
   </section>
 
   <section>
-    <div class="sec-head"><h2>心得裡反覆出現的寫法</h2><p class="muted">從下面幾篇心得整理的，細節請看原文。</p></div>
-    <div class="tips">
-      <div class="tip"><div><h3>個人資料表花最多時間</h3><p>面試的教授很可能只看過這張表就開始問，所以上面寫的每一行都要準備好被追問。116 國企個人關，教授也是一邊翻成績單和個人資料表一邊提問。</p><a class="from" href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" target="_blank" rel="noopener">PTT・109 學年度心得 ↗</a></div></div>
-      <div class="tip"><div><h3>先定好一條故事線再動筆</h3><p>想清楚為什麼要來、畢業想做什麼、這個所的資源怎麼幫你到那裡，讓整份書審都繞著同一件事講。把系所的核心能力列一欄、自己的經驗列一欄，逐一對照，就知道哪些經驗該放。</p><a class="from" href="https://livia-liang.notion.site/1e49eca82c3e419fb0944e6941ad3b1c" target="_blank" rel="noopener">Notion・112 學年度商研心得 ↗</a></div></div>
-      <div class="tip"><div><h3>一件事一段，用 STAR 寫</h3><p>每段經歷照情境、任務、行動、結果寫，段落盡量短，亮點放前面。</p><a class="from" href="https://livia-liang.notion.site/1e49eca82c3e419fb0944e6941ad3b1c" target="_blank" rel="noopener">Notion・112 學年度商研心得 ↗</a></div></div>
-      <div class="tip"><div><h3>能畫成圖表的就別寫成段落</h3><p>長文把重點拉到最前面，經歷盡量圖表化、數量化。粗體和底線可以用，但不要整頁都是。</p><a class="from" href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" target="_blank" rel="noopener">PTT・109 學年度心得 ↗</a></div></div>
-      <div class="tip"><div><h3>帶著初稿去招生說明會</h3><p>說明會結束後可以直接拿初稿請學長姐看，比空手去問收穫多。</p><a class="from" href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" target="_blank" rel="noopener">PTT・109 學年度心得 ↗</a></div></div>
-    </div>
+    <div class="sec-head"><h2><span class="no">02</span>心得裡反覆出現的寫法</h2><p class="muted">細節請看原文。</p></div>
+    <ol class="tips">
+      <li><h3>個人資料表花最多時間</h3><p>面試教授很可能只看過這張表就開始問，上面每一行都要準備好被追問。116 年國企個人關，教授就是一邊翻成績單和個人資料表一邊提問。</p><a class="from" href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" target="_blank" rel="noopener">PTT・109 學年度心得</a></li>
+      <li><h3>先定好一條故事線再動筆</h3><p>想清楚為什麼要來、畢業想做什麼、這個所的資源怎麼帶你到那裡。把系所的<a href="https://management.ntu.edu.tw/BA/introduction/coreability" target="_blank" rel="noopener">核心能力</a>列一欄、自己的經驗列一欄，逐一對照，就知道哪些經驗該放。</p><a class="from" href="https://livia-liang.notion.site/1e49eca82c3e419fb0944e6941ad3b1c" target="_blank" rel="noopener">Notion・112 學年度商研心得</a></li>
+      <li><h3>一件事一段，用 STAR 寫</h3><p>每段經歷照情境、任務、行動、結果寫，段落短，亮點放前面。</p><a class="from" href="https://livia-liang.notion.site/1e49eca82c3e419fb0944e6941ad3b1c" target="_blank" rel="noopener">Notion・112 學年度商研心得</a></li>
+      <li><h3>能畫成表格的就別寫成段落</h3><p>長文把重點拉到最前面，經歷盡量圖表化、數字化。粗體和底線可以用，但不要整頁都是。</p><a class="from" href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" target="_blank" rel="noopener">PTT・109 學年度心得</a></li>
+      <li><h3>帶著初稿去招生說明會</h3><p>說明會結束後直接拿初稿請學長姐看，比空手去問收穫多。</p><a class="from" href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" target="_blank" rel="noopener">PTT・109 學年度心得</a></li>
+    </ol>
   </section>
 
   <section>
-    <div class="sec-head"><h2>送出前檢查</h2></div>
-    <div class="panel">
-      <ul class="check">
-        <li>個人資料表用的是今年系網上的格式，頁數沒超過</li>
-        <li>成績單和名次證明已經申請到（學校通常要幾個工作天）</li>
-        <li>學習計畫書有回答簡章要求的每一項</li>
-        <li>其他有利文件都有證明，而且個人資料表裡提到的表現都附上了</li>
-        <li>至少請兩個人從頭讀過一次，抓錯字</li>
-        <li>上傳前另存一份 PDF，面試前要拿出來複習</li>
-      </ul>
-    </div>
+    <div class="sec-head"><h2><span class="no">03</span>送出前檢查</h2></div>
+    <ul class="check">
+      <li>個人資料表用的是今年系網的格式，頁數沒超過</li>
+      <li>成績單和名次證明已經拿到（學校通常要幾個工作天）</li>
+      <li>學習計畫書有回答簡章要求的每一項</li>
+      <li>個人資料表裡提到的表現，都有附上證明</li>
+      <li>至少請兩個人從頭讀過一次抓錯字</li>
+      <li>另存一份 PDF，面試前要拿出來複習</li>
+    </ul>
   </section>
 
   <section>
-    <div class="sec-head"><h2>值得細讀的書審心得</h2></div>
-    <div class="src-grid">
-      <a class="src-card" href="https://livia-liang.notion.site/1e49eca82c3e419fb0944e6941ad3b1c" target="_blank" rel="noopener"><div class="meta"><span class="site notion">Notion</span><span class="pill">商研</span><span class="tag">112</span></div><span class="t">〚理工轉商管〛台大商研推甄經驗分享 ↗</span></a>
-      <a class="src-card" href="https://medium.com/@huang2321/2022%E6%8E%A8%E7%94%84%E5%BF%83%E5%BE%97-%E5%8F%B0%E5%A4%A7%E5%95%86%E7%A0%94-%E5%8F%B0%E5%A4%A7%E5%9C%8B%E4%BC%81-%E6%94%BF%E5%A4%A7%E4%BC%81%E7%A0%94-%E6%94%BF%E5%A4%A7%E7%A7%91%E7%AE%A1-%E6%9B%B8%E5%AF%A9-%E9%9D%A2%E8%A9%A6-978d8a2c38e3" target="_blank" rel="noopener"><div class="meta"><span class="site medium">Medium</span><span class="pill">商研</span><span class="pill">國企</span><span class="tag">112</span></div><span class="t">【2022 推甄心得】台大商研．台大國企．政大企研．政大科管 書審＆面試 ↗</span></a>
-      <a class="src-card" href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" target="_blank" rel="noopener"><div class="meta"><span class="site ptt">PTT</span><span class="pill">商研</span><span class="pill">國企</span><span class="tag">109</span></div><span class="t">台大商研／台大國企 推甄正取心得 ↗</span></a>
-      <a class="src-card" href="https://www.dcard.tw/f/graduate_school/p/257352226" target="_blank" rel="noopener"><div class="meta"><span class="site dcard">Dcard</span><span class="pill">商研</span><span class="pill">國企</span><span class="tag">114</span></div><span class="t">114 推甄心得：28% 跨領域非應屆 ↗</span></a>
-    </div>
+    <div class="sec-head"><h2><span class="no">04</span>值得細讀的書審心得</h2></div>
+    <ul class="src-items">
+      <li><a href="https://livia-liang.notion.site/1e49eca82c3e419fb0944e6941ad3b1c" target="_blank" rel="noopener">〚理工轉商管〛台大商研推甄經驗分享</a><span class="meta"><span class="site">Notion</span> · 112 · 商研 · 書審步驟寫得最細</span></li>
+      <li><a href="https://medium.com/@huang2321/2022%E6%8E%A8%E7%94%84%E5%BF%83%E5%BE%97-%E5%8F%B0%E5%A4%A7%E5%95%86%E7%A0%94-%E5%8F%B0%E5%A4%A7%E5%9C%8B%E4%BC%81-%E6%94%BF%E5%A4%A7%E4%BC%81%E7%A0%94-%E6%94%BF%E5%A4%A7%E7%A7%91%E7%AE%A1-%E6%9B%B8%E5%AF%A9-%E9%9D%A2%E8%A9%A6-978d8a2c38e3" target="_blank" rel="noopener">【2022 推甄心得】台大商研．台大國企．政大企研．政大科管 書審＆面試</a><span class="meta"><span class="site">Medium</span> · 112 · 商研、國企</span></li>
+      <li><a href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" target="_blank" rel="noopener">台大商研／台大國企 推甄正取心得</a><span class="meta"><span class="site">PTT</span> · 109 · 商研、國企</span></li>
+      <li><a href="https://www.dcard.tw/f/graduate_school/p/257352226" target="_blank" rel="noopener">114 推甄心得：28% 跨領域非應屆</a><span class="meta"><span class="site">Dcard</span> · 114 · 商研、國企</span></li>
+    </ul>
   </section>
+  </div>
 </main>
 <script src="assets/site.js"></script>
 </body>

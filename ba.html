@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>台大商研教授一覽</title>
+<title>商研教授一覽｜台大商研、國企推甄分享</title>
 <meta name="author" content="Royee Chu">
 <meta name="description" content="商研教授一覽：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
@@ -83,46 +83,50 @@ textarea{width:100%;min-height:72px;margin-top:6px;font:inherit;font-size:14px;p
 .saved{font-size:12px;color:var(--muted);min-height:1em}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 
-/* ---- new look (site.css tokens) ---- */
-.page{display:grid;gap:24px;padding-bottom:72px}
-.page-head{padding-block:36px 0}
-.tabs{border-bottom:1px solid var(--line)}
-.tab{font-weight:700;color:var(--muted);padding:10px 14px}
+/* ---- editorial look (site.css tokens) ---- */
+.page{display:grid;gap:28px;padding-bottom:88px}
+.tabs{border-bottom:1px solid var(--line);gap:26px}
+.tab{padding:12px 0;font-weight:800;font-size:15.5px;color:var(--muted)}
 .tab:hover{color:var(--ink)}
 .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
-.chip{font-weight:600;font-size:13.5px;padding:6px 13px}
-.chip:hover{border-color:var(--accent)}
-.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-.count{color:var(--faint);font-weight:600}
-.grid{gap:14px}
-.card{border-radius:var(--radius);padding:20px;transition:border-color .15s,box-shadow .15s}
-.card:hover{box-shadow:var(--shadow)}
-.name{font-weight:800;font-size:22px;letter-spacing:-.01em}
-.photo{border-radius:10px;background:var(--accent-soft);color:var(--accent-ink);font-weight:800;border-color:var(--line)}
-.tag{border-radius:6px;font-weight:600;font-size:12px}
-.tag.ec{background:var(--ec-soft);color:var(--ec)}
-.tag.iv{background:var(--stamp-soft);color:var(--stamp);font-weight:700}
-.links a{color:var(--accent-ink);font-weight:700;text-decoration:none;font-size:13px}
-.links a:hover{text-decoration:underline}
-.lbl{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--faint)}
+.bar{gap:6px 20px}
+.chip{background:none;border:0;border-radius:0;padding:2px 0;font-weight:700;font-size:14.5px;color:var(--muted);text-decoration:underline;text-decoration-color:transparent;text-decoration-thickness:2px;text-underline-offset:6px}
+.chip:hover{color:var(--ink)}
+.chip[aria-pressed="true"]{background:none;color:var(--ink);text-decoration-color:var(--accent)}
+.count{color:var(--faint);font-weight:700;font-size:13.5px}
+.grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,430px),1fr));gap:0 56px;border-bottom:1px solid var(--line)}
+.card{background:none;border:0;border-top:1px solid var(--line);border-radius:0;padding:26px 0;gap:14px;transition:background .3s}
+.card.flash{box-shadow:none;background:var(--accent-soft)}
+.top{grid-template-columns:84px 1fr;gap:18px}
+.photo{width:84px;height:101px;border-radius:3px;border:0;background:var(--bg-soft);color:var(--faint);font-size:28px;font-weight:900}
+.name{font-size:23px;font-weight:900;letter-spacing:-.01em}
+.tags{display:block;line-height:1.7}
+.tag{display:inline;background:none!important;border:0;padding:0;border-radius:0;font-size:13.5px;color:var(--muted);font-weight:600}
+.tag+.tag::before{content:"·";margin:0 7px;color:var(--faint);font-weight:400}
+.tag.sc{color:var(--sc)}.tag.ec{color:var(--ec)}.tag.iv{color:var(--stamp);font-weight:800}
+.links a{font-weight:700;font-size:13.5px}
+.lbl{font-size:12.5px;font-weight:800;color:var(--faint);letter-spacing:.02em;margin-bottom:2px}
 ul.res{padding-left:18px}
+.course{font-size:14.5px}
 .iv{border-left:2px solid var(--stamp);padding-left:12px}
-.iv-yr{font-weight:800}
-.iv a{color:var(--muted);font-weight:600}
-.tl-scroll{border-radius:var(--radius)}
-.tl th{font-weight:700;color:var(--faint)}
-.tl .who.in{color:var(--accent-ink)}
-.own{border-radius:var(--radius)}
+.iv-yr{font-weight:900}
+.iv-st{color:var(--stamp)}
+.iv a{color:var(--muted);font-weight:700;font-size:12.5px}
+.tl-scroll{border:0;border-radius:0;background:none;border-top:2px solid var(--rule)}
+.tl th{color:var(--faint);font-weight:800}
+.tl td,.tl th{padding-left:0}
+.tl .who.in{color:inherit;text-decoration-color:var(--accent)}
+.own{background:none;border:0;border-radius:0;padding:0 0 28px;border-bottom:1px solid var(--line)}
+.own.flash{box-shadow:none;background:var(--accent-soft)}
 .own .st{border-left-width:2px}
-.flash,.card.flash,.own.flash{box-shadow:0 0 0 3px var(--accent-soft),0 0 0 1px var(--accent)}
-details{margin-top:2px}
-details summary{list-style:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:700;color:var(--accent-ink);padding:3px 0}
+.own .who.in,.iv .who.in{color:inherit;text-decoration-color:var(--accent)}
+details summary{list-style:none;display:inline;cursor:pointer;font-size:13px;font-weight:700;color:var(--accent-ink)}
 details summary::-webkit-details-marker{display:none}
-details summary::before{content:"";width:16px;height:16px;border-radius:5px;background:var(--accent-soft) no-repeat center/10px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1v8M1 5h8' stroke='%238F5CF0' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E")}
-details[open] summary::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1 5h8' stroke='%238F5CF0' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E")}
-textarea{display:block;width:100%;min-height:84px;margin-top:8px;font:inherit;font-size:14px;line-height:1.6;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);resize:vertical;transition:border-color .15s,background .15s,box-shadow .15s}
+details summary::before{content:"+ "}
+details[open] summary::before{content:"− "}
+textarea{display:block;width:100%;min-height:80px;margin-top:8px;font:inherit;font-size:14px;line-height:1.6;padding:10px 12px;border-radius:3px;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);resize:vertical}
 textarea::placeholder{color:var(--faint)}
-textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 3px var(--accent-soft)}
+textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);background:var(--bg)}
 .saved{font-size:12px;color:var(--faint);margin-top:4px}
 </style>
 </head>
@@ -130,7 +134,7 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
 
 <main class="wrap page">
   <header class="page-head">
-    <span class="eyebrow">商學研究所 · 7010</span>
+    <p class="crumb"><a href="./">首頁</a> / 商學研究所 · 7010</p>
     <h1>商研教授一覽</h1>
     <p class="lede">研究領域、開課，還有 106–116 學年度誰坐在哪一關。題目原文請點連結看；想記筆記，可以貼在每則紀錄下面，只會存在你自己的瀏覽器。</p>
   </header>
@@ -205,6 +209,10 @@ const PROFS=[
  {k:"liaocn",n:"廖振男",t:"專任副教授",cat:"營運／數據",sn:274,res:["社會責任營運","社會網絡","營運與行銷介面","資訊管理"],c:"最適化理論；統計學",
   iv:[{y:115,s:3,kind:"圖表分析／邏輯"},
       {y:114,s:3,kind:"邏輯（抽題）"}]},
+ {k:"liuyc",n:"劉怡靖",t:"專任助理教授",cat:"組織／人資",sn:293,res:["團隊合作動機", "團隊決策", "人際勸服與團體動力", "跨國、跨文化團隊管理"],c:"115-1 課表未查得",edu:"康乃爾大學 傳播博士（社會心理、組織行為）",iv:[{y:116,s:2,kind:"英文"},{y:114,s:2,kind:"英文"},{y:108,s:2,kind:"機智問答"}]},
+ {k:"kokc",n:"柯冠州",t:"專任助理教授",cat:"行銷",sn:310,res:["消費者新產品採用行為", "數位行銷", "創新競賽", "遊戲化"],c:"115-1 課表未查得",edu:"伊利諾大學芝加哥分校 管理博士",iv:[{y:116,s:3,kind:"邏輯"},{y:113,s:2,kind:"英文"},{y:108,s:3,kind:"英文"}]},
+ {k:"linjw",n:"林嘉薇",t:"專任助理教授",cat:"行銷",sn:427,res:["創新科技與行銷趨勢", "自我認同與文化差異對消費決策的影響", "社會行銷"],c:"115-1 課表未查得",edu:"德州大學聖安東尼奧分校 行銷博士；台大商研所碩士；台大心理系學士",iv:[]},
+ {k:"chinsc",n:"秦時雋",t:"專任助理教授",cat:"行銷",sn:456,res:["利社會行為", "道德", "企業社會責任", "科技採用"],c:"115-1 課表未查得",edu:"伊利諾大學香檳分校 行銷博士",iv:[]},
 ];
 PROFS.forEach(p=>{if(!p.edu&&typeof EDU!=="undefined")p.edu=EDU[p.k]});
 const IN=new Set(PROFS.map(p=>p.n));
