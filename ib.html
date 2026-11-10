@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="國企師資陣容：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261110231831">
+<link rel="stylesheet" href="assets/site.css?v=20261110232948">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -100,9 +100,14 @@ textarea{width:100%;min-height:72px;margin-top:6px;font:inherit;font-size:14px;p
 .top{grid-template-columns:84px 1fr;gap:18px}
 .photo{width:84px;height:101px;border-radius:3px;border:0;background:var(--bg-soft);color:var(--faint);font-size:28px;font-weight:900}
 .name{font-size:23px;font-weight:900;letter-spacing:-.01em}
-.tags{display:block;line-height:1.7}
+.tags{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;line-height:1.5}
 .tag{display:inline;background:none!important;border:0;padding:0;border-radius:0;font-size:13.5px;color:var(--muted);font-weight:600}
-.tag+.tag::before{content:"｜";margin:0 4px;color:var(--faint);font-weight:400}
+.tag.cat{display:inline-block;font-size:12px;font-weight:800;line-height:1;padding:4px 8px;border-radius:4px;background:var(--bg-soft)!important;border:1px solid var(--line);color:var(--ink)}
+.psearch{margin-left:auto;width:220px;max-width:100%;font:inherit;font-size:14px;padding:6px 10px 6px 30px;border:1px solid var(--line);border-radius:6px;color:var(--ink);
+  background:var(--bg-soft) no-repeat 10px center/14px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239496A3' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E")}
+.psearch:focus{outline:none;border-color:var(--accent);background-color:var(--bg)}
+.psearch+.count{margin-left:12px}
+@media (max-width:560px){.psearch{width:100%;margin-left:0;order:5}}
 .tag.sc{color:var(--sc)}.tag.ec{color:var(--ec)}.tag.iv{color:var(--stamp);font-weight:800}
 .links a{font-weight:700;font-size:13.5px}
 .lbl{font-size:12.5px;font-weight:800;color:var(--faint);letter-spacing:.02em;margin-bottom:2px}
@@ -175,7 +180,7 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
       <button class="chip" id="f-all" data-f="all" aria-pressed="true">全部</button>
       <button class="chip" id="f-iv" data-f="iv" aria-pressed="false">曾任面試官</button>
       <button class="chip" id="f-recent" data-f="recent" aria-pressed="false">近五年曾出現</button>
-      <button class="chip" id="f-econ" data-f="econ" aria-pressed="false">經濟背景</button>
+      <input type="search" class="psearch" id="psearch" placeholder="搜尋領域、課程、學歷" aria-label="搜尋教授" autocomplete="off">
       <span class="count" id="count"></span>
     </div>
     <div class="grid" id="grid"></div>
@@ -306,7 +311,7 @@ function goOwn(){
 
 
 /* state */
-const state={filter:"all"};
+const state={filter:"all",q:""};
 const store={
   get(k){try{return localStorage.getItem(k)||""}catch(e){return ""}},
   set(k,v){try{v?localStorage.setItem(k,v):localStorage.removeItem(k);return true}catch(e){return false}}
@@ -319,8 +324,9 @@ function render(){
   const g=$("#grid");g.textContent="";
   let n=0;
   PROFS.forEach(p=>{
-    const show=state.filter==="all"||(state.filter==="iv"&&p.iv.length)||(state.filter==="recent"&&p.iv.some(i=>i.y>=112))||(state.filter==="econ"&&p.econ);
-    if(!show)return;n++;
+    const show=state.filter==="all"||(state.filter==="iv"&&p.iv.length)||(state.filter==="recent"&&p.iv.some(i=>i.y>=112)); const hay=[p.n,p.t,p.cat,(p.res||[]).join(" "),p.edu||"",p.c||""].join(" ").toLowerCase();
+    const hit=!state.q||state.q.split(/\s+/).every(w=>hay.includes(w));
+    if(!show||!hit)return;n++;
     g.appendChild(card(p));
   });
   $("#count").textContent=n+" 位";
@@ -338,15 +344,11 @@ function card(p){
   id.appendChild(el("h3","name",p.n));
   const tags=el("div","tags");
   tags.appendChild(el("span","tag",p.t));
-  tags.appendChild(el("span","tag",p.cat));
-  if(p.econ)tags.appendChild(el("span","tag ec","經濟背景"));
+  tags.appendChild(el("span","tag cat",p.cat));
   if(p.iv.length)tags.appendChild(el("span","tag iv","面試官 ×"+p.iv.length));
   id.appendChild(tags);
   const l=el("div","links");const a=el("a",null,"官方師資頁 ↗");a.href=T+p.sn;a.target="_blank";a.rel="noopener";l.appendChild(a);
-  const q=el("a",null,"課程查詢 ↗");q.href="https://course.ntu.edu.tw/search/quick";q.target="_blank";q.rel="noopener";
-  q.title="會複製教授姓名，到台大課程網的搜尋框貼上";
-  q.onclick=()=>{try{navigator.clipboard.writeText(p.n)}catch(e){}toast("已複製「"+p.n+"」，到課程網搜尋框貼上")};
-  l.appendChild(q);id.appendChild(l);
+  id.appendChild(l);
   top.appendChild(id);c.appendChild(top);
 
   const r=el("div");r.appendChild(el("p","lbl","研究專長"));
@@ -378,7 +380,7 @@ function card(p){
   }
   const d=el("details","note-box");d.open=!!saved;
   d.appendChild(el("summary",null,"Note"));
-  const ta=el("textarea");ta.value=saved;ta.placeholder="關於這位教授的任何筆記，只會存在這台裝置";
+  const ta=el("textarea");ta.value=saved;ta.placeholder="";
   ta.setAttribute("aria-label",p.n+" Note");
   const sv=el("div","saved");
   let tm;ta.oninput=()=>{clearTimeout(tm);sv.textContent="編輯中…";tm=setTimeout(()=>{sv.textContent=store.set(nk,ta.value.trim())?"已存在這台裝置":"這個瀏覽器無法儲存"},600)};
@@ -413,6 +415,7 @@ try{const f=localStorage.getItem("ib-filter");if(f&&document.querySelector('.chi
 document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.f===state.filter)));
 
 
+$("#psearch").oninput=e=>{state.q=e.target.value.trim().toLowerCase();render()};
 render();
 
 
@@ -425,6 +428,6 @@ function follow(){const h=decodeURIComponent(location.hash.slice(1));
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261110231831"></script>
+<script src="assets/site.js?v=20261110232948"></script>
 </body>
 </html>

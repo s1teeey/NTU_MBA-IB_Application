@@ -23,7 +23,7 @@
       const data=code.slice(0,code.indexOf("const $="));
       let d;try{d=new Function(data+"\nreturn {PROFS,Q116};")()}catch(e){return}
       d.PROFS.forEach(p=>{
-        const text=[p.cat,p.econ?"經濟背景":"",(p.res||[]).join("、"),p.edu||"",p.c||"",
+        const text=[p.cat,(p.res||[]).join("、"),p.edu||"",p.c||"",
           (p.iv||[]).map(x=>x.y+" 學年度第 "+x.s+" 關 "+x.kind).join("、")].join(" ");
         out.push({g:label,t:p.n+"・"+p.t,x:text,u:u+"#p-"+p.k});
       });
@@ -34,7 +34,7 @@
 
     // 心得文
     if(typeof SOURCES==="undefined"){
-      await new Promise(res=>{const s=document.createElement("script");s.src="assets/sources.js?v=20261110231831";s.onload=res;s.onerror=res;document.head.appendChild(s)});
+      await new Promise(res=>{const s=document.createElement("script");s.src="assets/sources.js?v=20261110232948";s.onload=res;s.onerror=res;document.head.appendChild(s)});
     }
     if(typeof SOURCES!=="undefined")SOURCES.forEach(s=>{
       out.push({g:"心得文",t:s.t,x:[s.t,SITE_NAME[s.site],s.y+" 學年度",s.d.map(k=>DEPT_NAME[k]).join("、"),s.note||""].join(" "),
