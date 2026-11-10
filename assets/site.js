@@ -1,7 +1,7 @@
 /* Header, theme switch and footer shared by every page. */
 (function(){
   const PAGES=[
-    ["guide.html","推甄須知"],
+    ["sharing.html","推甄須知"],
     ["ba.html","商研教授"],
     ["ib.html","國企教授"],
     ["docs.html","書審準備"],
