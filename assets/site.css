@@ -125,7 +125,7 @@ mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;p
 
 /* page heading */
 main{padding-bottom:88px}
-.page-head{padding-block:48px 8px;display:grid;gap:14px;border-bottom:3px solid var(--rule);padding-bottom:24px;margin-bottom:40px}
+.page-head{padding-block:48px 8px;display:grid;gap:14px;border-bottom:3px solid var(--rule);padding-bottom:24px;margin-bottom:28px}
 .crumb{font-size:13.5px;color:var(--faint);font-weight:600}
 .crumb a{color:var(--muted);text-decoration-color:var(--line)}
 .lede{color:var(--muted);font-size:16.5px}
@@ -133,7 +133,7 @@ main{padding-bottom:88px}
 .stack{display:grid;gap:56px}
 section{display:grid;gap:16px}
 .sec-head{display:grid;gap:6px}
-.sec-head h2{display:flex;gap:14px;align-items:baseline}
+.sec-head h2,.faq-group h2{display:flex;gap:14px;align-items:baseline;justify-self:start;width:fit-content;padding-bottom:10px;border-bottom:3px solid var(--rule)}
 .sec-head h2 .no{font-size:15px;font-weight:900;color:var(--accent-ink);font-variant-numeric:tabular-nums}
 
 /* lists */
