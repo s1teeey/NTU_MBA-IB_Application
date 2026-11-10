@@ -5,36 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>台大國企教授一覽</title>
 <meta name="author" content="Royee Chu">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<meta name="description" content="國企教授一覽：研究領域、開課與歷年推甄面試官。">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/site.css">
 <style>
-/* Layout: summary timeline of interview panels (year × 關) on top, then a filterable grid of faculty cards */
-:root{
-  --bg:#F3F5F7; --surface:#FFFFFF; --ink:#18202B; --muted:#5B6675; --line:#DCE1E7;
-  --accent:#0F6B5C; --accent-soft:#E2F0EC; --stamp:#B5462F; --stamp-soft:#F8E6E1;
-  --sc:#8A5A00; --sc-soft:#FBF0D9;
-  --f-display:"Noto Serif TC","Songti TC",serif;
-  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#12161C; --surface:#1A2029; --ink:#E7EBF0; --muted:#9AA5B3; --line:#2C3542;
-  --accent:#5CC2AD; --accent-soft:#17312C; --stamp:#F08B73; --stamp-soft:#3A221D;
-  --sc:#E8B656; --sc-soft:#33290F; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#12161C; --surface:#1A2029; --ink:#E7EBF0; --muted:#9AA5B3; --line:#2C3542;
-  --accent:#5CC2AD; --accent-soft:#17312C; --stamp:#F08B73; --stamp-soft:#3A221D;
-  --sc:#E8B656; --sc-soft:#33290F; color-scheme:dark}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
-.wrap{max-width:1180px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
-header{display:grid;gap:6px}
-.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--accent);text-transform:uppercase}
-h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,5vw,40px);line-height:1.2;margin:0;text-wrap:balance}
-.lede{color:var(--muted);margin:0;max-width:68ch}
-h2{font-family:var(--f-display);font-weight:600;font-size:20px;margin:0}
-section{display:grid;gap:12px}
 .note{font-size:13px;color:var(--muted);margin:0}
 
 /* timeline */
@@ -92,13 +66,6 @@ ul.res{margin:0;padding-left:18px;display:grid;gap:2px}
 .iv-kind{font-size:13px;color:var(--muted)}
 .iv a{font-size:12px;color:var(--muted)}
 .none{font-size:14px;color:var(--muted);margin:0}
-.nav{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px}
-.nav a{color:var(--accent)}
-.src-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
-.src-list a{display:flex;justify-content:space-between;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:14px}
-.src-list a:hover{border-color:var(--accent)}
-.src-list .yr{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
-.src-list .host{color:var(--muted);font-size:12px}
 .own{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:14px;scroll-margin-top:16px}
 .own h3{font-family:var(--f-display);font-weight:800;font-size:20px;margin:0}
 .own .stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
@@ -115,16 +82,57 @@ details summary{cursor:pointer;font-size:13px;color:var(--accent);font-weight:50
 textarea{width:100%;min-height:72px;margin-top:6px;font:inherit;font-size:14px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
 .saved{font-size:12px;color:var(--muted);min-height:1em}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ---- new look (site.css tokens) ---- */
+.page{display:grid;gap:24px;padding-bottom:72px}
+.page-head{padding-block:36px 0}
+.tabs{border-bottom:1px solid var(--line)}
+.tab{font-weight:700;color:var(--muted);padding:10px 14px}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.chip{font-weight:600;font-size:13.5px;padding:6px 13px}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.count{color:var(--faint);font-weight:600}
+.grid{gap:14px}
+.card{border-radius:var(--radius);padding:20px;transition:border-color .15s,box-shadow .15s}
+.card:hover{box-shadow:var(--shadow)}
+.name{font-weight:800;font-size:22px;letter-spacing:-.01em}
+.photo{border-radius:10px;background:var(--accent-soft);color:var(--accent-ink);font-weight:800;border-color:var(--line)}
+.tag{border-radius:6px;font-weight:600;font-size:12px}
+.tag.ec{background:var(--ec-soft);color:var(--ec)}
+.tag.iv{background:var(--stamp-soft);color:var(--stamp);font-weight:700}
+.links a{color:var(--accent-ink);font-weight:700;text-decoration:none;font-size:13px}
+.links a:hover{text-decoration:underline}
+.lbl{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--faint)}
+ul.res{padding-left:18px}
+.iv{border-left:2px solid var(--stamp);padding-left:12px}
+.iv-yr{font-weight:800}
+.iv a{color:var(--muted);font-weight:600}
+.tl-scroll{border-radius:var(--radius)}
+.tl th{font-weight:700;color:var(--faint)}
+.tl .who.in{color:var(--accent-ink)}
+.own{border-radius:var(--radius)}
+.own .st{border-left-width:2px}
+.flash,.card.flash,.own.flash{box-shadow:0 0 0 3px var(--accent-soft),0 0 0 1px var(--accent)}
+details{margin-top:2px}
+details summary{list-style:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:700;color:var(--accent-ink);padding:3px 0}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"";width:16px;height:16px;border-radius:5px;background:var(--accent-soft) no-repeat center/10px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1v8M1 5h8' stroke='%238F5CF0' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E")}
+details[open] summary::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1 5h8' stroke='%238F5CF0' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E")}
+textarea{display:block;width:100%;min-height:84px;margin-top:8px;font:inherit;font-size:14px;line-height:1.6;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);resize:vertical;transition:border-color .15s,background .15s,box-shadow .15s}
+textarea::placeholder{color:var(--faint)}
+textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 3px var(--accent-soft)}
+.saved{font-size:12px;color:var(--faint);margin-top:4px}
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <header>
-    <span class="eyebrow">NTU International Business · 2026 推甄準備</span>
-    <h1>台大國企教授一覽</h1>
-    <p class=\"lede\">每則面試紀錄只列年度、關卡與心得文連結，不轉載原文。想做筆記可以把原文貼進各紀錄下方的欄位，內容只會存在你自己的瀏覽器。</p>
-    <nav class="nav"><a href="./">← 首頁</a><a href="ba.html">商研教授一覽</a></nav>
+<main class="wrap page">
+  <header class="page-head">
+    <span class="eyebrow">國際企業學系 · 7070</span>
+    <h1>國企教授一覽</h1>
+    <p class="lede">研究領域、開課，還有 106–116 學年度誰坐在哪一關。題目原文請點連結看；想記筆記，可以貼在每則紀錄下面，只會存在你自己的瀏覽器。</p>
   </header>
 
   <div class="tabs" role="tablist" aria-label="檢視">
@@ -139,8 +147,7 @@ textarea{width:100%;min-height:72px;margin-top:6px;font:inherit;font-size:14px;p
   </section>
 
   <section id="panel-src" role="tabpanel" aria-labelledby="tab-src" hidden>
-    <p class="note">各學年度面試紀錄引用的心得文，請到原文閱讀。</p>
-    <ul class="src-list" id="src"></ul>
+    <div id="src"></div>
   </section>
 
   <section id="panel-cards" role="tabpanel" aria-labelledby="tab-cards">
@@ -154,8 +161,9 @@ textarea{width:100%;min-height:72px;margin-top:6px;font:inherit;font-size:14px;p
     </div>
     <div class="grid" id="grid"></div>
   </section>
-</div>
+</main>
 
+<script src="assets/sources.js"></script>
 <script>
 const D="https://www.dcard.tw/f/graduate_school/p/";
 const SRC={115:D+"260371156",114:D+"257296058",113:D+"254109162",112:D+"240534805",111:D+"239956512",110:D+"234844532",
@@ -279,17 +287,7 @@ function goOwn(){
 }
 
 /* sources */
-(function(){
-  const ul=$("#src");
-  {const li=el("li");const a=el("a");a.href="#y116";a.onclick=e=>{e.preventDefault();goOwn()};
-   a.appendChild(el("span","yr","116 學年度"));a.appendChild(el("span","host","本站作者紀錄"));li.appendChild(a);ul.appendChild(li)}
-  Object.keys(SRC).map(Number).sort((a,b)=>b-a).forEach(y=>{
-    const li=el("li");const a=el("a");a.href=SRC[y];a.target="_blank";a.rel="noopener";
-    a.appendChild(el("span","yr",y+" 學年度"));
-    a.appendChild(el("span","host",new URL(SRC[y]).hostname.replace(/^www\./,"")+" ↗"));
-    li.appendChild(a);ul.appendChild(li);
-  });
-})();
+renderSources($("#src"),{dept:DEPT,ownHref:"#y116",onOwn:()=>goOwn()});
 
 /* state */
 const state={filter:"all"};
@@ -348,7 +346,7 @@ function card(p){
       const key=DEPT+"-iv-"+p.k+"-"+i.y+"-"+i.s;
       const d=el("details");const saved=store.get(key);d.open=!!saved;
       d.appendChild(el("summary",null,saved?"我貼的原文":"貼上原文"));
-      const ta=el("textarea");ta.value=saved;ta.placeholder="從心得文複製這一關的題目貼在這裡（只存在你的瀏覽器）";
+      const ta=el("textarea");ta.value=saved;ta.placeholder="貼上這一關的題目原文，只會存在這台裝置";
       ta.setAttribute("aria-label",p.n+" "+i.y+" 學年度第 "+i.s+" 關原文");
       const sv=el("div","saved");
       let tm;ta.oninput=()=>{clearTimeout(tm);sv.textContent="編輯中…";tm=setTimeout(()=>{sv.textContent=store.set(key,ta.value.trim())?"已存在這台裝置":"這個瀏覽器無法儲存"},600)};
@@ -390,6 +388,13 @@ document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",Stri
 
 render();
 
+
+/* deep links: #y116 #tl #src #cards */
+(function(){const h=location.hash.slice(1);
+  if(h==="y116")setTimeout(goOwn,50);
+  else if(TABS.includes(h))showTab(h);
+})();
 </script>
+<script src="assets/site.js"></script>
 </body>
 </html>

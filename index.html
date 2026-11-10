@@ -3,67 +3,98 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>台大商研・國企教授一覽</title>
+<title>台大商研・國企推甄筆記</title>
 <meta name="author" content="Royee Chu">
-<meta name="description" content="台大商研所與國企所教授的研究專長、開課與歷年推甄面試紀錄整理。">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<meta name="description" content="台大商研所、國企所推甄：簡章重點、教授、歷年面試官與心得文、書審和面試準備。">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/site.css">
 <style>
-:root{
-  --bg:#F3F5F7; --surface:#FFFFFF; --ink:#18202B; --muted:#5B6675; --line:#DCE1E7;
-  --accent:#0F6B5C; --accent-soft:#E2F0EC;
-  --f-display:"Noto Serif TC","Songti TC",serif;
-  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#12161C; --surface:#1A2029; --ink:#E7EBF0; --muted:#9AA5B3; --line:#2C3542;
-  --accent:#5CC2AD; --accent-soft:#17312C; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#12161C; --surface:#1A2029; --ink:#E7EBF0; --muted:#9AA5B3; --line:#2C3542;
-  --accent:#5CC2AD; --accent-soft:#17312C; color-scheme:dark}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
-.wrap{max-width:880px;margin:0 auto;padding-block:48px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
-.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--accent);text-transform:uppercase}
-h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,6vw,42px);line-height:1.2;margin:4px 0 8px;text-wrap:balance}
-.lede{color:var(--muted);margin:0;max-width:60ch}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-a.card{display:grid;gap:10px;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
-a.card:hover{border-color:var(--accent);transform:translateY(-2px)}
-a.card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.card .code{font-family:var(--f-mono);font-size:12px;color:var(--accent);letter-spacing:.06em}
-.card h2{font-family:var(--f-display);font-weight:800;font-size:24px;margin:0}
-.card p{margin:0;color:var(--muted);font-size:14px}
-.card .go{color:var(--accent);font-weight:500;font-size:14px}
-.note{font-size:13px;color:var(--muted);margin:0;border-top:1px solid var(--line);padding-top:16px}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);isolation:isolate}
+.hero::before{content:"";position:absolute;inset:-20% -10% auto -10%;height:140%;z-index:-2;
+  background:
+    radial-gradient(40% 55% at 18% 30%,color-mix(in srgb,var(--accent) 26%,transparent),transparent 70%),
+    radial-gradient(35% 50% at 82% 20%,color-mix(in srgb,#ff8fb1 22%,transparent),transparent 70%),
+    radial-gradient(45% 60% at 65% 95%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 70%)}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:44px 44px;opacity:.55;
+  -webkit-mask-image:radial-gradient(ellipse 70% 80% at 50% 0%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse 70% 80% at 50% 0%,#000 30%,transparent 75%)}
+.hero .wrap{padding-block:72px 56px;display:grid;gap:18px}
+.hero h1{font-size:clamp(34px,7vw,60px);font-weight:900;letter-spacing:-.02em}
+.hero h1 .nb{white-space:nowrap}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 50%,#ff6f9c));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lede{font-size:17px;max-width:46ch}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.fact{display:inline-flex;gap:6px;align-items:baseline;padding:6px 12px;border-radius:999px;background:color-mix(in srgb,var(--surface) 80%,transparent);border:1px solid var(--line);font-size:13.5px;color:var(--muted);backdrop-filter:blur(6px)}
+.fact b{color:var(--ink);font-weight:800}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding-block:40px 8px}
+.go{position:relative;display:grid;gap:10px;align-content:start;padding:22px 22px 20px;border-radius:var(--radius);border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;transition:border-color .15s,transform .15s,box-shadow .15s;min-height:168px}
+.go:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
+.go .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent-ink)}
+.go .ic svg{width:20px;height:20px}
+.go h2{font-size:19px}
+.go p{color:var(--muted);font-size:14.5px}
+.go .arrow{position:absolute;top:22px;right:22px;color:var(--faint);transition:transform .15s,color .15s}
+.go:hover .arrow{color:var(--accent-ink);transform:translateX(3px)}
+.go.lead{background:linear-gradient(160deg,var(--accent-soft),var(--surface) 70%)}
 </style>
 </head>
 <body>
-<main class="wrap">
-  <header>
-    <span class="eyebrow">NTU College of Management · 推甄準備</span>
-    <h1>台大商研・國企教授一覽</h1>
-    <p class="lede">整理兩所專任教師的研究專長、學歷、開課，以及 106–116 學年度推甄面試中誰擔任過哪一關。</p>
-  </header>
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">NTU MBA · 商研 7010 ／ 國企 7070</span>
+    <h1><span class="nb">台大商研、國企</span><br><em>推甄筆記</em></h1>
+    <p class="lede">簡章看不懂的地方、教授是誰、往年面試問了什麼、書審怎麼寫。一個 116 推甄生邊準備邊整理的，留給下一屆。</p>
+    <div class="facts" aria-label="116 學年度重點">
+      <span class="fact">名額 <b>各 33</b></span>
+      <span class="fact">書審 <b>50%</b>・口試 <b>50%</b></span>
+      <span class="fact">口試資格 <b>前 66 名</b></span>
+      <span class="fact">116 口試 <b>國企 10/30・商研 11/6</b></span>
+    </div>
+  </div>
+</section>
 
-  <div class="grid">
-    <a class="card" href="ba.html">
-      <span class="code">Business Administration</span>
-      <h2>台大商研</h2>
-      <p>17 位教授・近十年面試官時間表・供應鏈相關篩選</p>
-      <span class="go">進入 →</span>
+<main class="wrap">
+  <div class="cards">
+    <a class="go lead" href="guide.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></span>
+      <h2>推甄須知</h2>
+      <p>兩所的名額、計分、口試資格和整個時程，第一次看從這裡開始。</p>
+      <span class="arrow" aria-hidden="true">→</span>
     </a>
-    <a class="card" href="ib.html">
-      <span class="code">International Business</span>
-      <h2>台大國企</h2>
-      <p>22 位教授・近十年面試官時間表・經濟背景篩選</p>
-      <span class="go">進入 →</span>
+    <a class="go" href="ba.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+      <h2>商研教授一覽</h2>
+      <p>17 位專任教授的領域、開課，還有 106–116 年誰當過面試官。</p>
+      <span class="arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="go" href="ib.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+      <h2>國企教授一覽</h2>
+      <p>22 位專任教授，可以用供應鏈、經濟背景篩。</p>
+      <span class="arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="go" href="docs.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
+      <h2>書審準備</h2>
+      <p>要交哪些東西、頁數上限，還有寫得好的書審心得可以參考。</p>
+      <span class="arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="go" href="interview.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+      <h2>面試準備</h2>
+      <p>三關怎麼考、每年的心得文整理在一起。</p>
+      <span class="arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="go" href="faq.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg></span>
+      <h2>FAQ</h2>
+      <p>要不要推薦信、成績要多好、可以兩所一起報嗎。</p>
+      <span class="arrow" aria-hidden="true">→</span>
     </a>
   </div>
-
-  <p class="note">面試紀錄整理自網路上公開的推甄心得文，每則都附原文連結，本站不轉載原文。教授資料與照片取自台大管理學院官方師資頁，內容以官網為準。</p>
 </main>
+<script src="assets/site.js"></script>
 </body>
 </html>
