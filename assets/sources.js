@@ -53,7 +53,7 @@ function renderSources(box,opts){
     g.appendChild(mk("div","yr",String(y)));
     const ul=mk("ul","src-items");
     rows.filter(s=>s.y===y).forEach(s=>{
-      const li=mk("li");const a=mk("a",null,s.t);
+      const li=mk("li");if(s.d.length===1)li.dataset.d=s.d[0];const a=mk("a",null,s.t);
       if(s.site==="own"){a.href=opts.ownHref||s.u;if(opts.onOwn)a.onclick=e=>{e.preventDefault();opts.onOwn()}}
       else{a.href=s.u;a.target="_blank";a.rel="noopener"}
       li.appendChild(a);
@@ -73,7 +73,7 @@ function renderSources(box,opts){
     ["學年度"].concat(opts.dept?[]:["所"]).concat(["心得文","平台"]).forEach(h=>{const th=mk("th",null,h);th.scope="col";hr.appendChild(th)});
     const tb=tbl.createTBody();
     old.forEach(y=>rows.filter(s=>s.y===y).forEach(s=>{
-      const r=tb.insertRow();
+      const r=tb.insertRow();if(s.d.length===1)r.dataset.d=s.d[0];
       r.insertCell().textContent=y;r.cells[0].className="y";
       if(!opts.dept){const dc=r.insertCell();s.d.forEach((d,i)=>{if(i)dc.appendChild(document.createTextNode("、"));dc.appendChild(mk("span","d-"+d,DEPT_NAME[d]))})}
       const c=r.insertCell();const a=mk("a",null,s.t);a.href=s.u;a.target="_blank";a.rel="noopener";c.appendChild(a);

@@ -7,8 +7,11 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   try{const t=localStorage.getItem("theme");if(t==="light"||t==="dark")root.dataset.theme=t}catch(e){}
   // 師資陣容：商研、國企同一個選單項目，連到上次看的那一所
   const PROF=["ba.html","ib.html"];
+  let only="";try{only=localStorage.getItem("only")||""}catch(e){}
+  if(only)root.dataset.only=only;
   let lastDept="ba.html";
   try{if(PROF.includes(here))localStorage.setItem("dept",here);const d=localStorage.getItem("dept");if(PROF.includes(d))lastDept=d}catch(e){}
+  if(only)lastDept=only+".html";
   const PAGES=[
     ["sharing.html","推甄須知"],
     [lastDept,"師資陣容",PROF],
@@ -22,8 +25,16 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   bar.innerHTML='<div class="wrap"><a class="brand" href="./">台大商研、國企<span>推甄分享</span></a>'+
     '<nav class="menu" aria-label="主選單">'+PAGES.map(([h,t,also])=>'<a href="'+h+'"'+(h===here||(also&&also.includes(here))?' aria-current="page"':"")+'>'+t+'</a>').join("")+'</nav>'+
     '<div class="search" role="search"><input type="search" placeholder="搜尋" aria-label="搜尋全站" autocomplete="off"><div class="sresults" hidden></div></div>'+
+    '<div class="only" role="group" aria-label="只看哪一所">'+[["","全部"],["ba","商研"],["ib","國企"]].map(([v,t])=>'<button type="button" data-v="'+v+'" class="'+(v?"d-"+v:"")+'" aria-pressed="'+(only===v)+'">'+t+'</button>').join("")+'</div>'+
     '<button class="theme-btn" type="button"></button></div>';
   document.body.prepend(bar);
+  bar.querySelectorAll(".only button").forEach(b=>b.onclick=()=>{
+    const v=b.dataset.v;try{v?localStorage.setItem("only",v):localStorage.removeItem("only")}catch(e){}
+    if(v&&PROF.includes(here)&&here!==v+".html"){location.href=v+".html";return}
+    if(v)root.dataset.only=v;else delete root.dataset.only;
+    bar.querySelectorAll(".only button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+    const pl=bar.querySelector('.menu a[href="ba.html"],.menu a[href="ib.html"]');if(pl&&v)pl.setAttribute("href",v+".html");
+  });
   const btn=bar.querySelector(".theme-btn");
   const paint=()=>{btn.textContent=isDark()?"淺色":"深色"};
   btn.onclick=()=>{const t=isDark()?"light":"dark";root.dataset.theme=t;try{localStorage.setItem("theme",t)}catch(e){}paint()};
@@ -31,7 +42,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   const cur=bar.querySelector('[aria-current="page"]');if(cur)cur.scrollIntoView({block:"nearest",inline:"center"});
 
   const foot=document.createElement("footer");foot.className="foot";
-  foot.innerHTML='<div class="wrap"><span>面試題目為考生事後回憶；招生規定依台大當年簡章。</span>'+
+  foot.innerHTML='<div class="wrap"><span>招生規定請依當年度台大簡章為準。</span>'+
     (FORM_URL?'<a href="'+FORM_URL+'" target="_blank" rel="noopener">投稿・提問</a>':'')+'</div>';
   document.body.appendChild(foot);
   document.querySelectorAll("[data-form]").forEach(el=>{
@@ -39,7 +50,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=202611102032";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=202611102046";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
@@ -50,7 +61,8 @@ function buildRail(){
   if(!rail){rail=document.createElement("nav");rail.className="rail";rail.setAttribute("aria-label","本頁段落");document.body.appendChild(rail)}
   let items=[];
   const label=e=>{
-    const c=e.cloneNode(true);c.querySelectorAll(".no,.today").forEach(x=>x.remove());
+    const c=e.cloneNode(true);c.querySelectorAll(".today").forEach(x=>x.remove());
+    const no=c.querySelector(".no");if(no)no.textContent=no.textContent+" ";
     let t=c.textContent.replace(/\s+/g," ").trim();
     if(e.matches(".src-year > .yr"))t+=" 學年度心得";
     return t;

@@ -73,6 +73,17 @@ mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;p
   .menu a{padding:10px 0 10px}
 }
 
+/* school filter */
+.only{display:flex;flex:none;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.only button{font:inherit;font-size:13px;font-weight:800;padding:5px 10px;border:0;background:none;color:var(--muted);cursor:pointer}
+.only button+button{border-left:1px solid var(--line)}
+.only button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.only button.d-ba[aria-pressed="true"]{background:var(--ba);color:#fff}
+.only button.d-ib[aria-pressed="true"]{background:var(--ib);color:#fff}
+:root[data-only="ba"] [data-d="ib"],:root[data-only="ib"] [data-d="ba"]{display:none!important}
+:root[data-only] .cmp.two{table-layout:auto}
+@media (max-width:760px){.only{order:1}}
+
 /* search */
 .search{position:relative;flex:0 1 190px;min-width:110px}
 .search input{width:100%;font:inherit;font-size:14px;line-height:1.4;padding:7px 10px 7px 30px;border:1px solid var(--line);border-radius:6px;color:var(--ink);
@@ -164,3 +175,8 @@ main h2,.src-year,.src-past,.faq-group{scroll-margin-top:84px}
 .foot a{color:var(--muted);text-decoration-color:var(--line)}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+@media (max-width:760px){
+  .search{flex:1 1 0}
+  .only{order:2;margin-top:10px;margin-left:8px}
+}

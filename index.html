@@ -7,15 +7,14 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="台大商研所、國企所碩士班推甄：簡章重點、教授、歷年面試官與心得文、書審和面試準備。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=202611102032">
+<link rel="stylesheet" href="assets/site.css?v=202611102046">
 <style>
 .mast{padding-block:48px 28px;border-bottom:3px solid var(--rule);display:grid;gap:22px}
 .issue{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:13.5px;font-weight:700;color:var(--faint)}
 .issue b{color:var(--accent-ink)}
 .mast h1{font-size:clamp(28px,4vw,40px);line-height:1.25;letter-spacing:-.015em;font-weight:900}
 .mast h1 mark{background:linear-gradient(transparent 62%,var(--mark) 62%);padding:0 .04em}
-.mast .callout{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:18px 22px;color:var(--ink)!important}
-.mast .intro{font-size:17px;color:var(--muted);line-height:1.8}
+.mast .intro{display:grid;gap:10px;background:var(--bg-soft);border-radius:10px;padding:22px 26px;font-size:16.5px;font-weight:500;line-height:1.95;letter-spacing:.015em;color:var(--ink)}
 
 .home{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:56px;padding-top:12px}
 @media (max-width:880px){.home{grid-template-columns:1fr;gap:40px}}
@@ -23,7 +22,10 @@
 .toc{list-style:none;margin:0;padding:0;counter-reset:toc}
 .toc li{border-bottom:1px solid var(--line)}
 .toc a{display:grid;grid-template-columns:64px 1fr;gap:4px 16px;padding:22px 16px;margin:0 -16px;border-radius:8px;text-decoration:none;transform-origin:left center;transition:transform .22s cubic-bezier(.2,.8,.2,1),background .22s,box-shadow .22s}
-.toc a:hover{transform:scale(1.035);background:var(--bg-soft);box-shadow:0 10px 30px rgba(18,19,34,.08)}
+.toc a:hover{transform:scale(1.07) translateX(6px);background:var(--bg-soft);box-shadow:0 16px 40px rgba(18,19,34,.12)}
+.toc a:hover .tt{color:var(--accent-ink)}
+.toc a:hover::before{transform:scale(1.25)}
+.toc a::before{transition:color .2s,transform .22s;transform-origin:left center}
 @media (prefers-reduced-motion:reduce){.toc a:hover{transform:none}}
 .toc a::before{counter-increment:toc;content:counter(toc,decimal-leading-zero);grid-row:span 2;font-size:30px;font-weight:900;line-height:1;color:var(--line);font-variant-numeric:tabular-nums;letter-spacing:-.03em;transition:color .15s}
 .toc a:hover::before{color:var(--accent)}
@@ -51,7 +53,10 @@
   <header class="mast">
     <p class="issue"><b>114–116 學年度整理</b><span>2026 年 11 月更新</span><span>商研 7010・國企 7070</span></p>
     <h1>台大商研、國企<br><mark>推甄分享</mark></h1>
-    <p class="intro callout">準備推甄總是漫長的，因此歷年來有許多優秀的學長姐花費許多心血撰寫心得文，然而資訊卻散落在各方。本網站整理兩所近 5~10 年的推甄心得、師資陣容與面試題目，並有我自己集大成的書審撰寫及面試準備心得，希望可以造福學弟妹們，也歡迎各路高手踴躍分享更多資訊！</p>
+    <div class="intro">
+      <p>準備推甄總是漫長的，因此歷年來有許多優秀的學長姐花費許多心血撰寫心得文，唯資訊散落在各方，取得不易。</p>
+      <p>本網站整理兩所近 5~10 年推甄心得、師資陣容與面試題目，並有我個人集大成的書審撰寫及面試準備心得，希望可以造福學弟妹們，也歡迎各路高手踴躍分享更多資訊！</p>
+    </div>
   </header>
 
   <div class="home">
@@ -86,6 +91,6 @@
   </div>
 </main>
 <script>{const d=new Date(),w='日一二三四五六'[d.getDay()],t=document.querySelector('.today');if(t)t.textContent='Today: '+d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+'（'+w+'）'}</script>
-<script src="assets/site.js?v=202611102032"></script>
+<script src="assets/site.js?v=202611102046"></script>
 </body>
 </html>
