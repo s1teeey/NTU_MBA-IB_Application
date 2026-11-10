@@ -1,4 +1,4 @@
-# 台大商研、國企推甄分享
+# 推甄分享｜台大商研、台大國企
 
 https://s1teeey.github.io/NTU_MBA-IB_Application/
 

@@ -25,7 +25,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   const ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>';
   const opts=(k,cur,list)=>'<div class="opts" data-k="'+k+'">'+list.map(([v,t,hl])=>'<button type="button" data-v="'+v+'" aria-pressed="'+(cur===v)+'"><span class="'+hl+'">'+t+'</span></button>').join("")+'</div>';
   const bar=document.createElement("header");bar.className="topbar";
-  bar.innerHTML='<div class="wrap"><a class="brand" href="./">台大商研、國企<span>推甄分享</span></a>'+
+  bar.innerHTML='<div class="wrap"><a class="brand" href="./"><span>推甄分享</span>｜台大商研、台大國企</a>'+
     '<nav class="menu" aria-label="主選單">'+PAGES.map(([h,t,also])=>'<a href="'+h+'"'+(h===here||(also&&also.includes(here))?' aria-current="page"':"")+'>'+t+'</a>').join("")+'</nav>'+
     '<div class="search" role="search"><input type="search" placeholder="搜尋" aria-label="搜尋全站" autocomplete="off"><div class="sresults" hidden></div></div>'+
     '<div class="prefs"><button class="prefs-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="顯示設定" title="顯示設定">'+ICON+'</button>'+
@@ -60,7 +60,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=20261110231339";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261110231831";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
