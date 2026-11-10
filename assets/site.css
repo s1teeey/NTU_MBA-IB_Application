@@ -71,24 +71,31 @@ mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;p
 .menu a{flex:none;font-size:14.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:20px 0 18px;border-bottom:2px solid transparent;white-space:nowrap}
 .menu a:hover{color:var(--ink)}
 .menu a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
-.theme-btn{flex:none;font:inherit;font-size:13px;font-weight:700;color:var(--muted);background:none;border:0;padding:4px 0;cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
-.theme-btn:hover{color:var(--ink);text-decoration-color:var(--accent)}
 @media (max-width:760px){
   .topbar .wrap{flex-wrap:wrap;gap:0 16px;padding-top:12px}
   .menu{order:3;width:100%;margin-left:0;gap:18px}
   .menu a{padding:10px 0 10px}
 }
 
-/* school filter */
-.only{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px;font-size:14.5px;color:var(--faint);font-weight:700}
-.only i{font-style:normal;color:var(--line);margin:0 2px}
-.only button{font:inherit;border:0;background:none;padding:2px 2px;color:var(--muted);cursor:pointer}
-.only button:hover{color:var(--ink)}
-.only button[aria-pressed="true"]{color:var(--ink);font-weight:900}
-.only button span{background:none;padding:0 2px}
-.only button[aria-pressed="true"] .hl-ba{background:linear-gradient(transparent 55%,var(--mark-ba) 55%)}
-.only button[aria-pressed="true"] .hl-ib{background:linear-gradient(transparent 55%,var(--mark-ib) 55%)}
-.only button[aria-pressed="true"] .hl-all{background:linear-gradient(transparent 55%,var(--line) 55%)}
+/* 顯示設定 */
+.prefs{position:relative;flex:none}
+.prefs-btn{display:flex;align-items:center;gap:6px;font:inherit;font-size:14px;font-weight:700;color:var(--muted);background:none;border:0;padding:6px 2px;cursor:pointer}
+.prefs-btn svg{width:17px;height:17px}
+.prefs-btn:hover,.prefs.open .prefs-btn,.prefs:hover .prefs-btn{color:var(--ink)}
+.prefs-pop{position:absolute;right:0;top:100%;min-width:220px;padding:14px 16px 12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;box-shadow:0 14px 40px rgba(18,19,34,.14);opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s,transform .15s,visibility .15s;z-index:50}
+.prefs-pop::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
+.prefs:hover .prefs-pop,.prefs:focus-within .prefs-pop,.prefs.open .prefs-pop{opacity:1;visibility:visible;transform:none}
+.prefs .grp{font-size:12px;font-weight:800;color:var(--faint);margin:0 0 4px}
+.prefs .grp+.opts{margin-bottom:12px}
+.prefs .opts:last-child{margin-bottom:0}
+.prefs .opts{display:flex;gap:4px}
+.prefs .opts button{font:inherit;font-size:14px;font-weight:700;border:0;background:none;padding:4px 6px;border-radius:4px;color:var(--muted);cursor:pointer}
+.prefs .opts button:hover{background:var(--bg-soft);color:var(--ink)}
+.prefs .opts button[aria-pressed="true"]{color:var(--ink);font-weight:900}
+.prefs .opts button span{background:none;padding:0 2px}
+.prefs .opts button[aria-pressed="true"] .hl-ba{background:linear-gradient(transparent 55%,var(--mark-ba) 55%)}
+.prefs .opts button[aria-pressed="true"] .hl-ib{background:linear-gradient(transparent 55%,var(--mark-ib) 55%)}
+.prefs .opts button[aria-pressed="true"] .hl-all{background:linear-gradient(transparent 55%,var(--mark) 55%)}
 :root[data-only="ba"] [data-d="ib"],:root[data-only="ib"] [data-d="ba"]{display:none!important}
 :root[data-only] .cmp.two{table-layout:auto}
 
@@ -110,7 +117,7 @@ mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;p
 
 @media (max-width:760px){
   .brand{order:1}
-  .theme-btn{order:1;margin-left:auto}
+  .prefs{order:1;margin-left:auto}
   .search{order:2;flex:1 1 100%;margin-top:10px;position:static}
   .topbar .wrap{position:relative}
   .sresults{left:16px;right:16px;width:auto;top:calc(100% + 4px)}

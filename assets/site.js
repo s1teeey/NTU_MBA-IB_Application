@@ -19,31 +19,36 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     ["interview.html","面試準備"],
     ["faq.html","FAQ"],
   ];
-  const isDark=()=>root.dataset.theme?root.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
+  let theme="";try{theme=localStorage.getItem("theme")||""}catch(e){}
 
+  // 顯示設定：外觀（淺色/深色/跟隨系統）＋系所（All/商研/國企）
+  const ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>';
+  const opts=(k,cur,list)=>'<div class="opts" data-k="'+k+'">'+list.map(([v,t,hl])=>'<button type="button" data-v="'+v+'" aria-pressed="'+(cur===v)+'"><span class="'+hl+'">'+t+'</span></button>').join("")+'</div>';
   const bar=document.createElement("header");bar.className="topbar";
   bar.innerHTML='<div class="wrap"><a class="brand" href="./">台大商研、國企<span>推甄分享</span></a>'+
     '<nav class="menu" aria-label="主選單">'+PAGES.map(([h,t,also])=>'<a href="'+h+'"'+(h===here||(also&&also.includes(here))?' aria-current="page"':"")+'>'+t+'</a>').join("")+'</nav>'+
     '<div class="search" role="search"><input type="search" placeholder="搜尋" aria-label="搜尋全站" autocomplete="off"><div class="sresults" hidden></div></div>'+
-    '<button class="theme-btn" type="button"></button></div>';
+    '<div class="prefs"><button class="prefs-btn" type="button" aria-haspopup="true" aria-expanded="false">'+ICON+'<span>顯示</span></button>'+
+    '<div class="prefs-pop">'+
+      '<p class="grp">外觀</p>'+opts("theme",theme,[["light","淺色","hl-all"],["dark","深色","hl-all"],["","跟隨系統","hl-all"]])+
+      '<p class="grp">系所</p>'+opts("only",only,[["","All","hl-all"],["ba","商研","hl-ba"],["ib","國企","hl-ib"]])+
+    '</div></div></div>';
   document.body.prepend(bar);
-  const head=document.querySelector(".page-head");
-  if(head&&document.querySelector("[data-d]")&&!PROF.includes(here)){
-    const f=document.createElement("div");f.className="only";f.setAttribute("role","group");f.setAttribute("aria-label","只看哪一所");
-    f.innerHTML='<span>顯示：</span>'+[["","全部"],["ba","商研"],["ib","國企"]].map(([v,t])=>'<button type="button" data-v="'+v+'" aria-pressed="'+(only===v)+'"><span class="'+(v?"hl-"+v:"hl-all")+'">'+t+'</span></button>').join('<i>｜</i>');
-    head.appendChild(f);
-  }
-  document.querySelectorAll(".only button").forEach(b=>b.onclick=()=>{
+  const prefs=bar.querySelector(".prefs"),pbtn=bar.querySelector(".prefs-btn");
+  pbtn.onclick=()=>{const o=!prefs.classList.contains("open");prefs.classList.toggle("open",o);pbtn.setAttribute("aria-expanded",String(o))};
+  document.addEventListener("click",e=>{if(!prefs.contains(e.target)){prefs.classList.remove("open");pbtn.setAttribute("aria-expanded","false")}});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"){prefs.classList.remove("open");pbtn.setAttribute("aria-expanded","false")}});
+  const press=(k,b)=>bar.querySelectorAll('.opts[data-k="'+k+'"] button').forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+  bar.querySelectorAll('.opts[data-k="theme"] button').forEach(b=>b.onclick=()=>{
+    const v=b.dataset.v;try{v?localStorage.setItem("theme",v):localStorage.removeItem("theme")}catch(e){}
+    if(v)root.dataset.theme=v;else delete root.dataset.theme;press("theme",b);
+  });
+  bar.querySelectorAll('.opts[data-k="only"] button').forEach(b=>b.onclick=()=>{
     const v=b.dataset.v;try{v?localStorage.setItem("only",v):localStorage.removeItem("only")}catch(e){}
     if(v&&PROF.includes(here)&&here!==v+".html"){location.href=v+".html";return}
-    if(v)root.dataset.only=v;else delete root.dataset.only;
-    document.querySelectorAll(".only button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+    if(v)root.dataset.only=v;else delete root.dataset.only;press("only",b);
     const pl=bar.querySelector('.menu a[href="ba.html"],.menu a[href="ib.html"]');if(pl&&v)pl.setAttribute("href",v+".html");
   });
-  const btn=bar.querySelector(".theme-btn");
-  const paint=()=>{btn.textContent=isDark()?"淺色":"深色"};
-  btn.onclick=()=>{const t=isDark()?"light":"dark";root.dataset.theme=t;try{localStorage.setItem("theme",t)}catch(e){}paint()};
-  paint();
   const cur=bar.querySelector('[aria-current="page"]');if(cur)cur.scrollIntoView({block:"nearest",inline:"center"});
 
   const foot=document.createElement("footer");foot.className="foot";
@@ -55,7 +60,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=202611102256";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=202611102304";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
