@@ -35,6 +35,12 @@
 @media (prefers-color-scheme:dark){:root[data-dept="ib"]:not([data-theme="light"]){--accent:#3FBFA6;--accent-ink:#6FD8C3;--accent-soft:#15302B;--mark:rgba(63,191,166,.35)}}
 :root[data-dept="ib"][data-theme="dark"]{--accent:#3FBFA6;--accent-ink:#6FD8C3;--accent-soft:#15302B;--mark:rgba(63,191,166,.35)}
 .d-ba{color:var(--ba)}.d-ib{color:var(--ib)}
+/* 半截螢光筆：商研紫、國企青綠 */
+:root{--mark-ba:rgba(160,110,245,.30);--mark-ib:rgba(22,170,145,.26)}
+:root[data-theme="dark"]{--mark-ba:rgba(130,120,235,.45);--mark-ib:rgba(63,191,166,.38)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mark-ba:rgba(130,120,235,.45);--mark-ib:rgba(63,191,166,.38)}}
+.hl-ba{background:linear-gradient(transparent 55%,var(--mark-ba) 55%);padding:0 2px}
+.hl-ib{background:linear-gradient(transparent 55%,var(--mark-ib) 55%);padding:0 2px}
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}

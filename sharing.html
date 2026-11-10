@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="台大商研所、國企所碩士班甄試：名額、口試資格、應繳資料與歷年時程。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=202611102046">
+<link rel="stylesheet" href="assets/site.css?v=202611102054">
 <style>
 .cmp-scroll{overflow-x:auto}
 table.cmp{border-collapse:collapse;width:100%;min-width:540px;font-size:15px}
@@ -16,14 +16,12 @@ table.cmp{border-collapse:collapse;width:100%;min-width:540px;font-size:15px}
 .cmp thead th small{display:block;font-size:12.5px;color:var(--faint);font-weight:700}
 .cmp tbody th{width:132px;color:var(--muted);font-weight:700;font-size:14px}
 .cmp .sub{display:block;color:var(--muted);font-size:13.5px}
-.cmp thead th.d-ba,.cmp thead th.d-ib{color:inherit}.cmp thead th.d-ba{border-top:3px solid var(--ba)}.cmp thead th.d-ib{border-top:3px solid var(--ib)}
 .cmp.two{table-layout:fixed}
 .cmp.two col.lab{width:150px}
 .oral{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 48px;margin-top:8px}
 @media (max-width:760px){.oral{grid-template-columns:1fr}}
 .oral .cmp{min-width:0}
-.sub-h{font-size:16px;margin-top:8px;padding-bottom:8px;border-bottom:2px solid currentColor}
-.sub-h:not(.d-ba):not(.d-ib){border-color:var(--rule)}
+.sub-h{font-size:16px;margin-top:8px;padding-bottom:8px;border-bottom:2px solid var(--rule)}
 .cmp .dtag{display:block;width:max-content;margin-top:4px;font-size:11.5px;font-weight:800;color:var(--stamp);background:var(--stamp-soft);padding:2px 6px;border-radius:3px}
 .cmp td.both{text-align:center;color:var(--muted)}
 .cmp.yrs td{font-variant-numeric:tabular-nums}
@@ -32,7 +30,7 @@ table.cmp.yrs{min-width:0}
 @media (max-width:560px){.cmp tbody th{width:84px}}
 
 .files{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px 48px}
-.files h3{padding-bottom:8px;border-bottom:2px solid currentColor;margin-bottom:6px}
+.files h3{padding-bottom:8px;border-bottom:2px solid var(--rule);margin-bottom:6px}
 .files ol{margin:0;padding-left:22px;display:grid;gap:8px}
 
 </style>
@@ -51,7 +49,7 @@ table.cmp.yrs{min-width:0}
     <div class="cmp-scroll">
       <table class="cmp two">
         <colgroup><col class="lab"><col data-d="ba"><col data-d="ib"></colgroup>
-        <thead><tr><th scope="col"></th><th scope="col" class="d-ba" data-d="ba"><small>7010</small>商學研究所碩士班</th><th scope="col" class="d-ib" data-d="ib"><small>7070</small>國際企業學系碩士班</th></tr></thead>
+        <thead><tr><th scope="col"></th><th scope="col" data-d="ba"><small>7010</small><span class="hl-ba">商學研究所</span></th><th scope="col" data-d="ib"><small>7070</small><span class="hl-ib">國際企業學系碩士班</span></th></tr></thead>
         <tbody>
           <tr><th scope="row">一般生名額</th><td data-d="ba">33</td><td data-d="ib">33</td></tr>
           <tr><th scope="row">可口試名額</th><td data-d="ba">書審排名前 66 名</td><td data-d="ib">書審排名前 66 名</td></tr>
@@ -69,7 +67,7 @@ table.cmp.yrs{min-width:0}
     <div class="sec-head"><h2><span class="no">02</span>指定繳交資料</h2><p class="muted">全部線上上傳，確認後不能補件或更新。兩所都不需推薦信。</p></div>
     <div class="files">
       <div data-d="ba">
-        <h3 class="d-ba">商研</h3>
+        <h3><span class="hl-ba">商研</span></h3>
         <ol>
           <li>學位證書、學生證或在學證明</li>
           <li>歷年成績單</li>
@@ -80,7 +78,7 @@ table.cmp.yrs{min-width:0}
         </ol>
       </div>
       <div data-d="ib">
-        <h3 class="d-ib">國企</h3>
+        <h3><span class="hl-ib">國企</span></h3>
         <ol>
           <li>學位證書，或蓋了當學期註冊章的學生證、在學證明</li>
           <li>歷年成績單</li>
@@ -112,7 +110,7 @@ table.cmp.yrs{min-width:0}
     </div>
     <div class="oral">
       <div data-d="ba">
-        <h3 class="sub-h d-ba">商研口試</h3>
+        <h3 class="sub-h"><span class="hl-ba">商研口試</span></h3>
         <table class="cmp yrs">
           <thead><tr><th scope="col"></th><th scope="col">116</th><th scope="col">115</th><th scope="col">114</th></tr></thead>
           <tbody>
@@ -122,7 +120,7 @@ table.cmp.yrs{min-width:0}
         </table>
       </div>
       <div data-d="ib">
-        <h3 class="sub-h d-ib">國企口試</h3>
+        <h3 class="sub-h"><span class="hl-ib">國企口試</span></h3>
         <table class="cmp yrs">
           <thead><tr><th scope="col"></th><th scope="col">116</th><th scope="col">115</th><th scope="col">114</th></tr></thead>
           <tbody>
@@ -147,6 +145,6 @@ table.cmp.yrs{min-width:0}
   </section>
   </div>
 </main>
-<script src="assets/site.js?v=202611102046"></script>
+<script src="assets/site.js?v=202611102054"></script>
 </body>
 </html>

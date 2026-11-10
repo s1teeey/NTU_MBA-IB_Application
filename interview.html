@@ -7,19 +7,17 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="台大商研所、國企所推甄口試：面試題型、準備方式，以及 106–116 學年度心得文。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=202611102046">
+<link rel="stylesheet" href="assets/site.css?v=202611102054">
 <style>
 .fmt{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px 48px}
 .fmt h3{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:8px;border-bottom:2px solid var(--rule)}
-.fmt h3 span{font-size:13.5px;color:var(--muted);font-weight:700}
 .stages{list-style:none;margin:0;padding:0;counter-reset:st}
 .stages li{display:grid;grid-template-columns:34px 1fr;padding:12px 0;border-bottom:1px solid var(--line)}
 .stages li::before{counter-increment:st;content:counter(st);font-weight:900;font-size:20px;color:var(--accent-ink);line-height:1.4}
 .stages b{display:block}
 .stages span{color:var(--muted);font-size:14.5px}
 .fmt .links-inline{margin-top:12px;font-size:14.5px}
-.fmt h3.d-ba,.fmt h3.d-ib{border-bottom-color:currentColor}
-.fmt h3 span{color:var(--muted)}
+.fmt h3 .mins{color:var(--muted);font-size:13.5px;font-weight:700}
 .fmt [data-d="ba"] .stages li::before{color:var(--ba)}
 .fmt [data-d="ib"] .stages li::before{color:var(--ib)}
 .more{border-bottom:1px solid var(--line)}
@@ -56,27 +54,27 @@
 
   <div class="stack">
   <section>
-    <div class="sec-head"><h2><span class="no">01</span>116 學年度面試題型</h2></div>
+    <div class="sec-head"><h2><span class="no">01</span>116 面試題型</h2></div>
     <div class="fmt">
       <div data-d="ba">
-        <h3 class="d-ba">商研 <span>每關 4–5 分鐘</span></h3>
+        <h3><span class="hl-ba">商研</span> <span class="mins">每關 4–5 分鐘</span></h3>
         <ol class="stages">
           <li><div><b>個人關</b><span>看著個人資料表問，從一分鐘自我介紹開始</span></div></li>
           <li><div><b>英文關</b><span>桌上五篇抽一篇，自己讀約一分鐘，摘要後回答問題</span></div></li>
           <li><div><b>邏輯關</b><span>九題抽一題，有時間想，選一個立場說明，再被追問</span></div></li>
         </ol>
         <details class="more" data-src="ba" data-what="q116"><summary>116 題目</summary><div class="body">載入中…</div></details>
-        <details class="more" data-src="ba" data-what="tl"><summary>歷年面試官</summary><div class="body">載入中…</div></details>
+        <details class="more" data-src="ba" data-what="tl"><summary>近五年面試官</summary><div class="body">載入中…</div></details>
       </div>
       <div data-d="ib">
-        <h3 class="d-ib">國企 <span>每關 5 分鐘</span></h3>
+        <h3><span class="hl-ib">國企</span> <span class="mins">每關 5 分鐘</span></h3>
         <ol class="stages">
           <li><div><b>英文關</b><span>A4 單面文章讀 2.5 分鐘，摘要後和教授討論</span></div></li>
           <li><div><b>邏輯關</b><span>個案分析，從生活情境一路問到財務數字</span></div></li>
           <li><div><b>個人關</b><span>教授翻閱成績單和個人資料表提問，沒有自我介紹</span></div></li>
         </ol>
         <details class="more" data-src="ib" data-what="q116"><summary>116 題目</summary><div class="body">載入中…</div></details>
-        <details class="more" data-src="ib" data-what="tl"><summary>歷年面試官</summary><div class="body">載入中…</div></details>
+        <details class="more" data-src="ib" data-what="tl"><summary>近五年面試官</summary><div class="body">載入中…</div></details>
       </div>
     </div>
   </section>
@@ -122,7 +120,7 @@
         const t=mk("table");const hr=t.createTHead().insertRow();
         ["學年度","第 1 關","第 2 關","第 3 關"].forEach(x=>hr.appendChild(mk("th",null,x)));
         const tb=t.createTBody();
-        data.TL.forEach(([y,...cells])=>{const r=tb.insertRow();r.appendChild(mk("td","y",String(y)));
+        data.TL.filter(([y])=>y>=112).forEach(([y,...cells])=>{const r=tb.insertRow();r.appendChild(mk("td","y",String(y)));
           cells.forEach(([who,kind])=>{const c=r.insertCell();c.appendChild(mk("span",who.includes("未知")?"unk":null,who));c.appendChild(mk("small",null,kind))})});
         body.appendChild(t);
       }
@@ -131,8 +129,8 @@
   }));
 })();
 </script>
-<script src="assets/sources.js?v=202611102046"></script>
+<script src="assets/sources.js?v=202611102054"></script>
 <script>renderSources(document.getElementById("src"),{ownHref:"ba.html#y116"});</script>
-<script src="assets/site.js?v=202611102046"></script>
+<script src="assets/site.js?v=202611102054"></script>
 </body>
 </html>
