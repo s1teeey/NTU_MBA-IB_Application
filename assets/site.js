@@ -25,7 +25,7 @@
   const cur=bar.querySelector('[aria-current="page"]');if(cur)cur.scrollIntoView({block:"nearest",inline:"center"});
 
   const foot=document.createElement("footer");foot.className="foot";
-  foot.innerHTML='<div class="wrap"><span>題目和心得是考生事後的回憶，以原文為準；招生規定以台大當年簡章為準。</span>'+
+  foot.innerHTML='<div class="wrap"><span>面試題目為考生事後回憶；招生規定依台大當年簡章。</span>'+
     '<a href="https://github.com/s1teeey/NTU_MBA-IB_Application">GitHub</a></div>';
   document.body.appendChild(foot);
 })();

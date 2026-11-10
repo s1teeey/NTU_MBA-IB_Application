@@ -49,7 +49,7 @@ function renderSources(box,opts){
 
   recent.forEach(y=>{
     const g=mk("div","src-year");
-    const yr=mk("div","yr",String(y));yr.appendChild(mk("small",null,(y+1910)+" 秋天面試"));g.appendChild(yr);
+    const yr=mk("div","yr",String(y));g.appendChild(yr);
     const ul=mk("ul","src-items");
     rows.filter(s=>s.y===y).forEach(s=>{
       const li=mk("li");const a=mk("a",null,s.t);
@@ -68,7 +68,7 @@ function renderSources(box,opts){
 
   if(old.length){
     const g=mk("div","src-year");
-    const yr=mk("div","yr","109");yr.appendChild(mk("small",null,"以前"));g.appendChild(yr);
+    const yr=mk("div","yr","≤109");g.appendChild(yr);
     const ul=mk("ul","src-old");
     old.forEach(y=>rows.filter(s=>s.y===y).forEach(s=>{
       const li=mk("li");const a=mk("a");a.href=s.u;a.target="_blank";a.rel="noopener";a.title=s.t;
