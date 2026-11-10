@@ -25,14 +25,19 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   bar.innerHTML='<div class="wrap"><a class="brand" href="./">台大商研、國企<span>推甄分享</span></a>'+
     '<nav class="menu" aria-label="主選單">'+PAGES.map(([h,t,also])=>'<a href="'+h+'"'+(h===here||(also&&also.includes(here))?' aria-current="page"':"")+'>'+t+'</a>').join("")+'</nav>'+
     '<div class="search" role="search"><input type="search" placeholder="搜尋" aria-label="搜尋全站" autocomplete="off"><div class="sresults" hidden></div></div>'+
-    '<div class="only" role="group" aria-label="只看哪一所">'+[["","全部"],["ba","商研"],["ib","國企"]].map(([v,t])=>'<button type="button" data-v="'+v+'" class="'+(v?"d-"+v:"")+'" aria-pressed="'+(only===v)+'">'+t+'</button>').join("")+'</div>'+
     '<button class="theme-btn" type="button"></button></div>';
   document.body.prepend(bar);
-  bar.querySelectorAll(".only button").forEach(b=>b.onclick=()=>{
+  const head=document.querySelector(".page-head");
+  if(head&&document.querySelector("[data-d]")&&!PROF.includes(here)){
+    const f=document.createElement("div");f.className="only";f.setAttribute("role","group");f.setAttribute("aria-label","只看哪一所");
+    f.innerHTML='<span>顯示：</span>'+[["","全部"],["ba","商研"],["ib","國企"]].map(([v,t])=>'<button type="button" data-v="'+v+'" aria-pressed="'+(only===v)+'"><span class="'+(v?"hl-"+v:"hl-all")+'">'+t+'</span></button>').join('<i>｜</i>');
+    head.appendChild(f);
+  }
+  document.querySelectorAll(".only button").forEach(b=>b.onclick=()=>{
     const v=b.dataset.v;try{v?localStorage.setItem("only",v):localStorage.removeItem("only")}catch(e){}
     if(v&&PROF.includes(here)&&here!==v+".html"){location.href=v+".html";return}
     if(v)root.dataset.only=v;else delete root.dataset.only;
-    bar.querySelectorAll(".only button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+    document.querySelectorAll(".only button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
     const pl=bar.querySelector('.menu a[href="ba.html"],.menu a[href="ib.html"]');if(pl&&v)pl.setAttribute("href",v+".html");
   });
   const btn=bar.querySelector(".theme-btn");
@@ -50,7 +55,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=202611102054";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=202611102256";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */

@@ -80,15 +80,17 @@ mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;p
 }
 
 /* school filter */
-.only{display:flex;flex:none;border:1px solid var(--line);border-radius:6px;overflow:hidden}
-.only button{font:inherit;font-size:13px;font-weight:800;padding:5px 10px;border:0;background:none;color:var(--muted);cursor:pointer}
-.only button+button{border-left:1px solid var(--line)}
-.only button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
-.only button.d-ba[aria-pressed="true"]{background:var(--ba);color:#fff}
-.only button.d-ib[aria-pressed="true"]{background:var(--ib);color:#fff}
+.only{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px;font-size:14.5px;color:var(--faint);font-weight:700}
+.only i{font-style:normal;color:var(--line);margin:0 2px}
+.only button{font:inherit;border:0;background:none;padding:2px 2px;color:var(--muted);cursor:pointer}
+.only button:hover{color:var(--ink)}
+.only button[aria-pressed="true"]{color:var(--ink);font-weight:900}
+.only button span{background:none;padding:0 2px}
+.only button[aria-pressed="true"] .hl-ba{background:linear-gradient(transparent 55%,var(--mark-ba) 55%)}
+.only button[aria-pressed="true"] .hl-ib{background:linear-gradient(transparent 55%,var(--mark-ib) 55%)}
+.only button[aria-pressed="true"] .hl-all{background:linear-gradient(transparent 55%,var(--line) 55%)}
 :root[data-only="ba"] [data-d="ib"],:root[data-only="ib"] [data-d="ba"]{display:none!important}
 :root[data-only] .cmp.two{table-layout:auto}
-@media (max-width:760px){.only{order:1}}
 
 /* search */
 .search{position:relative;flex:0 1 190px;min-width:110px}
@@ -184,5 +186,4 @@ main h2,.src-year,.src-past,.faq-group{scroll-margin-top:84px}
 
 @media (max-width:760px){
   .search{flex:1 1 0}
-  .only{order:2;margin-top:10px;margin-left:8px}
 }
