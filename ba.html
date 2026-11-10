@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>台大商研教授一覽</title>
+<meta name="author" content="Royee Chu">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: summary timeline of interview panels (year × 關) on top, then a filterable grid of faculty cards */
+:root{
+  --bg:#F3F5F7; --surface:#FFFFFF; --ink:#18202B; --muted:#5B6675; --line:#DCE1E7;
+  --accent:#0F6B5C; --accent-soft:#E2F0EC; --stamp:#B5462F; --stamp-soft:#F8E6E1;
+  --sc:#8A5A00; --sc-soft:#FBF0D9;
+  --f-display:"Noto Serif TC","Songti TC",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161C; --surface:#1A2029; --ink:#E7EBF0; --muted:#9AA5B3; --line:#2C3542;
+  --accent:#5CC2AD; --accent-soft:#17312C; --stamp:#F08B73; --stamp-soft:#3A221D;
+  --sc:#E8B656; --sc-soft:#33290F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161C; --surface:#1A2029; --ink:#E7EBF0; --muted:#9AA5B3; --line:#2C3542;
+  --accent:#5CC2AD; --accent-soft:#17312C; --stamp:#F08B73; --stamp-soft:#3A221D;
+  --sc:#E8B656; --sc-soft:#33290F; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+header{display:grid;gap:6px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--accent);text-transform:uppercase}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,5vw,40px);line-height:1.2;margin:0;text-wrap:balance}
+.lede{color:var(--muted);margin:0;max-width:68ch}
+h2{font-family:var(--f-display);font-weight:600;font-size:20px;margin:0}
+section{display:grid;gap:12px}
+.note{font-size:13px;color:var(--muted);margin:0}
+
+/* timeline */
+.tl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table.tl{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+.tl th,.tl td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.tl tr:last-child td{border-bottom:0}
+.tl th{font-weight:500;color:var(--muted);font-size:12px;letter-spacing:.04em}
+.tl td.yr{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.tl .who{font-weight:700}
+.tl .who.in{color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;background:none;border:0;padding:0;font:inherit;font-weight:700}
+.tl .who.out{color:var(--muted);font-weight:500}
+.tl .kind{display:block;font-size:12px;color:var(--muted)}
+.tl .unk{color:var(--muted);opacity:.7}
+
+/* tabs */
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
+.tab{font:inherit;font-size:15px;font-weight:500;padding:10px 16px;white-space:nowrap;flex:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;color:var(--muted);cursor:pointer}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);font-weight:700}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* filters */
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,.who.in:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.count{margin-left:auto;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.status{font-size:13px;color:var(--muted)}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+@media (max-width:420px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:14px;align-content:start;min-width:0;scroll-margin-top:16px}
+.card.flash{box-shadow:0 0 0 3px var(--accent)}
+.top{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:start}
+.photo{position:relative;width:92px;height:112px;border-radius:8px;overflow:hidden;background:var(--accent-soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--accent);font-family:var(--f-display);font-size:30px;font-weight:800}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.id{display:grid;gap:4px;min-width:0}
+.name{font-family:var(--f-display);font-weight:800;font-size:24px;line-height:1.2;margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;padding:2px 8px;border-radius:4px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.tag.sc{background:var(--sc-soft);color:var(--sc);border-color:transparent;font-weight:500}
+.tag.ec{background:var(--accent-soft);color:var(--accent);border-color:transparent;font-weight:500}
+.tag.iv{background:var(--stamp-soft);color:var(--stamp);border-color:transparent;font-weight:700}
+.links{font-size:13px}
+.links a{color:var(--accent)}
+.lbl{font-size:12px;letter-spacing:.06em;color:var(--muted);margin:0 0 4px;font-weight:500}
+ul.res{margin:0;padding-left:18px;display:grid;gap:2px}
+.course{font-size:14px;margin:0}
+.iv-list{display:grid;gap:10px}
+.iv{border-left:3px solid var(--stamp);padding:2px 0 2px 12px;display:grid;gap:4px}
+.iv-head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.iv-yr{font-family:var(--f-mono);font-weight:500;font-variant-numeric:tabular-nums}
+.iv-st{font-weight:700;color:var(--stamp)}
+.iv-kind{font-size:13px;color:var(--muted)}
+.iv a{font-size:12px;color:var(--muted)}
+.none{font-size:14px;color:var(--muted);margin:0}
+.nav{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px}
+.nav a{color:var(--accent)}
+.src-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.src-list a{display:flex;justify-content:space-between;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:14px}
+.src-list a:hover{border-color:var(--accent)}
+.src-list .yr{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.src-list .host{color:var(--muted);font-size:12px}
+.own{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:14px;scroll-margin-top:16px}
+.own h3{font-family:var(--f-display);font-weight:800;font-size:20px;margin:0}
+.own .stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.own .st{border-left:3px solid var(--stamp);padding-left:12px;display:grid;gap:4px;align-content:start}
+.own .st-head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.own .st-head b{color:var(--stamp)}
+.own .how,.own .topic{font-size:13px;color:var(--muted);margin:0}
+.own ol{margin:0;padding-left:20px;font-size:14px;display:grid;gap:2px}
+.own.flash{box-shadow:0 0 0 3px var(--accent)}
+.own .who.in,.iv .who.in{color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;background:none;border:0;padding:0;font:inherit;font-weight:700}
+.own .who.out{color:var(--muted);font-weight:500}
+.iv .who.in{font-size:12px;font-weight:500;justify-self:start}
+details summary{cursor:pointer;font-size:13px;color:var(--accent);font-weight:500}
+textarea{width:100%;min-height:72px;margin-top:6px;font:inherit;font-size:14px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
+.saved{font-size:12px;color:var(--muted);min-height:1em}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">NTU Business Administration · 2026 推甄準備</span>
+    <h1>台大商研教授一覽</h1>
+    <p class=\"lede\">每則面試紀錄只列年度、關卡與心得文連結，不轉載原文。想做筆記可以把原文貼進各紀錄下方的欄位，內容只會存在你自己的瀏覽器。</p>
+    <nav class="nav"><a href="./">← 首頁</a><a href="ib.html">國企教授一覽</a></nav>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="檢視">
+    <button class="tab" role="tab" id="tab-cards" aria-controls="panel-cards" aria-selected="true">教授卡片</button>
+    <button class="tab" role="tab" id="tab-tl" aria-controls="panel-tl" aria-selected="false">歷年面試官</button>
+    <button class="tab" role="tab" id="tab-src" aria-controls="panel-src" aria-selected="false">歷年心得文</button>
+  </div>
+
+  <section id="panel-tl" role="tabpanel" aria-labelledby="tab-tl" hidden>
+    <div class="own" id="y116"></div>
+    <div class="tl-scroll"><table class="tl" id="tl"></table></div>
+  </section>
+
+  <section id="panel-src" role="tabpanel" aria-labelledby="tab-src" hidden>
+    <p class="note">各學年度面試紀錄引用的心得文，請到原文閱讀。</p>
+    <ul class="src-list" id="src"></ul>
+  </section>
+
+  <section id="panel-cards" role="tabpanel" aria-labelledby="tab-cards">
+    <div class="bar" role="group" aria-label="篩選">
+      <button class="chip" id="f-all" data-f="all" aria-pressed="true">全部</button>
+      <button class="chip" id="f-iv" data-f="iv" aria-pressed="false">曾任面試官</button>
+      <button class="chip" id="f-recent" data-f="recent" aria-pressed="false">114–116 出現過</button>
+      <button class="chip" id="f-sc" data-f="sc" aria-pressed="false">供應鏈相關</button>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+</div>
+
+<script>
+const D="https://www.dcard.tw/f/graduate_school/p/";
+const SRC={115:D+"260371156",114:D+"257296058",113:D+"254109162",112:D+"240534805",111:D+"239956512",
+  109:"https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082",108:"https://www.dcard.tw/f/exam/p/230237132",
+  107:"https://www.pttweb.cc/bbs/graduate/M.1526109224.A.AE9",106:"https://www.pttweb.cc/bbs/graduate/M.1481561218.A.5D8",110:D+"234844532"};
+const DEPT="ba";
+const Q116={"note": "三關各 4 分鐘。", "stages": [{"s": 1, "who": "許鉅秉", "kind": "個人關", "how": "針對個人資料表提問。", "q": ["一分鐘自我介紹。", "（第二次申請的考生）今年和去年申請有什麼不一樣？", "你想走供應鏈，系上有哪些教授能幫助你？"]}, {"s": 2, "who": "劉怡靖", "kind": "英文關", "how": "桌上五題抽一，自行閱讀約一分鐘後回答。", "topic": "Target 改裝紐約 SoHo 門市（Business Insider，2026 年 10 月）", "link": "https://www.businessinsider.com/target-revamped-soho-store-in-new-york-photos-2026-10", "q": ["摘要文章內容。", "你認為他們為什麼做出這樣的調整？會帶來什麼影響？", "這樣做會碰到什麼挑戰？"]}, {"s": 3, "who": "柯冠州", "kind": "邏輯關", "how": "九題抽一，看完題目有思考時間，選一個立場說明。", "q": ["有人認為 AI 能降低創作者成本、有助影視產業發展，也有人認為 AI 會毀掉影視創作。選一個立場並說明。", "追問：AI 要怎麼幫助傳統電視、電影產業？", "追問：除此之外還有其他方法嗎？"]}]};
+const T="https://management.ntu.edu.tw/BA/faculty/teacher/sn/";
+const CL="115-1 開課";
+const EDU={liunq:"明尼蘇達大學 人力資源與勞資關係博士",chisc:"紐約州立大學水牛城分校 組織暨人力資源博士",kuorx:"MIT 機械工程博士",lul:"牛津大學 心理學博士",chousy:"芝加哥大學 商研所行銷組博士",chencr:"壬色列理工學院 管理博士",chuwy:"倫敦商學院博士；台大商研所碩士；台大工管系學士",hsujb:"加州大學爾灣分校 交通系統工程博士",chiangjy:"官網未列",chenjl:"UIUC 企業管理博士；MIT 土木環工／科技政策碩士；台大機械系學士",kuocw:"密西根大學安娜堡 工業工程博士",linbw:"壬色列理工學院 管理及決策科學與工程系統博士",liennh:"康乃爾大學 企業管理博士",chienyw:"普渡大學 消費者行為博士",liucl:"曼徹斯特大學博士（行銷、國企、策略組）",yujy:"牛津大學 應用統計博士",liaocn:"加州大學柏克萊 工業工程與作業研究博士"};
+
+const PROFS=[
+ {k:"liunq",n:"劉念琪",t:"系主任",cat:"組織／人資",sn:384,res:["策略人力資源管理","組織變革與發展","雇用關係與員工福祉"],c:"人力資源管理；高科技企業經營管理實務",
+  iv:[{y:113,s:3,kind:"邏輯（抽題）"}]},
+ {k:"chisc",n:"戚樹誠",t:"專任教授",cat:"組織／人資",sn:109,res:["組織行為","人力資源管理","協商談判","衝突管理"],c:"領導與衝突管理；組織行為研討",iv:[]},
+ {k:"kuorx",n:"郭瑞祥",t:"專任教授",cat:"營運／數據",sc:1,sn:110,res:["品質與服務管理","資料探勘與商業智慧","供應鏈與流通管理","高科技創新模式"],c:"作業管理；人工智慧時代之商業競爭策略",iv:[]},
+ {k:"lul",n:"陸洛",t:"專任教授",cat:"組織／人資",sn:116,res:["組織行為與人力資源","工作壓力與職場健康","跨文化管理","人格與社會心理學"],c:"115-1 課表未查得",iv:[]},
+ {k:"chousy",n:"周善瑜",t:"專任教授",cat:"行銷",sn:112,res:["產品線與價格策略","通路策略","網路行銷","個別化行銷"],c:"行銷管理學",
+  iv:[{y:106,s:3,kind:"隨機問答／邏輯"}]},
+ {k:"chencr",n:"陳忠仁",t:"專任教授",cat:"策略",sn:118,res:["策略與創新管理","經營發展策略","創新創業","科技政策與產業發展"],c:"策略管理",iv:[]},
+ {k:"chuwy",n:"朱文儀",t:"專任教授",cat:"策略",sn:35,res:["策略管理","產業競爭分析","集團與家族企業","多角化與公司治理","跨國經營策略"],c:"策略管理",
+  iv:[{y:107,s:1,kind:"基本資料（個人關）"}]},
+ {k:"hsujb",n:"許鉅秉",t:"專任教授",cat:"營運／供應鏈",sc:1,sn:121,res:["智慧型運輸系統","全球與綠色供應鏈","緊急救災物流","逆向物流"],c:"物流管理",
+  iv:[{y:116,s:1,kind:"個人資料（個人關）"},{y:115,s:1,kind:"個人資料（個人關）"},
+      {y:113,s:1,kind:"個人資料（個人關）"}]},
+ {k:"chiangjy",n:"江俊毅",t:"專任教授",cat:"科技／資訊",sn:90,res:["IT 專案管理","IT 專案集群管理","數位轉型策略與效益實現"],c:"專案管理；科技管理研討",iv:[]},
+ {k:"chenjl",n:"陳家麟",t:"專任教授",cat:"營運／供應鏈",sc:1,sn:258,res:["新產品設計與科技創新","ESG 與永續營運","供應鏈管理","賽局理論應用"],c:"作業管理（合授）；服務與營運管理",
+  iv:[{y:107,s:3,kind:"機智問答"}]},
+ {k:"kuocw",n:"郭佳瑋",t:"專任教授",cat:"營運／供應鏈",sc:1,sn:126,res:["作業與行銷介面","收益管理與動態定價","供應鏈管理","賽局理論"],c:"收益管理與訂價",iv:[]},
+ {k:"linbw",n:"林博文",t:"專任教授",cat:"科技／創業",sn:308,res:["科技管理","高科技產業政策","財務科技","創業管理"],c:"115-1 課表未查得",iv:[]},
+ {k:"liennh",n:"練乃華",t:"專任副教授",cat:"行銷",sn:127,res:["產品記憶","購買決策","廣告溝通過程","消費者訊息處理"],c:"行銷管理學；行銷溝通與消費心理研討",
+  iv:[{y:114,s:1,kind:"個人資料（個人關）"},
+      {y:109,s:2,kind:"抽題／邏輯"}]},
+ {k:"chienyw",n:"簡怡雯",t:"專任副教授",cat:"行銷",sn:128,res:["消費者心理","消費者資訊處理","產品決策偏差","消費者態度與決策理論"],c:"行銷管理；創業行銷（合授）",
+  iv:[{y:106,s:2,kind:"英文"}]},
+ {k:"liucl",n:"劉佳玲",t:"專任副教授",cat:"策略",sc:1,sn:292,res:["策略聯盟","網路關係","知識移轉與科技創新","國際創業"],c:"產業組織研討",
+  iv:[{y:107,s:2,kind:"英文"}]},
+ {k:"yujy",n:"余峻瑜",t:"專任副教授",cat:"營運／數據",sn:129,res:["商業分析","系統動力學","作業研究與模擬（醫療服務應用）","服務設計與創新"],c:"商管統計資料分析；企業系統動態學",
+  iv:[{y:109,s:3,kind:"英文"}]},
+ {k:"liaocn",n:"廖振男",t:"專任副教授",cat:"營運／數據",sn:274,res:["社會責任營運","社會網絡","營運與行銷介面","資訊管理"],c:"最適化理論；統計學",
+  iv:[{y:115,s:3,kind:"圖表分析／邏輯"},
+      {y:114,s:3,kind:"邏輯（抽題）"}]},
+];
+PROFS.forEach(p=>{if(!p.edu&&typeof EDU!=="undefined")p.edu=EDU[p.k]});
+const IN=new Set(PROFS.map(p=>p.n));
+const TL=[
+ [116,["許鉅秉","個人資料"],["劉怡靖","英文"],["柯冠州","邏輯"]],
+ [115,["許鉅秉","個人資料"],["未確認","英文"],["廖振男","圖表分析"]],
+ [114,["練乃華","個人資料"],["劉怡靖","英文"],["廖振男","邏輯"]],
+ [113,["許鉅秉","個人資料"],["柯冠州","英文"],["劉念琪","邏輯"]],
+ [112,["未確認","個人資料"],["未確認","英文"],["未確認","邏輯"]],
+ [111,["未確認","個人資料"],["未確認","英文"],["未確認","時事"]],
+ [110,["未確認","個人資料"],["未確認","英文"],["未確認","抽題／邏輯"]],
+ [109,["蔣明晃","個人資料"],["練乃華","抽題／邏輯"],["余峻瑜","英文"]],
+ [108,["陳鴻基","個人資料"],["劉怡靖","機智問答"],["柯冠州","英文"]],
+ [107,["朱文儀","基本資料"],["劉佳玲","英文"],["陳家麟","機智問答"]],
+ [106,["陳鴻基","個人資料"],["簡怡雯","英文"],["周善瑜","隨機問答"]],
+];
+
+const $=s=>document.querySelector(s);
+const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
+
+/* timeline */
+(function(){
+  const t=$("#tl");
+  const hr=t.createTHead().insertRow();
+  ["學年度","第 1 關","第 2 關","第 3 關"].forEach(h=>{const th=el("th",null,h);th.scope="col";hr.appendChild(th)});
+  const tb=t.createTBody();
+  TL.forEach(([y,...cells])=>{
+    const r=tb.insertRow();
+    r.appendChild(el("td","yr",y+"（"+(y+1911-1)+"）"));
+    cells.forEach(([who,kind])=>{
+      const td=r.insertCell();
+      who.split("、").forEach((w,i)=>{
+        if(i)td.appendChild(document.createTextNode("、"));
+        if(w.includes("未確認"))td.appendChild(el("span","unk",w));
+        else if(IN.has(w)){const b=el("button","who in",w);b.type="button";b.onclick=()=>jump(w);td.appendChild(b)}
+        else td.appendChild(el("span","who out",w));
+      });
+      td.appendChild(el("span","kind",kind));
+    });
+  });
+})();
+
+/* 116: site owner's own record (questions only) */
+(function(){
+  const box=$("#y116");
+  const h=el("div");h.appendChild(el("h3",null,"116 學年度面試題目"));
+  h.appendChild(el("p","note","本站作者的面試紀錄，只列題目。"+Q116.note));box.appendChild(h);
+  const g=el("div","stages");
+  Q116.stages.forEach(st=>{
+    const b=el("div","st");const hd=el("div","st-head");
+    hd.appendChild(el("b",null,"第 "+st.s+" 關"));hd.appendChild(el("span",null,st.kind));
+    if(IN.has(st.who)){const w=el("button","who in",st.who);w.type="button";w.onclick=()=>jump(st.who);hd.appendChild(w)}
+    else hd.appendChild(el("span","who out",st.who));
+    b.appendChild(hd);b.appendChild(el("p","how",st.how));
+    if(st.topic){const t=el("p","topic","文章主題："+st.topic+" ");
+      if(st.link){const a=el("a",null,"原文 ↗");a.href=st.link;a.target="_blank";a.rel="noopener";t.appendChild(a)}
+      b.appendChild(t)}
+    const ol=el("ol");st.q.forEach(q=>ol.appendChild(el("li",null,q)));b.appendChild(ol);
+    g.appendChild(b);
+  });
+  box.appendChild(g);
+})();
+function goOwn(){
+  showTab("tl");const b=$("#y116");
+  b.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  b.classList.add("flash");setTimeout(()=>b.classList.remove("flash"),1600);
+}
+
+/* sources */
+(function(){
+  const ul=$("#src");
+  {const li=el("li");const a=el("a");a.href="#y116";a.onclick=e=>{e.preventDefault();goOwn()};
+   a.appendChild(el("span","yr","116 學年度"));a.appendChild(el("span","host","本站作者紀錄"));li.appendChild(a);ul.appendChild(li)}
+  Object.keys(SRC).map(Number).sort((a,b)=>b-a).forEach(y=>{
+    const li=el("li");const a=el("a");a.href=SRC[y];a.target="_blank";a.rel="noopener";
+    a.appendChild(el("span","yr",y+" 學年度"));
+    a.appendChild(el("span","host",new URL(SRC[y]).hostname.replace(/^www\./,"")+" ↗"));
+    li.appendChild(a);ul.appendChild(li);
+  });
+})();
+
+/* state */
+const state={filter:"all"};
+const store={
+  get(k){try{return localStorage.getItem(k)||""}catch(e){return ""}},
+  set(k,v){try{v?localStorage.setItem(k,v):localStorage.removeItem(k);return true}catch(e){return false}}
+};
+const cards={};
+
+function render(){
+  const g=$("#grid");g.textContent="";
+  let n=0;
+  PROFS.forEach(p=>{
+    const show=state.filter==="all"||(state.filter==="iv"&&p.iv.length)||(state.filter==="recent"&&p.iv.some(i=>i.y>=114))||(state.filter==="sc"&&p.sc)||(state.filter==="econ"&&p.econ);
+    if(!show)return;n++;
+    g.appendChild(card(p));
+  });
+  $("#count").textContent=n+" 位";
+}
+
+function card(p){
+  const c=el("article","card");c.id="p-"+p.k;cards[p.n]=c;
+  const top=el("div","top");
+  const ph=el("div","photo");
+  const img=el("img");img.alt=p.n+" 照片";img.loading="lazy";img.src="img/"+DEPT+"/"+p.k+".jpg";
+  img.onerror=()=>{img.remove();ph.classList.add("empty");ph.textContent=p.n.slice(0,1)};
+  ph.appendChild(img);
+  top.appendChild(ph);
+  const id=el("div","id");
+  id.appendChild(el("h3","name",p.n));
+  const tags=el("div","tags");
+  tags.appendChild(el("span","tag",p.t));
+  tags.appendChild(el("span","tag",p.cat));
+  if(p.sc)tags.appendChild(el("span","tag sc","供應鏈相關"));
+  if(p.econ)tags.appendChild(el("span","tag ec","經濟背景"));
+  if(p.iv.length)tags.appendChild(el("span","tag iv","面試官 ×"+p.iv.length));
+  id.appendChild(tags);
+  const l=el("div","links");const a=el("a",null,"官方師資頁 ↗");a.href=T+p.sn;a.target="_blank";a.rel="noopener";l.appendChild(a);id.appendChild(l);
+  top.appendChild(id);c.appendChild(top);
+
+  const r=el("div");r.appendChild(el("p","lbl","研究專長"));
+  const ul=el("ul","res");p.res.forEach(x=>ul.appendChild(el("li",null,x)));r.appendChild(ul);c.appendChild(r);
+  if(p.edu){const ed=el("div");ed.appendChild(el("p","lbl","學歷"));ed.appendChild(el("p","course",p.edu));c.appendChild(ed)}
+  const co=el("div");co.appendChild(el("p","lbl",CL));co.appendChild(el("p","course",p.c));c.appendChild(co);
+
+  const iv=el("div");iv.appendChild(el("p","lbl","面試紀錄（106–116）"));
+  if(!p.iv.length)iv.appendChild(el("p","none","無紀錄"));
+  else{
+    const list=el("div","iv-list");
+    p.iv.forEach(i=>{
+      const b=el("div","iv");const h=el("div","iv-head");
+      h.appendChild(el("span","iv-yr",i.y+" 學年度"));h.appendChild(el("span","iv-st","第 "+i.s+" 關"));h.appendChild(el("span","iv-kind",i.kind));
+      b.appendChild(h);
+      if(i.y===116){const o=el("button","who in","看 116 題目 ↓");o.type="button";o.onclick=goOwn;b.appendChild(o);list.appendChild(b);return}
+      const s=el("a",null,"心得來源 ↗");s.href=SRC[i.y];s.target="_blank";s.rel="noopener";b.appendChild(s);
+      const key=DEPT+"-iv-"+p.k+"-"+i.y+"-"+i.s;
+      const d=el("details");const saved=store.get(key);d.open=!!saved;
+      d.appendChild(el("summary",null,saved?"我貼的原文":"貼上原文"));
+      const ta=el("textarea");ta.value=saved;ta.placeholder="從心得文複製這一關的題目貼在這裡（只存在你的瀏覽器）";
+      ta.setAttribute("aria-label",p.n+" "+i.y+" 學年度第 "+i.s+" 關原文");
+      const sv=el("div","saved");
+      let tm;ta.oninput=()=>{clearTimeout(tm);sv.textContent="編輯中…";tm=setTimeout(()=>{sv.textContent=store.set(key,ta.value.trim())?"已存在這台裝置":"這個瀏覽器無法儲存"},600)};
+      d.appendChild(ta);d.appendChild(sv);b.appendChild(d);
+      list.appendChild(b);
+    });
+    iv.appendChild(list);
+  }
+  c.appendChild(iv);
+
+  return c;
+}
+
+const TABS=["cards","tl","src"];
+function showTab(which){
+  TABS.forEach(t=>{$("#tab-"+t).setAttribute("aria-selected",String(t===which));$("#panel-"+t).hidden=t!==which});
+  store.set(DEPT+"-tab",which);
+}
+TABS.forEach(t=>$("#tab-"+t).onclick=()=>showTab(t));
+{const t=store.get(DEPT+"-tab");if(TABS.includes(t))showTab(t)}
+
+function jump(name){
+  showTab("cards");
+  if(!cards[name]||!cards[name].isConnected){setFilter("all")}
+  const c=cards[name];if(!c)return;
+  c.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  c.classList.add("flash");setTimeout(()=>c.classList.remove("flash"),1600);
+}
+function setFilter(f){
+  state.filter=f;
+  document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.f===f)));
+  try{localStorage.setItem("ba-filter",f)}catch(e){}
+  render();
+}
+document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>setFilter(b.dataset.f));
+try{const f=localStorage.getItem("ba-filter");if(f)state.filter=f}catch(e){}
+document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.f===state.filter)));
+
+
+render();
+
+</script>
+</body>
+</html>

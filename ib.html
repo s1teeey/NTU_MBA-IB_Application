@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>台大國企教授一覽</title>
+<meta name="author" content="Royee Chu">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: summary timeline of interview panels (year × 關) on top, then a filterable grid of faculty cards */
+:root{
+  --bg:#F3F5F7; --surface:#FFFFFF; --ink:#18202B; --muted:#5B6675; --line:#DCE1E7;
+  --accent:#0F6B5C; --accent-soft:#E2F0EC; --stamp:#B5462F; --stamp-soft:#F8E6E1;
+  --sc:#8A5A00; --sc-soft:#FBF0D9;
+  --f-display:"Noto Serif TC","Songti TC",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161C; --surface:#1A2029; --ink:#E7EBF0; --muted:#9AA5B3; --line:#2C3542;
+  --accent:#5CC2AD; --accent-soft:#17312C; --stamp:#F08B73; --stamp-soft:#3A221D;
+  --sc:#E8B656; --sc-soft:#33290F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161C; --surface:#1A2029; --ink:#E7EBF0; --muted:#9AA5B3; --line:#2C3542;
+  --accent:#5CC2AD; --accent-soft:#17312C; --stamp:#F08B73; --stamp-soft:#3A221D;
+  --sc:#E8B656; --sc-soft:#33290F; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+header{display:grid;gap:6px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--accent);text-transform:uppercase}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,5vw,40px);line-height:1.2;margin:0;text-wrap:balance}
+.lede{color:var(--muted);margin:0;max-width:68ch}
+h2{font-family:var(--f-display);font-weight:600;font-size:20px;margin:0}
+section{display:grid;gap:12px}
+.note{font-size:13px;color:var(--muted);margin:0}
+
+/* timeline */
+.tl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table.tl{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+.tl th,.tl td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.tl tr:last-child td{border-bottom:0}
+.tl th{font-weight:500;color:var(--muted);font-size:12px;letter-spacing:.04em}
+.tl td.yr{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.tl .who{font-weight:700}
+.tl .who.in{color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;background:none;border:0;padding:0;font:inherit;font-weight:700}
+.tl .who.out{color:var(--muted);font-weight:500}
+.tl .kind{display:block;font-size:12px;color:var(--muted)}
+.tl .unk{color:var(--muted);opacity:.7}
+
+/* tabs */
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
+.tab{font:inherit;font-size:15px;font-weight:500;padding:10px 16px;white-space:nowrap;flex:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;color:var(--muted);cursor:pointer}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);font-weight:700}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* filters */
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,.who.in:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.count{margin-left:auto;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.status{font-size:13px;color:var(--muted)}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+@media (max-width:420px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:14px;align-content:start;min-width:0;scroll-margin-top:16px}
+.card.flash{box-shadow:0 0 0 3px var(--accent)}
+.top{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:start}
+.photo{position:relative;width:92px;height:112px;border-radius:8px;overflow:hidden;background:var(--accent-soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--accent);font-family:var(--f-display);font-size:30px;font-weight:800}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.id{display:grid;gap:4px;min-width:0}
+.name{font-family:var(--f-display);font-weight:800;font-size:24px;line-height:1.2;margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;padding:2px 8px;border-radius:4px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.tag.sc{background:var(--sc-soft);color:var(--sc);border-color:transparent;font-weight:500}
+.tag.ec{background:var(--accent-soft);color:var(--accent);border-color:transparent;font-weight:500}
+.tag.iv{background:var(--stamp-soft);color:var(--stamp);border-color:transparent;font-weight:700}
+.links{font-size:13px}
+.links a{color:var(--accent)}
+.lbl{font-size:12px;letter-spacing:.06em;color:var(--muted);margin:0 0 4px;font-weight:500}
+ul.res{margin:0;padding-left:18px;display:grid;gap:2px}
+.course{font-size:14px;margin:0}
+.iv-list{display:grid;gap:10px}
+.iv{border-left:3px solid var(--stamp);padding:2px 0 2px 12px;display:grid;gap:4px}
+.iv-head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.iv-yr{font-family:var(--f-mono);font-weight:500;font-variant-numeric:tabular-nums}
+.iv-st{font-weight:700;color:var(--stamp)}
+.iv-kind{font-size:13px;color:var(--muted)}
+.iv a{font-size:12px;color:var(--muted)}
+.none{font-size:14px;color:var(--muted);margin:0}
+.nav{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px}
+.nav a{color:var(--accent)}
+.src-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.src-list a{display:flex;justify-content:space-between;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:14px}
+.src-list a:hover{border-color:var(--accent)}
+.src-list .yr{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.src-list .host{color:var(--muted);font-size:12px}
+.own{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:14px;scroll-margin-top:16px}
+.own h3{font-family:var(--f-display);font-weight:800;font-size:20px;margin:0}
+.own .stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.own .st{border-left:3px solid var(--stamp);padding-left:12px;display:grid;gap:4px;align-content:start}
+.own .st-head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.own .st-head b{color:var(--stamp)}
+.own .how,.own .topic{font-size:13px;color:var(--muted);margin:0}
+.own ol{margin:0;padding-left:20px;font-size:14px;display:grid;gap:2px}
+.own.flash{box-shadow:0 0 0 3px var(--accent)}
+.own .who.in,.iv .who.in{color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;background:none;border:0;padding:0;font:inherit;font-weight:700}
+.own .who.out{color:var(--muted);font-weight:500}
+.iv .who.in{font-size:12px;font-weight:500;justify-self:start}
+details summary{cursor:pointer;font-size:13px;color:var(--accent);font-weight:500}
+textarea{width:100%;min-height:72px;margin-top:6px;font:inherit;font-size:14px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
+.saved{font-size:12px;color:var(--muted);min-height:1em}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">NTU International Business · 2026 推甄準備</span>
+    <h1>台大國企教授一覽</h1>
+    <p class=\"lede\">每則面試紀錄只列年度、關卡與心得文連結，不轉載原文。想做筆記可以把原文貼進各紀錄下方的欄位，內容只會存在你自己的瀏覽器。</p>
+    <nav class="nav"><a href="./">← 首頁</a><a href="ba.html">商研教授一覽</a></nav>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="檢視">
+    <button class="tab" role="tab" id="tab-cards" aria-controls="panel-cards" aria-selected="true">教授卡片</button>
+    <button class="tab" role="tab" id="tab-tl" aria-controls="panel-tl" aria-selected="false">歷年面試官</button>
+    <button class="tab" role="tab" id="tab-src" aria-controls="panel-src" aria-selected="false">歷年心得文</button>
+  </div>
+
+  <section id="panel-tl" role="tabpanel" aria-labelledby="tab-tl" hidden>
+    <div class="own" id="y116"></div>
+    <div class="tl-scroll"><table class="tl" id="tl"></table></div>
+  </section>
+
+  <section id="panel-src" role="tabpanel" aria-labelledby="tab-src" hidden>
+    <p class="note">各學年度面試紀錄引用的心得文，請到原文閱讀。</p>
+    <ul class="src-list" id="src"></ul>
+  </section>
+
+  <section id="panel-cards" role="tabpanel" aria-labelledby="tab-cards">
+    <div class="bar" role="group" aria-label="篩選">
+      <button class="chip" id="f-all" data-f="all" aria-pressed="true">全部</button>
+      <button class="chip" id="f-iv" data-f="iv" aria-pressed="false">曾任面試官</button>
+      <button class="chip" id="f-recent" data-f="recent" aria-pressed="false">114–116 出現過</button>
+      <button class="chip" id="f-sc" data-f="sc" aria-pressed="false">供應鏈相關</button>
+      <button class="chip" id="f-econ" data-f="econ" aria-pressed="false">經濟背景</button>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+</div>
+
+<script>
+const D="https://www.dcard.tw/f/graduate_school/p/";
+const SRC={115:D+"260371156",114:D+"257296058",113:D+"254109162",112:D+"240534805",111:D+"239956512",110:D+"234844532",
+  109:"https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082",108:"https://www.ptt.cc/bbs/graduate/M.1543684514.A.1C7.html",
+  107:"https://www.pttweb.cc/bbs/graduate/M.1519855933.A.ACB",106:"https://www.pttweb.cc/bbs/graduate/M.1491033606.A.55C"};
+const DEPT="ib";
+const Q116={"note": "三關各 5 分鐘。", "stages": [{"s": 1, "who": "林宏璋", "kind": "英文關", "how": "工讀生提供 A4 單面文章，閱讀 2.5 分鐘後摘要並討論。", "topic": "川普的經濟政策", "q": ["How's your day today?", "摘要文章內容。", "追問：川普的政策會造成什麼影響？為什麼？", "追問：你認為川普的政策正確、合理嗎？"]}, {"s": 2, "who": "陳聿宏", "kind": "邏輯關", "how": "個案分析，品牌以 A、B、C 代稱。", "q": ["平常喝咖啡嗎？喝哪一家？為什麼？喝過 A 品牌嗎？", "A 品牌上半年財報：賣 100 元的咖啡只有 0.5 元進到股東口袋。A 遇到了什麼問題？", "為什麼同價位的 C 品牌沒有遇到這個問題？"]}, {"s": 3, "who": "洪茂蔚", "kind": "個人關", "how": "沒有自我介紹，教授邊翻成績單和個人資料表邊提問。", "q": ["個人資料表上的社團經驗，哪些能展現你的領導力？", "最喜歡、收穫最多、或讓你選擇國企所的課程是哪一門？有沒有修過國際或全球相關的課？", "某一門通識課學到了什麼？", "英文檢定成績要不要重考？有沒有出國交換？"]}]};
+const T="https://management.ntu.edu.tw/IB/faculty/teacher/sn/";
+const CL="113-1～115-1 碩班課程";
+
+const PROFS=[
+ {k:"wangcy",n:"王之彥",t:"系主任",cat:"財務金融",sn:197,res:["財務工程","風險管理","信用風險與隨機利率模型","隨機波動度模型","資產定價與行為財務","交易策略與機器學習"],edu:"台大國企博士；台大資工碩士、學士",c:"金融計算；國際金融與資產管理實務；資產配置與風險控管實務",
+  iv:[{y:114,s:3,kind:"個人資料（個人關）"},
+      {y:113,s:2,kind:"邏輯"}]},
+ {k:"huanghc",n:"黃恆獎",t:"專任教授",cat:"行銷",sn:181,res:["國際企業管理","國際行銷","行銷研究與計量模型","消費者行為"],edu:"密西根大學 企業管理博士",c:"行銷計量模式一；行銷管理",iv:[]},
+ {k:"linhw",n:"林修葳",t:"專任教授",cat:"財務金融",sn:184,res:["國際財務管理","財務管理","管理會計","財務報表分析","財務金融創新","金融機構風險管理"],edu:"史丹佛大學 商學博士；紐約大學 MBA；台大商學系工管組",c:"財務管理；財務報表分析",
+  iv:[{y:113,s:1,kind:"英文"},
+      {y:112,s:3,kind:"生涯／個人"}]},
+ {k:"hsiehmh",n:"謝明慧",t:"專任教授",cat:"行銷",sn:174,res:["跨文化消費者研究","次文化消費","品牌策略","消費者與品牌關係"],edu:"華威商學院 行銷與策略管理博士；紐約市立大學 Baruch 管理碩士",c:"消費者行為",iv:[]},
+ {k:"wuhl",n:"吳學良",t:"專任教授",cat:"策略",sn:188,res:["策略管理","科技與創新管理","產業經濟與政策","公營事業民營化"],edu:"伯明罕大學 商學博士；台大商研所碩士；成大材料碩士、學士",c:"產業經濟",iv:[]},
+ {k:"luchiul",n:"盧秋玲",t:"專任教授",cat:"財務金融",econ:1,sn:189,res:["公司理財","投資銀行","財務管理","不動產融資與投資","資產證券化"],edu:"康乃狄克大學 財務博士；路易斯安那州立大學 財務碩士、計量商業分析碩士；台大經濟系學士",c:"國際金融市場；財務管理",
+  iv:[{y:109,s:1,kind:"英文"},
+      {y:106,s:1,kind:"英文"}]},
+ {k:"lincs",n:"林俊昇",t:"專任教授",cat:"行銷／通路",sc:1,sn:190,res:["數位行銷","品牌行銷","顧客服務與體驗行銷","顧客關係行銷","服務品質管理","通路行銷"],edu:"馬里蘭大學 Smith 商學院 企業管理博士",c:"全球品牌管理；行銷管理",
+  iv:[{y:106,s:3,kind:"個人資料（個人關）"}]},
+ {k:"lienyc",n:"連勇智",t:"專任教授",cat:"策略",sn:198,res:["公司治理","家族企業","新興市場策略","國際企業"],edu:"倫敦國王學院 管理博士；伯明罕大學 企管碩士",c:"國際企業管理",
+  iv:[{y:112,s:1,kind:"英文"},
+      {y:109,s:3,kind:"個人資料（個人關）"}]},
+ {k:"chienjc",n:"簡睿哲",t:"專任教授",cat:"策略／供應鏈",sc:1,sn:406,res:["國際企業管理","國際行銷管理","全球企業平台策略","數位國際化"],edu:"曼徹斯特大學商學院 企業管理博士",c:"未查得碩班課程",
+  iv:[{y:112,s:2,kind:"邏輯"}]},
+ {k:"chiuhj",n:"邱宏仁",t:"專任副教授",cat:"策略",sn:193,res:["併購與重組策略","策略領導與變革","國際私募股權策略","社會網路及制度演化"],edu:"西雅圖華盛頓大學 企業管理博士",c:"國際併購與重組管理；國際企業經營策略",iv:[]},
+ {k:"luhc",n:"盧信昌",t:"專任副教授",cat:"經濟",econ:1,sn:194,res:["勞動經濟","計量經濟","產業經濟"],edu:"芝加哥大學 經濟學博士",c:"產業經濟；國際經濟學；知識經濟與人力分析",iv:[]},
+ {k:"chencc",n:"陳俊忠",t:"專任副教授",cat:"策略／供應鏈",sc:1,sn:195,res:["競爭策略","組織管理","國際化策略","跨國營運佈局"],edu:"德州大學達拉斯分校 國際企管博士；紐約市立大學 國際企管碩士",c:"國際企業經營策略；個案研討",iv:[]},
+ {k:"hsuyw",n:"許耀文",t:"專任副教授",cat:"財務金融",sn:196,res:["資產定價","實質選擇權","財務計量","行為財務"],edu:"劍橋大學 財務博士；台大 MBA；台大電機系學士",c:"隨機定價模型；商業解析與研究方法；財務時間序列",
+  iv:[{y:112,s:1,kind:"英文"}]},
+ {k:"wucw",n:"吳政衞",t:"專任副教授",cat:"策略",sn:316,res:["企業併購","初次公開發行（IPO）","資訊經濟學","國際企業進入策略"],edu:"普渡大學 策略管理博士；台大國企所碩士；台大國企系學士",c:"國際企業經營策略",
+  iv:[{y:115,s:3,kind:"個人資料（個人關）"},
+      {y:114,s:1,kind:"英文"},
+      {y:112,s:2,kind:"邏輯"},
+      {y:109,s:1,kind:"英文"}]},
+ {k:"hohw",n:"何筱文",t:"專任副教授",cat:"策略／供應鏈",sc:1,econ:1,sn:393,res:["國際策略聯盟","跨國知識移轉與學習","雙元文化與制度因素","國際行銷策略","新興市場創新","數位平台與生態圈"],edu:"倫敦國王學院 管理博士；Aston 大學 商學碩士；政大經濟系學士",c:"國際企業管理；國際企業職涯發展實務",
+  iv:[{y:112,s:3,kind:"生涯／個人"}]},
+ {k:"chenyh",n:"陳聿宏",t:"專任副教授",cat:"定價／決策",econ:1,sn:291,res:["行銷理論","動態定價","應用賽局理論"],edu:"WashU 經濟學博士、碩士；台大經濟所、財金所；台大會計系學士",c:"管理會計",
+  iv:[{y:116,s:2,kind:"邏輯／個案分析"},{y:115,s:2,kind:"邏輯／個人看法"}]},
+ {k:"chenyj",n:"陳譽仁",t:"專任副教授",cat:"行銷",sn:426,res:["消費者線上溝通","口碑行銷","社群媒體","社會影響","說服知識"],edu:"馬里蘭大學 行銷博士；成大國企所 MBA；交大管科系學士",c:"全球品牌管理；行銷研究；行為實驗方法",iv:[]},
+ {k:"fucy",n:"傅浚映",t:"專任副教授",cat:"策略",sn:468,res:["公司治理","非市場策略","ESG","家族企業","創業"],edu:"倫敦帝國學院 管理博士",c:"國際企業經營策略",
+  iv:[{y:115,s:1,kind:"英文"},
+      {y:114,s:2,kind:"邏輯／專業"}]},
+ {k:"chenyp",n:"陳瑀屏",t:"專任助理教授",cat:"行銷",econ:1,sn:267,res:["腦神經行銷學","腦神經經濟學","消費者判斷與決策"],edu:"柏克萊 商學博士；台大經濟所碩士；台大物理系學士",c:"全球品牌管理；行銷研究",iv:[]},
+ {k:"liencht",n:"連振廷",t:"專任助理教授",cat:"財務金融",econ:1,sn:446,res:["財務管理","金融機構","家計金融"],edu:"UIUC 財務博士；LSE 財務與經濟碩士；政大財務碩士；警大資管系學士",c:"新創金融（一）；國際財務管理",
+  iv:[{y:113,s:3,kind:"個人資料（個人關）"}]},
+ {k:"hunghy",n:"洪秀瑜",t:"專任助理教授",cat:"行銷／AI",sn:502,res:["消費者體驗與旅程","AI 在消費者情境與企業行銷的應用","線上評論與服務補救"],edu:"華威商學院；台北大學企管系",c:"全球品牌管理；數位行銷",iv:[]},
+ {k:"linhc",n:"林宏璋",t:"專任助理教授",cat:"策略／數據",sn:503,res:["策略溝通","文本分析","語言、情緒與市場"],edu:"密西根州立大學 策略管理博士；康乃爾大學 勞工與工業關係碩士；台大政治系學士",c:"未查得碩班課程",iv:[{y:116,s:1,kind:"英文"},]},
+];
+const TL=[
+ [116,["林宏璋","英文"],["陳聿宏","邏輯／個案"],["洪茂蔚","個人資料"]],
+ [115,["傅浚映","英文"],["陳聿宏","邏輯／個人看法"],["吳政衞","個人資料"]],
+ [114,["吳政衞","英文"],["傅浚映","邏輯／專業"],["王之彥","個人資料"]],
+ [113,["林修葳","英文"],["王之彥","邏輯"],["連振廷","個人資料"]],
+ [112,["連勇智、許耀文","英文"],["吳政衞、簡睿哲","邏輯"],["林修葳、何筱文","生涯／個人"]],
+ [111,["未確認","英文"],["未確認","邏輯"],["未確認","個人資料"]],
+ [110,["未確認","英文"],["未確認","隨機應變"],["未確認","情境假設"]],
+ [109,["盧秋玲、吳政衞","英文"],["未確認","問答／邏輯"],["連勇智、另一位未確認","個人資料"]],
+ [108,["未確認","英文"],["未確認","邏輯"],["未確認","個人資料"]],
+ [107,["未確認","英文"],["未確認","問答／邏輯"],["未確認","個人資料"]],
+ [106,["盧秋玲、另一位未確認","英文"],["未確認","時事專業"],["林俊昇、陳思寬","個人資料"]],
+];
+PROFS.forEach(p=>{if(!p.edu&&typeof EDU!=="undefined")p.edu=EDU[p.k]});
+const IN=new Set(PROFS.map(p=>p.n));
+
+
+const $=s=>document.querySelector(s);
+const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
+
+/* timeline */
+(function(){
+  const t=$("#tl");
+  const hr=t.createTHead().insertRow();
+  ["學年度","第 1 關","第 2 關","第 3 關"].forEach(h=>{const th=el("th",null,h);th.scope="col";hr.appendChild(th)});
+  const tb=t.createTBody();
+  TL.forEach(([y,...cells])=>{
+    const r=tb.insertRow();
+    r.appendChild(el("td","yr",y+"（"+(y+1911-1)+"）"));
+    cells.forEach(([who,kind])=>{
+      const td=r.insertCell();
+      who.split("、").forEach((w,i)=>{
+        if(i)td.appendChild(document.createTextNode("、"));
+        if(w.includes("未確認"))td.appendChild(el("span","unk",w));
+        else if(IN.has(w)){const b=el("button","who in",w);b.type="button";b.onclick=()=>jump(w);td.appendChild(b)}
+        else td.appendChild(el("span","who out",w));
+      });
+      td.appendChild(el("span","kind",kind));
+    });
+  });
+})();
+
+/* 116: site owner's own record (questions only) */
+(function(){
+  const box=$("#y116");
+  const h=el("div");h.appendChild(el("h3",null,"116 學年度面試題目"));
+  h.appendChild(el("p","note","本站作者的面試紀錄，只列題目。"+Q116.note));box.appendChild(h);
+  const g=el("div","stages");
+  Q116.stages.forEach(st=>{
+    const b=el("div","st");const hd=el("div","st-head");
+    hd.appendChild(el("b",null,"第 "+st.s+" 關"));hd.appendChild(el("span",null,st.kind));
+    if(IN.has(st.who)){const w=el("button","who in",st.who);w.type="button";w.onclick=()=>jump(st.who);hd.appendChild(w)}
+    else hd.appendChild(el("span","who out",st.who));
+    b.appendChild(hd);b.appendChild(el("p","how",st.how));
+    if(st.topic){const t=el("p","topic","文章主題："+st.topic+" ");
+      if(st.link){const a=el("a",null,"原文 ↗");a.href=st.link;a.target="_blank";a.rel="noopener";t.appendChild(a)}
+      b.appendChild(t)}
+    const ol=el("ol");st.q.forEach(q=>ol.appendChild(el("li",null,q)));b.appendChild(ol);
+    g.appendChild(b);
+  });
+  box.appendChild(g);
+})();
+function goOwn(){
+  showTab("tl");const b=$("#y116");
+  b.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  b.classList.add("flash");setTimeout(()=>b.classList.remove("flash"),1600);
+}
+
+/* sources */
+(function(){
+  const ul=$("#src");
+  {const li=el("li");const a=el("a");a.href="#y116";a.onclick=e=>{e.preventDefault();goOwn()};
+   a.appendChild(el("span","yr","116 學年度"));a.appendChild(el("span","host","本站作者紀錄"));li.appendChild(a);ul.appendChild(li)}
+  Object.keys(SRC).map(Number).sort((a,b)=>b-a).forEach(y=>{
+    const li=el("li");const a=el("a");a.href=SRC[y];a.target="_blank";a.rel="noopener";
+    a.appendChild(el("span","yr",y+" 學年度"));
+    a.appendChild(el("span","host",new URL(SRC[y]).hostname.replace(/^www\./,"")+" ↗"));
+    li.appendChild(a);ul.appendChild(li);
+  });
+})();
+
+/* state */
+const state={filter:"all"};
+const store={
+  get(k){try{return localStorage.getItem(k)||""}catch(e){return ""}},
+  set(k,v){try{v?localStorage.setItem(k,v):localStorage.removeItem(k);return true}catch(e){return false}}
+};
+const cards={};
+
+function render(){
+  const g=$("#grid");g.textContent="";
+  let n=0;
+  PROFS.forEach(p=>{
+    const show=state.filter==="all"||(state.filter==="iv"&&p.iv.length)||(state.filter==="recent"&&p.iv.some(i=>i.y>=114))||(state.filter==="sc"&&p.sc)||(state.filter==="econ"&&p.econ);
+    if(!show)return;n++;
+    g.appendChild(card(p));
+  });
+  $("#count").textContent=n+" 位";
+}
+
+function card(p){
+  const c=el("article","card");c.id="p-"+p.k;cards[p.n]=c;
+  const top=el("div","top");
+  const ph=el("div","photo");
+  const img=el("img");img.alt=p.n+" 照片";img.loading="lazy";img.src="img/"+DEPT+"/"+p.k+".jpg";
+  img.onerror=()=>{img.remove();ph.classList.add("empty");ph.textContent=p.n.slice(0,1)};
+  ph.appendChild(img);
+  top.appendChild(ph);
+  const id=el("div","id");
+  id.appendChild(el("h3","name",p.n));
+  const tags=el("div","tags");
+  tags.appendChild(el("span","tag",p.t));
+  tags.appendChild(el("span","tag",p.cat));
+  if(p.sc)tags.appendChild(el("span","tag sc","供應鏈相關"));
+  if(p.econ)tags.appendChild(el("span","tag ec","經濟背景"));
+  if(p.iv.length)tags.appendChild(el("span","tag iv","面試官 ×"+p.iv.length));
+  id.appendChild(tags);
+  const l=el("div","links");const a=el("a",null,"官方師資頁 ↗");a.href=T+p.sn;a.target="_blank";a.rel="noopener";l.appendChild(a);id.appendChild(l);
+  top.appendChild(id);c.appendChild(top);
+
+  const r=el("div");r.appendChild(el("p","lbl","研究專長"));
+  const ul=el("ul","res");p.res.forEach(x=>ul.appendChild(el("li",null,x)));r.appendChild(ul);c.appendChild(r);
+  if(p.edu){const ed=el("div");ed.appendChild(el("p","lbl","學歷"));ed.appendChild(el("p","course",p.edu));c.appendChild(ed)}
+  const co=el("div");co.appendChild(el("p","lbl",CL));co.appendChild(el("p","course",p.c));c.appendChild(co);
+
+  const iv=el("div");iv.appendChild(el("p","lbl","面試紀錄（106–116）"));
+  if(!p.iv.length)iv.appendChild(el("p","none","無紀錄"));
+  else{
+    const list=el("div","iv-list");
+    p.iv.forEach(i=>{
+      const b=el("div","iv");const h=el("div","iv-head");
+      h.appendChild(el("span","iv-yr",i.y+" 學年度"));h.appendChild(el("span","iv-st","第 "+i.s+" 關"));h.appendChild(el("span","iv-kind",i.kind));
+      b.appendChild(h);
+      if(i.y===116){const o=el("button","who in","看 116 題目 ↓");o.type="button";o.onclick=goOwn;b.appendChild(o);list.appendChild(b);return}
+      const s=el("a",null,"心得來源 ↗");s.href=SRC[i.y];s.target="_blank";s.rel="noopener";b.appendChild(s);
+      const key=DEPT+"-iv-"+p.k+"-"+i.y+"-"+i.s;
+      const d=el("details");const saved=store.get(key);d.open=!!saved;
+      d.appendChild(el("summary",null,saved?"我貼的原文":"貼上原文"));
+      const ta=el("textarea");ta.value=saved;ta.placeholder="從心得文複製這一關的題目貼在這裡（只存在你的瀏覽器）";
+      ta.setAttribute("aria-label",p.n+" "+i.y+" 學年度第 "+i.s+" 關原文");
+      const sv=el("div","saved");
+      let tm;ta.oninput=()=>{clearTimeout(tm);sv.textContent="編輯中…";tm=setTimeout(()=>{sv.textContent=store.set(key,ta.value.trim())?"已存在這台裝置":"這個瀏覽器無法儲存"},600)};
+      d.appendChild(ta);d.appendChild(sv);b.appendChild(d);
+      list.appendChild(b);
+    });
+    iv.appendChild(list);
+  }
+  c.appendChild(iv);
+
+  return c;
+}
+
+const TABS=["cards","tl","src"];
+function showTab(which){
+  TABS.forEach(t=>{$("#tab-"+t).setAttribute("aria-selected",String(t===which));$("#panel-"+t).hidden=t!==which});
+  store.set(DEPT+"-tab",which);
+}
+TABS.forEach(t=>$("#tab-"+t).onclick=()=>showTab(t));
+{const t=store.get(DEPT+"-tab");if(TABS.includes(t))showTab(t)}
+
+function jump(name){
+  showTab("cards");
+  if(!cards[name]||!cards[name].isConnected){setFilter("all")}
+  const c=cards[name];if(!c)return;
+  c.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  c.classList.add("flash");setTimeout(()=>c.classList.remove("flash"),1600);
+}
+function setFilter(f){
+  state.filter=f;
+  document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.f===f)));
+  try{localStorage.setItem("ib-filter",f)}catch(e){}
+  render();
+}
+document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>setFilter(b.dataset.f));
+try{const f=localStorage.getItem("ib-filter");if(f)state.filter=f}catch(e){}
+document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.f===state.filter)));
+
+
+render();
+
+</script>
+</body>
+</html>
