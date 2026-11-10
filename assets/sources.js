@@ -39,44 +39,49 @@ const SOURCES=[
 const SITE_NAME={dcard:"Dcard",ptt:"PTT",medium:"Medium",notion:"Notion",own:"本站"};
 const DEPT_NAME={ba:"商研",ib:"國企"};
 
-/* opts: {dept:"ba"|"ib"|null, ownHref:"#y116", onOwn:fn} */
+/* opts: {dept:"ba"|"ib"|null, ownHref:"#y116", onOwn:fn}
+   110 以後：兩欄格線，每列左右各一年。109 以前：最下方獨立一張表。 */
 function renderSources(box,opts){
   opts=opts||{};
-  box.classList.add("src-cols");
   const rows=SOURCES.filter(s=>!opts.dept||s.d.includes(opts.dept));
   const years=[...new Set(rows.map(s=>s.y))].sort((a,b)=>b-a);
   const mk=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
   const recent=years.filter(y=>y>=110), old=years.filter(y=>y<110);
 
+  const grid=mk("div","src-cols");
   recent.forEach(y=>{
     const g=mk("div","src-year");
-    const yr=mk("div","yr",String(y));g.appendChild(yr);
+    g.appendChild(mk("div","yr",String(y)));
     const ul=mk("ul","src-items");
     rows.filter(s=>s.y===y).forEach(s=>{
       const li=mk("li");const a=mk("a",null,s.t);
       if(s.site==="own"){a.href=opts.ownHref||s.u;if(opts.onOwn)a.onclick=e=>{e.preventDefault();opts.onOwn()}}
       else{a.href=s.u;a.target="_blank";a.rel="noopener"}
       li.appendChild(a);
-      const bits=[SITE_NAME[s.site]];
+      const bits=[];
       if(!opts.dept)bits.push(s.d.map(d=>DEPT_NAME[d]).join("、"));
       if(s.note)bits.push(s.note);
-      const m=mk("span","meta");m.appendChild(mk("span","site",bits[0]));
-      if(bits.length>1)m.appendChild(document.createTextNode(" · "+bits.slice(1).join(" · ")));
+      const m=mk("span","meta");m.appendChild(mk("span","site",SITE_NAME[s.site]));
+      if(bits.length)m.appendChild(document.createTextNode(" · "+bits.join(" · ")));
       li.appendChild(m);ul.appendChild(li);
     });
-    g.appendChild(ul);box.appendChild(g);
+    g.appendChild(ul);grid.appendChild(g);
   });
+  box.appendChild(grid);
 
   if(old.length){
-    const g=mk("div","src-year");
-    const yr=mk("div","yr","≤109");g.appendChild(yr);
-    const ul=mk("ul","src-old");
+    const wrap=mk("div","src-past");
+    wrap.appendChild(mk("h3",null,"109 學年度以前"));
+    const tbl=mk("table");const hr=tbl.createTHead().insertRow();
+    ["學年度"].concat(opts.dept?[]:["所"]).concat(["心得文","平台"]).forEach(h=>{const th=mk("th",null,h);th.scope="col";hr.appendChild(th)});
+    const tb=tbl.createTBody();
     old.forEach(y=>rows.filter(s=>s.y===y).forEach(s=>{
-      const li=mk("li");const a=mk("a");a.href=s.u;a.target="_blank";a.rel="noopener";a.title=s.t;
-      a.appendChild(mk("span","y",y+" 學年度"+(opts.dept?"":"・"+s.d.map(d=>DEPT_NAME[d]).join("／"))));
-      a.appendChild(mk("span","h",SITE_NAME[s.site]));
-      li.appendChild(a);ul.appendChild(li);
+      const r=tb.insertRow();
+      r.insertCell().textContent=y;r.cells[0].className="y";
+      if(!opts.dept)r.insertCell().textContent=s.d.map(d=>DEPT_NAME[d]).join("、");
+      const c=r.insertCell();const a=mk("a",null,s.t);a.href=s.u;a.target="_blank";a.rel="noopener";c.appendChild(a);
+      const pc=r.insertCell();pc.textContent=SITE_NAME[s.site];pc.className="h";
     }));
-    g.appendChild(ul);box.appendChild(g);
+    wrap.appendChild(tbl);box.appendChild(wrap);
   }
 }
