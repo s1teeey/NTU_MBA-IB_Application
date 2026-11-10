@@ -60,7 +60,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=20261110230840";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261110231054";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
