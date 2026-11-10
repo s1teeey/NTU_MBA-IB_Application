@@ -5,14 +5,14 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   const here=(location.pathname.split("/").pop()||"index.html");
   const root=document.documentElement;
   try{const t=localStorage.getItem("theme");if(t==="light"||t==="dark")root.dataset.theme=t}catch(e){}
-  // 教授一覽：商研、國企同一個選單項目，連到上次看的那一所
+  // 師資陣容：商研、國企同一個選單項目，連到上次看的那一所
   const PROF=["ba.html","ib.html"];
   let lastDept="ba.html";
   try{if(PROF.includes(here))localStorage.setItem("dept",here);const d=localStorage.getItem("dept");if(PROF.includes(d))lastDept=d}catch(e){}
   const PAGES=[
     ["sharing.html","推甄須知"],
-    [lastDept,"教授一覽",PROF],
-    ["docs.html","書審準備"],
+    [lastDept,"師資陣容",PROF],
+    ["docs.html","書審撰寫"],
     ["interview.html","面試準備"],
     ["faq.html","FAQ"],
   ];
@@ -39,7 +39,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=202611102025";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=202611102032";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
