@@ -1,6 +1,6 @@
 /* Header, theme switch and footer shared by every page. */
 /* 投稿・提問表單（Google 表單）。留空時，網站上的投稿區塊和頁尾連結都不會顯示。 */
-const FORM_URL="";
+const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO97Q0kYJ0R5NuswYG7o_WKHHpoiw/viewform";
 (function(){
   const PAGES=[
     ["sharing.html","推甄須知"],
