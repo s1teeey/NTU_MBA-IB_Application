@@ -7,21 +7,23 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="台大商研所、國企所碩士班推甄：簡章重點、教授、歷年面試官與心得文、書審和面試準備。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=202611101530">
+<link rel="stylesheet" href="assets/site.css?v=202611102025">
 <style>
 .mast{padding-block:48px 28px;border-bottom:3px solid var(--rule);display:grid;gap:22px}
 .issue{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:13.5px;font-weight:700;color:var(--faint)}
 .issue b{color:var(--accent-ink)}
 .mast h1{font-size:clamp(28px,4vw,40px);line-height:1.25;letter-spacing:-.015em;font-weight:900}
 .mast h1 mark{background:linear-gradient(transparent 62%,var(--mark) 62%);padding:0 .04em}
-.mast .intro{font-size:17px;color:var(--muted);max-width:40em;line-height:1.8}
+.mast .intro{font-size:17px;color:var(--muted);line-height:1.8}
 
 .home{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:56px;padding-top:12px}
 @media (max-width:880px){.home{grid-template-columns:1fr;gap:40px}}
 
 .toc{list-style:none;margin:0;padding:0;counter-reset:toc}
 .toc li{border-bottom:1px solid var(--line)}
-.toc a{display:grid;grid-template-columns:64px 1fr;gap:4px 16px;padding:22px 0;text-decoration:none}
+.toc a{display:grid;grid-template-columns:64px 1fr;gap:4px 16px;padding:22px 16px;margin:0 -16px;border-radius:8px;text-decoration:none;transform-origin:left center;transition:transform .22s cubic-bezier(.2,.8,.2,1),background .22s,box-shadow .22s}
+.toc a:hover{transform:scale(1.035);background:var(--bg-soft);box-shadow:0 10px 30px rgba(18,19,34,.08)}
+@media (prefers-reduced-motion:reduce){.toc a:hover{transform:none}}
 .toc a::before{counter-increment:toc;content:counter(toc,decimal-leading-zero);grid-row:span 2;font-size:30px;font-weight:900;line-height:1;color:var(--line);font-variant-numeric:tabular-nums;letter-spacing:-.03em;transition:color .15s}
 .toc a:hover::before{color:var(--accent)}
 .toc .tt{font-size:23px;font-weight:900;letter-spacing:-.01em;line-height:1.2;text-decoration:underline;text-decoration-color:transparent;text-decoration-thickness:2.5px;text-underline-offset:6px;transition:text-decoration-color .15s}
@@ -29,7 +31,8 @@
 .toc .ds{color:var(--muted);font-size:15px}
 
 .side{display:grid;gap:28px;align-content:start;padding-top:22px}
-.side h2{font-size:15px;font-weight:900;padding-bottom:10px;border-bottom:2px solid var(--rule)}
+.side h2{font-size:15px;font-weight:900;padding-bottom:10px;border-bottom:2px solid var(--rule);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.today{font-size:13px;font-weight:700;color:var(--accent-ink);font-variant-numeric:tabular-nums}
 .dates{list-style:none;margin:0;padding:0}
 .dates li{display:grid;grid-template-columns:86px 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
 .dates .d{font-weight:900;font-variant-numeric:tabular-nums}
@@ -53,8 +56,7 @@
   <div class="home">
     <ol class="toc">
       <li><a href="sharing.html"><span class="tt">推甄須知</span><span class="ds">名額、口試資格、要交的資料、從報名到報到的時程</span></a></li>
-      <li><a href="ba.html"><span class="tt">商研教授一覽</span><span class="ds">21 位專任教授的研究領域，以及 106–116 年的面試官</span></a></li>
-      <li><a href="ib.html"><span class="tt">國企教授一覽</span><span class="ds">22 位專任教授，可依供應鏈、經濟背景篩選</span></a></li>
+      <li><a href="ba.html"><span class="tt">教授一覽</span><span class="ds"><span class="d-ba">商研</span> 21 位、<span class="d-ib">國企</span> 22 位專任教授的研究領域，以及 106–116 年的面試官</span></a></li>
       <li><a href="docs.html"><span class="tt">書審準備</span><span class="ds">頁數限制、心得裡的書審寫法、參考文章</span></a></li>
       <li><a href="interview.html"><span class="tt">面試準備</span><span class="ds">116 面試題型、準備方式、106–116 心得文</span></a></li>
       <li><a href="faq.html"><span class="tt">FAQ</span><span class="ds">推薦信、成績門檻、兩所同時報名等問題</span></a></li>
@@ -62,7 +64,7 @@
 
     <aside class="side">
       <div>
-        <h2>推甄時程</h2>
+        <h2>推甄時程<span class="today"></span></h2>
         <ol class="dates">
           <li><span class="d">9 月中</span><span>簡章公告</span></li>
           <li><span class="d">9 月底</span><span>繳費、填報名資料，約一週</span></li>
@@ -82,6 +84,7 @@
     </aside>
   </div>
 </main>
-<script src="assets/site.js?v=202611101530"></script>
+<script>{const d=new Date(),w='日一二三四五六'[d.getDay()],t=document.querySelector('.today');if(t)t.textContent='Today: '+d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+'（'+w+'）'}</script>
+<script src="assets/site.js?v=202611102025"></script>
 </body>
 </html>

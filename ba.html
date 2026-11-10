@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" data-dept="ba">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="商研教授一覽：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=202611101530">
+<link rel="stylesheet" href="assets/site.css?v=202611102025">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -128,15 +128,36 @@ textarea{display:block;width:100%;min-height:80px;margin-top:8px;font:inherit;fo
 textarea::placeholder{color:var(--faint)}
 textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);background:var(--bg)}
 .saved{font-size:12px;color:var(--faint);margin-top:4px}
+.head-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+.dept-switch{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.dept-switch a{display:flex;gap:6px;align-items:baseline;padding:8px 16px;font-weight:900;font-size:15px;text-decoration:none;color:var(--muted)}
+.dept-switch a small{font-size:12px;font-weight:700;color:var(--faint)}
+.dept-switch a+a{border-left:1px solid var(--line)}
+.dept-switch a:hover{background:var(--bg-soft)}
+.dept-switch a.d-ba[aria-current]{background:var(--ba);color:#fff}
+.dept-switch a.d-ib[aria-current]{background:var(--ib);color:#fff}
+.dept-switch a[aria-current] small{color:rgba(255,255,255,.75)}
+:root[data-theme="dark"] .dept-switch a[aria-current]{color:#121322}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dept-switch a[aria-current]{color:#121322}}
+.links{display:flex;flex-wrap:wrap;gap:4px 16px}
+.card,.own{scroll-margin-top:84px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--ink);color:var(--bg);font-size:14px;font-weight:700;padding:10px 16px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60}
+.toast.show{opacity:1;transform:translate(-50%,0)}
 </style>
 </head>
 <body>
 
 <main class="wrap page">
   <header class="page-head">
-    <p class="crumb"><a href="./">首頁</a> / 商學研究所 · 7010</p>
-    <h1>商研教授一覽</h1>
-    <p class="lede">專任教授的研究領域、開課，以及 106–116 學年度的面試官紀錄。每則紀錄附心得原文連結，下方欄位可貼上原文做筆記，內容只存在自己的瀏覽器。</p>
+    <p class="crumb"><a href="./">首頁</a> / 教授一覽</p>
+    <div class="head-row">
+      <h1>教授一覽</h1>
+      <nav class="dept-switch" aria-label="切換系所">
+        <a href="ba.html" class="d-ba" aria-current="page">商研<small>7010</small></a>
+        <a href="ib.html" class="d-ib">國企<small>7070</small></a>
+      </nav>
+    </div>
+    <p class="lede">專任教授的研究領域、開課，以及 106–116 學年度的面試官紀錄。每位教授都有 Note 欄位可以做筆記，內容只存在自己的瀏覽器。開課資訊可到<a href="https://course.ntu.edu.tw/" target="_blank" rel="noopener">台大課程網</a>查詢。</p>
   </header>
 
   <div class="tabs" role="tablist" aria-label="檢視">
@@ -158,15 +179,14 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
     <div class="bar" role="group" aria-label="篩選">
       <button class="chip" id="f-all" data-f="all" aria-pressed="true">全部</button>
       <button class="chip" id="f-iv" data-f="iv" aria-pressed="false">曾任面試官</button>
-      <button class="chip" id="f-recent" data-f="recent" aria-pressed="false">114–116 出現過</button>
-      <button class="chip" id="f-sc" data-f="sc" aria-pressed="false">供應鏈相關</button>
+      <button class="chip" id="f-recent" data-f="recent" aria-pressed="false">近五年曾出現</button>
       <span class="count" id="count"></span>
     </div>
     <div class="grid" id="grid"></div>
   </section>
 </main>
 
-<script src="assets/sources.js?v=202611101530"></script>
+<script src="assets/sources.js?v=202611102025"></script>
 <script>
 const D="https://www.dcard.tw/f/graduate_school/p/";
 const SRC={115:D+"260371156",114:D+"257296058",113:D+"254109162",112:D+"240534805",111:D+"239956512",
@@ -218,12 +238,12 @@ PROFS.forEach(p=>{if(!p.edu&&typeof EDU!=="undefined")p.edu=EDU[p.k]});
 const IN=new Set(PROFS.map(p=>p.n));
 const TL=[
  [116,["許鉅秉","個人資料"],["劉怡靖","英文"],["柯冠州","邏輯"]],
- [115,["許鉅秉","個人資料"],["未確認","英文"],["廖振男","圖表分析"]],
+ [115,["許鉅秉","個人資料"],["未知","英文"],["廖振男","圖表分析"]],
  [114,["練乃華","個人資料"],["劉怡靖","英文"],["廖振男","邏輯"]],
  [113,["許鉅秉","個人資料"],["柯冠州","英文"],["劉念琪","邏輯"]],
- [112,["未確認","個人資料"],["未確認","英文"],["未確認","邏輯"]],
- [111,["未確認","個人資料"],["未確認","英文"],["未確認","時事"]],
- [110,["未確認","個人資料"],["未確認","英文"],["未確認","抽題／邏輯"]],
+ [112,["未知","個人資料"],["未知","英文"],["未知","邏輯"]],
+ [111,["未知","個人資料"],["未知","英文"],["未知","時事"]],
+ [110,["未知","個人資料"],["未知","英文"],["未知","抽題／邏輯"]],
  [109,["蔣明晃","個人資料"],["練乃華","抽題／邏輯"],["余峻瑜","英文"]],
  [108,["陳鴻基","個人資料"],["劉怡靖","機智問答"],["柯冠州","英文"]],
  [107,["朱文儀","基本資料"],["劉佳玲","英文"],["陳家麟","機智問答"]],
@@ -246,7 +266,7 @@ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=
       const td=r.insertCell();
       who.split("、").forEach((w,i)=>{
         if(i)td.appendChild(document.createTextNode("、"));
-        if(w.includes("未確認"))td.appendChild(el("span","unk",w));
+        if(w.includes("未知"))td.appendChild(el("span","unk",w));
         else if(IN.has(w)){const b=el("button","who in",w);b.type="button";b.onclick=()=>jump(w);td.appendChild(b)}
         else td.appendChild(el("span","who out",w));
       });
@@ -291,12 +311,14 @@ const store={
   set(k,v){try{v?localStorage.setItem(k,v):localStorage.removeItem(k);return true}catch(e){return false}}
 };
 const cards={};
+function toast(t){let e=document.querySelector(".toast");if(!e){e=document.createElement("div");e.className="toast";e.setAttribute("role","status");document.body.appendChild(e)}
+  e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),2400)}
 
 function render(){
   const g=$("#grid");g.textContent="";
   let n=0;
   PROFS.forEach(p=>{
-    const show=state.filter==="all"||(state.filter==="iv"&&p.iv.length)||(state.filter==="recent"&&p.iv.some(i=>i.y>=114))||(state.filter==="sc"&&p.sc)||(state.filter==="econ"&&p.econ);
+    const show=state.filter==="all"||(state.filter==="iv"&&p.iv.length)||(state.filter==="recent"&&p.iv.some(i=>i.y>=112))||(state.filter==="econ"&&p.econ);
     if(!show)return;n++;
     g.appendChild(card(p));
   });
@@ -316,11 +338,14 @@ function card(p){
   const tags=el("div","tags");
   tags.appendChild(el("span","tag",p.t));
   tags.appendChild(el("span","tag",p.cat));
-  if(p.sc)tags.appendChild(el("span","tag sc","供應鏈相關"));
   if(p.econ)tags.appendChild(el("span","tag ec","經濟背景"));
   if(p.iv.length)tags.appendChild(el("span","tag iv","面試官 ×"+p.iv.length));
   id.appendChild(tags);
-  const l=el("div","links");const a=el("a",null,"官方師資頁 ↗");a.href=T+p.sn;a.target="_blank";a.rel="noopener";l.appendChild(a);id.appendChild(l);
+  const l=el("div","links");const a=el("a",null,"官方師資頁 ↗");a.href=T+p.sn;a.target="_blank";a.rel="noopener";l.appendChild(a);
+  const q=el("a",null,"課程查詢 ↗");q.href="https://course.ntu.edu.tw/search/quick";q.target="_blank";q.rel="noopener";
+  q.title="會複製教授姓名，到台大課程網的搜尋框貼上";
+  q.onclick=()=>{try{navigator.clipboard.writeText(p.n)}catch(e){}toast("已複製「"+p.n+"」，到課程網搜尋框貼上")};
+  l.appendChild(q);id.appendChild(l);
   top.appendChild(id);c.appendChild(top);
 
   const r=el("div");r.appendChild(el("p","lbl","研究專長"));
@@ -338,19 +363,25 @@ function card(p){
       b.appendChild(h);
       if(i.y===116){const o=el("button","who in","看 116 題目 ↓");o.type="button";o.onclick=goOwn;b.appendChild(o);list.appendChild(b);return}
       const s=el("a",null,"心得來源 ↗");s.href=SRC[i.y];s.target="_blank";s.rel="noopener";b.appendChild(s);
-      const key=DEPT+"-iv-"+p.k+"-"+i.y+"-"+i.s;
-      const d=el("details");const saved=store.get(key);d.open=!!saved;
-      d.appendChild(el("summary",null,saved?"我貼的原文":"貼上原文"));
-      const ta=el("textarea");ta.value=saved;ta.placeholder="貼上這一關的題目原文，只會存在這台裝置";
-      ta.setAttribute("aria-label",p.n+" "+i.y+" 學年度第 "+i.s+" 關原文");
-      const sv=el("div","saved");
-      let tm;ta.oninput=()=>{clearTimeout(tm);sv.textContent="編輯中…";tm=setTimeout(()=>{sv.textContent=store.set(key,ta.value.trim())?"已存在這台裝置":"這個瀏覽器無法儲存"},600)};
-      d.appendChild(ta);d.appendChild(sv);b.appendChild(d);
       list.appendChild(b);
     });
     iv.appendChild(list);
   }
   c.appendChild(iv);
+
+  const nk=DEPT+"-note-"+p.k;
+  let saved=store.get(nk);
+  if(!saved){ // older version kept one box per interview record
+    const old=p.iv.map(i=>store.get(DEPT+"-iv-"+p.k+"-"+i.y+"-"+i.s)).filter(Boolean);
+    if(old.length){saved=old.join("\n\n");store.set(nk,saved)}
+  }
+  const d=el("details","note-box");d.open=!!saved;
+  d.appendChild(el("summary",null,"Note"));
+  const ta=el("textarea");ta.value=saved;ta.placeholder="關於這位教授的任何筆記，只會存在這台裝置";
+  ta.setAttribute("aria-label",p.n+" Note");
+  const sv=el("div","saved");
+  let tm;ta.oninput=()=>{clearTimeout(tm);sv.textContent="編輯中…";tm=setTimeout(()=>{sv.textContent=store.set(nk,ta.value.trim())?"已存在這台裝置":"這個瀏覽器無法儲存"},600)};
+  d.appendChild(ta);d.appendChild(sv);c.appendChild(d);
 
   return c;
 }
@@ -377,7 +408,7 @@ function setFilter(f){
   render();
 }
 document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>setFilter(b.dataset.f));
-try{const f=localStorage.getItem("ba-filter");if(f)state.filter=f}catch(e){}
+try{const f=localStorage.getItem("ba-filter");if(f&&document.querySelector('.chip[data-f="'+f+'"]'))state.filter=f}catch(e){}
 document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.f===state.filter)));
 
 
@@ -392,6 +423,6 @@ function follow(){const h=decodeURIComponent(location.hash.slice(1));
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=202611101530"></script>
+<script src="assets/site.js?v=202611102025"></script>
 </body>
 </html>

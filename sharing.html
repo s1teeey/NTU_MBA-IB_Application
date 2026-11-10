@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="台大商研所、國企所碩士班甄試：名額、口試資格、應繳資料與歷年時程。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=202611101530">
+<link rel="stylesheet" href="assets/site.css?v=202611102025">
 <style>
 .cmp-scroll{overflow-x:auto}
 table.cmp{border-collapse:collapse;width:100%;min-width:540px;font-size:15px}
@@ -16,13 +16,16 @@ table.cmp{border-collapse:collapse;width:100%;min-width:540px;font-size:15px}
 .cmp thead th small{display:block;font-size:12.5px;color:var(--faint);font-weight:700}
 .cmp tbody th{width:132px;color:var(--muted);font-weight:700;font-size:14px}
 .cmp .sub{display:block;color:var(--muted);font-size:13.5px}
+.cmp thead th.d-ba,.cmp thead th.d-ib{color:inherit}.cmp thead th.d-ba{border-top:3px solid var(--ba)}.cmp thead th.d-ib{border-top:3px solid var(--ib)}
+.cmp .dtag{display:block;width:max-content;margin-top:4px;font-size:11.5px;font-weight:800;color:var(--stamp);background:var(--stamp-soft);padding:2px 6px;border-radius:3px}
+.cmp td.both{text-align:center;color:var(--muted)}
 .cmp.yrs td{font-variant-numeric:tabular-nums}
 table.cmp.yrs{min-width:0}
 @media (max-width:560px){.cmp.yrs th,.cmp.yrs td{padding-right:8px;font-size:14px}.cmp.yrs tbody th{width:76px;font-size:13px}}
 @media (max-width:560px){.cmp tbody th{width:84px}}
 
 .files{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px 48px}
-.files h3{padding-bottom:8px;border-bottom:2px solid var(--rule);margin-bottom:6px}
+.files h3{padding-bottom:8px;border-bottom:2px solid currentColor;margin-bottom:6px}
 .files ol{margin:0;padding-left:22px;display:grid;gap:8px}
 
 </style>
@@ -40,17 +43,14 @@ table.cmp.yrs{min-width:0}
     <div class="sec-head"><h2><span class="no">01</span>兩所比較</h2></div>
     <div class="cmp-scroll">
       <table class="cmp">
-        <thead><tr><th scope="col"></th><th scope="col"><small>7010</small>商學研究所</th><th scope="col"><small>7070</small>國際企業學系</th></tr></thead>
+        <thead><tr><th scope="col"></th><th scope="col" class="d-ba"><small>7010</small>商學研究所</th><th scope="col" class="d-ib"><small>7070</small>國際企業學系</th></tr></thead>
         <tbody>
           <tr><th scope="row">一般生名額</th><td>33</td><td>33</td></tr>
-          <tr><th scope="row">誰能進口試</th><td>書審排名前 66 名</td><td>書審排名前 66 名</td></tr>
-          <tr><th scope="row">口試日期</th><td><mark>11 月初，週五</mark><span class="sub">116：11/6・115：11/7・114：11/8<br>管理學院一號館</span></td><td><mark>10 月底到 11 月初，週五</mark><span class="sub">116：10/30・115：10/31・114：11/1<br>管理學院壹號館</span></td></tr>
-          <tr><th scope="row">口試名單</th><td>口試當週週一上午 10 點前<span class="sub">116：11/2・115：11/3・114：11/4<br>公布在系網，不另通知</span></td><td>口試前 4–7 天<span class="sub">116：10/23・115：10/27・114：10/28<br>公布在系網，同時開始繳口試費</span></td></tr>
-          <tr><th scope="row">成績</th><td>在校成績前 30% 優先考慮</td><td>簡章沒有特別寫</td></tr>
-          <tr><th scope="row">口試門檻</th><td>口試原始成績未滿 70 分不錄取</td><td>口試成績未滿 70 分不錄取</td></tr>
-          <tr><th scope="row">人在國外</th><td>簡章未說明</td><td>交換或在外讀書者，報名時附證明，可安排網路面試</td></tr>
-          <tr><th scope="row">計分</th><td>書審、口試各半，沒有筆試</td><td>書審、口試各半，沒有筆試</td></tr>
-          <tr><th scope="row">放榜</th><td>第 2 梯次，11 月中旬<span class="sub">116：11/19・115：11/20・114：11/20</span></td><td>第 2 梯次，11 月中旬<span class="sub">116：11/19・115：11/20・114：11/20</span></td></tr>
+          <tr><th scope="row">可口試名額</th><td>書審排名前 66 名</td><td>書審排名前 66 名</td></tr>
+          <tr class="diff"><th scope="row">口試日期<span class="dtag">兩所不同</span></th><td><mark>11 月初，週五</mark><span class="sub">116：11/6｜115：11/7｜114：11/8</span></td><td><mark>10 月底到 11 月初，週五</mark><span class="sub">116：10/30｜115：10/31｜114：11/1</span></td></tr>
+          <tr class="diff"><th scope="row">成績門檻<span class="dtag">兩所不同</span></th><td>在校成績前 30% 優先考慮</td><td>簡章未提及</td></tr>
+          <tr class="diff"><th scope="row">網路面試<span class="dtag">兩所不同</span></th><td>不接受</td><td>交換或在國外讀書者，報名時附證明，可安排網路面試</td></tr>
+          <tr><th scope="row">放榜日期</th><td colspan="2" class="both">第 2 梯次，11 月中旬</td></tr>
           <tr><th scope="row">系辦</th><td>(02) 3366-1062</td><td>(02) 3366-4991</td></tr>
         </tbody>
       </table>
@@ -61,7 +61,7 @@ table.cmp.yrs{min-width:0}
     <div class="sec-head"><h2><span class="no">02</span>要交的資料</h2><p class="muted">全部線上上傳，確認後不能補件或更新。兩所都不需推薦信。</p></div>
     <div class="files">
       <div>
-        <h3>商研</h3>
+        <h3 class="d-ba">商研</h3>
         <ol>
           <li>學位證書、學生證或在學證明</li>
           <li>歷年成績單</li>
@@ -72,7 +72,7 @@ table.cmp.yrs{min-width:0}
         </ol>
       </div>
       <div>
-        <h3>國企</h3>
+        <h3 class="d-ib">國企</h3>
         <ol>
           <li>學位證書，或蓋了當學期註冊章的學生證、在學證明</li>
           <li>歷年成績單</li>
@@ -115,11 +115,11 @@ table.cmp.yrs{min-width:0}
       <li><a href="https://exam.aca.ntu.edu.tw/graf/brochure/116/192.pdf" target="_blank" rel="noopener">116 商研系所分則（PDF）</a></li>
       <li><a href="https://exam.aca.ntu.edu.tw/graf/brochure/116/198.pdf" target="_blank" rel="noopener">116 國企系所分則（PDF）</a></li>
       <li><a href="https://exam.aca.ntu.edu.tw/graf/brochure/116/first.pdf" target="_blank" rel="noopener">簡章共同規定（PDF）</a></li>
-      <li><a href="https://management.ntu.edu.tw/BA" target="_blank" rel="noopener">商研系網</a>・<a href="https://management.ntu.edu.tw/IB" target="_blank" rel="noopener">國企系網</a> <span class="muted small">個人資料表下載、口試名單公布</span></li>
+      <li><a href="https://management.ntu.edu.tw/BA" target="_blank" rel="noopener">商研系網</a>｜<a href="https://management.ntu.edu.tw/IB" target="_blank" rel="noopener">國企系網</a> <span class="muted small">個人資料表下載、口試名單公布</span></li>
     </ul>
   </section>
   </div>
 </main>
-<script src="assets/site.js?v=202611101530"></script>
+<script src="assets/site.js?v=202611102025"></script>
 </body>
 </html>

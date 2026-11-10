@@ -17,8 +17,7 @@ const SOURCES=[
   {y:113,d:["ba","ib"],site:"medium",t:"2023 推甄心得分享：台大商研、台大國企（面試篇）",u:"https://medium.com/@kitty91041012334/2023%E6%8E%A8%E7%94%84%E5%BF%83%E5%BE%97%E5%88%86%E4%BA%AB-%E5%8F%B0%E5%A4%A7%E5%95%86%E7%A0%94-%E5%8F%B0%E5%A4%A7%E5%9C%8B%E4%BC%81-%E9%9D%A2%E8%A9%A6%E7%AF%87-2fdd8bd477e1"},
 
   {y:112,d:["ba","ib"],site:"dcard",t:"112 年推甄面試分享（台大資管／商研／國企）",u:DC+"240534805"},
-  {y:112,d:["ba"],site:"notion",t:"〚理工轉商管〛台大商研推甄經驗分享",u:"https://livia-liang.notion.site/1e49eca82c3e419fb0944e6941ad3b1c",note:"書審寫得很細"},
-  {y:112,d:["ba"],site:"dcard",t:"推甄心得（2023 年 1 月）",u:DC+"241103555"},
+  {y:112,d:["ba"],site:"dcard",t:"〚理工轉商管〛台大商研推甄經驗分享",u:DC+"241103555",note:"書審寫得很細"},
   {y:112,d:["ba","ib"],site:"medium",t:"【2022 推甄心得】台大商研．台大國企．政大企研．政大科管 書審＆面試",u:"https://medium.com/@huang2321/2022%E6%8E%A8%E7%94%84%E5%BF%83%E5%BE%97-%E5%8F%B0%E5%A4%A7%E5%95%86%E7%A0%94-%E5%8F%B0%E5%A4%A7%E5%9C%8B%E4%BC%81-%E6%94%BF%E5%A4%A7%E4%BC%81%E7%A0%94-%E6%94%BF%E5%A4%A7%E7%A7%91%E7%AE%A1-%E6%9B%B8%E5%AF%A9-%E9%9D%A2%E8%A9%A6-978d8a2c38e3"},
 
   {y:111,d:["ba","ib"],site:"dcard",t:"111 推甄：台大國企、台大商研錄取分享",u:DC+"239956512"},
@@ -58,11 +57,9 @@ function renderSources(box,opts){
       if(s.site==="own"){a.href=opts.ownHref||s.u;if(opts.onOwn)a.onclick=e=>{e.preventDefault();opts.onOwn()}}
       else{a.href=s.u;a.target="_blank";a.rel="noopener"}
       li.appendChild(a);
-      const bits=[];
-      if(!opts.dept)bits.push(s.d.map(d=>DEPT_NAME[d]).join("、"));
-      if(s.note)bits.push(s.note);
-      const m=mk("span","meta");m.appendChild(mk("span","site",SITE_NAME[s.site]));
-      if(bits.length)m.appendChild(document.createTextNode(" · "+bits.join(" · ")));
+      const m=mk("span","meta");m.appendChild(mk("span","site "+s.site,SITE_NAME[s.site]));
+      if(!opts.dept)s.d.forEach(d=>m.appendChild(mk("span","d-"+d,DEPT_NAME[d])));
+      if(s.note)m.appendChild(mk("span",null,s.note));
       li.appendChild(m);ul.appendChild(li);
     });
     g.appendChild(ul);grid.appendChild(g);
@@ -78,9 +75,9 @@ function renderSources(box,opts){
     old.forEach(y=>rows.filter(s=>s.y===y).forEach(s=>{
       const r=tb.insertRow();
       r.insertCell().textContent=y;r.cells[0].className="y";
-      if(!opts.dept)r.insertCell().textContent=s.d.map(d=>DEPT_NAME[d]).join("、");
+      if(!opts.dept){const dc=r.insertCell();s.d.forEach((d,i)=>{if(i)dc.appendChild(document.createTextNode("、"));dc.appendChild(mk("span","d-"+d,DEPT_NAME[d]))})}
       const c=r.insertCell();const a=mk("a",null,s.t);a.href=s.u;a.target="_blank";a.rel="noopener";c.appendChild(a);
-      const pc=r.insertCell();pc.textContent=SITE_NAME[s.site];pc.className="h";
+      const pc=r.insertCell();pc.className="h";pc.appendChild(mk("span","site "+s.site,SITE_NAME[s.site]));
     }));
     wrap.appendChild(tbl);box.appendChild(wrap);
   }
