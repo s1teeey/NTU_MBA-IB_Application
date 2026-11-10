@@ -80,7 +80,7 @@ mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;p
 /* 顯示設定 */
 .prefs{position:relative;flex:none}
 .prefs-btn{display:flex;align-items:center;gap:6px;font:inherit;font-size:14px;font-weight:700;color:var(--muted);background:none;border:0;padding:6px 2px;cursor:pointer}
-.prefs-btn svg{width:17px;height:17px}
+.prefs-btn svg{width:19px;height:19px}
 .prefs-btn:hover,.prefs.open .prefs-btn,.prefs:hover .prefs-btn{color:var(--ink)}
 .prefs-pop{position:absolute;right:0;top:100%;min-width:220px;padding:14px 16px 12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;box-shadow:0 14px 40px rgba(18,19,34,.14);opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s,transform .15s,visibility .15s;z-index:50}
 .prefs-pop::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
@@ -125,7 +125,7 @@ mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;p
 
 /* page heading */
 main{padding-bottom:88px}
-.page-head{padding-block:48px 8px;display:grid;gap:14px;border-bottom:3px solid var(--rule);padding-bottom:24px;margin-bottom:8px}
+.page-head{padding-block:48px 8px;display:grid;gap:14px;border-bottom:3px solid var(--rule);padding-bottom:24px;margin-bottom:40px}
 .crumb{font-size:13.5px;color:var(--faint);font-weight:600}
 .crumb a{color:var(--muted);text-decoration-color:var(--line)}
 .lede{color:var(--muted);font-size:16.5px}
@@ -155,7 +155,7 @@ section{display:grid;gap:16px}
 .site.dcard{background:#006AA6;color:#fff}
 .site.notion,.site.ptt{background:#E9E9E7;color:#37352F}
 .site.medium{background:#000;color:#fff}
-.site.own{background:var(--accent);color:var(--on-accent)}
+.site.mine{background:var(--accent);color:var(--on-accent)}
 :root[data-theme="dark"] .site.notion,:root[data-theme="dark"] .site.ptt{background:#2E3045;color:#D5D7E0}
 :root[data-theme="dark"] .site.medium{box-shadow:inset 0 0 0 1px #3A3C52}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .site.notion,:root:not([data-theme="light"]) .site.ptt{background:#2E3045;color:#D5D7E0}:root:not([data-theme="light"]) .site.medium{box-shadow:inset 0 0 0 1px #3A3C52}}

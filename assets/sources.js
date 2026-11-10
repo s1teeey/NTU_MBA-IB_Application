@@ -57,7 +57,7 @@ function renderSources(box,opts){
       if(s.site==="own"){a.href=opts.ownHref||s.u;if(opts.onOwn)a.onclick=e=>{e.preventDefault();opts.onOwn()}}
       else{a.href=s.u;a.target="_blank";a.rel="noopener"}
       li.appendChild(a);
-      const m=mk("span","meta");m.appendChild(mk("span","site "+s.site,SITE_NAME[s.site]));
+      const m=mk("span","meta");m.appendChild(mk("span","site "+(s.site==="own"?"mine":s.site),SITE_NAME[s.site]));
       if(!opts.dept)s.d.forEach(d=>m.appendChild(mk("span","d-"+d,DEPT_NAME[d])));
       if(s.note)m.appendChild(mk("span",null,s.note));
       li.appendChild(m);ul.appendChild(li);
@@ -77,7 +77,7 @@ function renderSources(box,opts){
       r.insertCell().textContent=y;r.cells[0].className="y";
       if(!opts.dept){const dc=r.insertCell();s.d.forEach((d,i)=>{if(i)dc.appendChild(document.createTextNode("、"));dc.appendChild(mk("span","d-"+d,DEPT_NAME[d]))})}
       const c=r.insertCell();const a=mk("a",null,s.t);a.href=s.u;a.target="_blank";a.rel="noopener";c.appendChild(a);
-      const pc=r.insertCell();pc.className="h";pc.appendChild(mk("span","site "+s.site,SITE_NAME[s.site]));
+      const pc=r.insertCell();pc.className="h";pc.appendChild(mk("span","site "+(s.site==="own"?"mine":s.site),SITE_NAME[s.site]));
     }));
     wrap.appendChild(tbl);box.appendChild(wrap);
   }

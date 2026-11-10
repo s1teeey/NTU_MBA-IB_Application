@@ -28,9 +28,9 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   bar.innerHTML='<div class="wrap"><a class="brand" href="./">台大商研、國企<span>推甄分享</span></a>'+
     '<nav class="menu" aria-label="主選單">'+PAGES.map(([h,t,also])=>'<a href="'+h+'"'+(h===here||(also&&also.includes(here))?' aria-current="page"':"")+'>'+t+'</a>').join("")+'</nav>'+
     '<div class="search" role="search"><input type="search" placeholder="搜尋" aria-label="搜尋全站" autocomplete="off"><div class="sresults" hidden></div></div>'+
-    '<div class="prefs"><button class="prefs-btn" type="button" aria-haspopup="true" aria-expanded="false">'+ICON+'<span>顯示</span></button>'+
+    '<div class="prefs"><button class="prefs-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="顯示設定" title="顯示設定">'+ICON+'</button>'+
     '<div class="prefs-pop">'+
-      '<p class="grp">外觀</p>'+opts("theme",theme,[["light","淺色","hl-all"],["dark","深色","hl-all"],["","跟隨系統","hl-all"]])+
+      '<p class="grp">外觀</p>'+opts("theme",theme,[["","跟隨系統","hl-all"],["light","淺色","hl-all"],["dark","深色","hl-all"]])+
       '<p class="grp">系所</p>'+opts("only",only,[["","All","hl-all"],["ba","商研","hl-ba"],["ib","國企","hl-ib"]])+
     '</div></div></div>';
   document.body.prepend(bar);
@@ -60,7 +60,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=202611102304";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261110230630";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
