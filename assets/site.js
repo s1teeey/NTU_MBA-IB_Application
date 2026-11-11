@@ -62,7 +62,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   const cur=bar.querySelector('[aria-current="page"]');if(cur)cur.scrollIntoView({block:"nearest",inline:"center"});
 
   const foot=document.createElement("footer");foot.className="foot";
-  foot.innerHTML='<div class="wrap"><span>招生規定請依當年度台大簡章為準。</span>'+
+  foot.innerHTML='<div class="wrap"><span>本網站資訊僅供參考，請以校方公告為準。</span>'+
     (FORM_URL?'<a href="'+FORM_URL+'" target="_blank" rel="noopener">投稿・提問</a>':'')+'</div>';
   document.body.appendChild(foot);
   document.querySelectorAll("[data-form]").forEach(el=>{
@@ -70,7 +70,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=20261111105533";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261111110651";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
