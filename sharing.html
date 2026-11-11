@@ -29,7 +29,8 @@ table.cmp{border-collapse:collapse;width:100%;min-width:540px;font-size:15px}
 .cmp td.both{text-align:center;color:var(--muted)}
 .cmp.yrs td{font-variant-numeric:tabular-nums}
 table.cmp.yrs{min-width:0}
-.cmp.yrs thead th{text-align:center;padding-left:8px;padding-right:8px}
+.cmp.yrs thead th,.cmp.yrs td{text-align:center;padding-left:8px;padding-right:8px}
+.cmp.yrs .c{display:inline-block;text-align:left}
 .cmp.yrs td small{margin-left:4px}
 @media (max-width:560px){.cmp.yrs th,.cmp.yrs td{padding-right:8px;font-size:14px}.cmp.yrs tbody th{width:76px;font-size:13px}}
 @media (max-width:560px){.cmp tbody th{width:84px}}
@@ -110,7 +111,7 @@ table.cmp.yrs{min-width:0}
           <tr><th scope="row">簡章公告</th><td>9/11</td><td>9/11</td><td>9/13</td></tr>
           <tr><th scope="row">繳費、填報名資料</th><td>9/30–10/7</td><td>10/1–10/8</td><td>10/3–10/10</td></tr>
           <tr><th scope="row">上傳審查資料截止</th><td>10/8 17:00</td><td>10/9 17:00</td><td>10/11 17:00</td></tr>
-          <tr><th scope="row">放榜（第 2 梯次）</th><td>11/19（四）</td><td>11/20（四）</td><td>11/20（三）</td></tr>
+          <tr><th scope="row">放榜（第 2 梯次）</th><td>11/19</td><td>11/20</td><td>11/20</td></tr>
           <tr><th scope="row">網路報到</th><td>11/24–11/26</td><td>11/25–11/27</td><td>11/26–11/28</td></tr>
           <tr><th scope="row">備取遞補</th><td>12/2 起，到 1/21</td><td>12/3 起，到 1/22</td><td>12/4 起，到 1/22</td></tr>
         </tbody>
@@ -122,8 +123,8 @@ table.cmp.yrs{min-width:0}
         <table class="cmp yrs">
           <thead><tr><th scope="col"></th><th scope="col">116</th><th scope="col">115</th><th scope="col">114</th></tr></thead>
           <tbody>
-            <tr><th scope="row">口試名單</th><td>11/2（一）</td><td>11/3（一）</td><td>11/4（一）</td></tr>
-            <tr><th scope="row">口試</th><td><mark>11/6（五）</mark></td><td><mark>11/7（五）</mark></td><td><mark>11/8（五）</mark></td></tr>
+            <tr><th scope="row">口試名單</th><td>11/2</td><td>11/3</td><td>11/4</td></tr>
+            <tr><th scope="row">口試</th><td><mark>11/6</mark></td><td><mark>11/7</mark></td><td><mark>11/8</mark></td></tr>
           </tbody>
         </table>
       </div>
@@ -132,8 +133,8 @@ table.cmp.yrs{min-width:0}
         <table class="cmp yrs">
           <thead><tr><th scope="col"></th><th scope="col">116</th><th scope="col">115</th><th scope="col">114</th></tr></thead>
           <tbody>
-            <tr><th scope="row">口試名單</th><td>10/23（五）</td><td>10/27（一）</td><td>10/28（一）</td></tr>
-            <tr><th scope="row">口試</th><td><mark>10/30（五）</mark></td><td><mark>10/31（五）</mark></td><td><mark>11/1（五）</mark></td></tr>
+            <tr><th scope="row">口試名單</th><td>10/23</td><td>10/27</td><td>10/28</td></tr>
+            <tr><th scope="row">口試</th><td><mark>10/30</mark></td><td><mark>10/31</mark></td><td><mark>11/1</mark></td></tr>
           </tbody>
         </table>
       </div>
@@ -172,6 +173,19 @@ table.cmp.yrs{min-width:0}
   </section>
   </div>
 </main>
+<script>
+/* 年份表：每欄內容置中成一塊，塊內靠左，讓同一欄的內容左緣對齊 */
+document.querySelectorAll(".cmp.yrs").forEach(t=>{
+  const cols={};
+  t.querySelectorAll("tr").forEach(r=>[...r.cells].forEach((c,i)=>{
+    if(i===0)return;
+    const w=document.createElement("span");w.className="c";
+    while(c.firstChild)w.appendChild(c.firstChild);c.appendChild(w);(cols[i]=cols[i]||[]).push(w);
+  }));
+  const fit=()=>Object.values(cols).forEach(ws=>{ws.forEach(w=>w.style.width="");const m=Math.max(...ws.map(w=>w.getBoundingClientRect().width));ws.forEach(w=>w.style.width=Math.ceil(m)+"px")});
+  fit();document.fonts&&document.fonts.ready.then(fit);
+});
+</script>
 <script src="assets/site.js?v=20261111110651"></script>
 </body>
 </html>
