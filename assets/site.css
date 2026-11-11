@@ -200,3 +200,13 @@ main h2,.src-year,.src-past,.faq-group{scroll-margin-top:84px}
 @media (max-width:760px){
   .search{flex:1 1 0}
 }
+
+/* left section index (wide screens only) */
+.lidx{position:fixed;top:132px;left:max(20px,calc((100vw - 1080px)/2 - 196px));width:168px;z-index:30;display:grid;gap:2px;padding-left:2px}
+.lidx a{display:grid;grid-template-columns:26px 1fr;align-items:baseline;padding:7px 0 7px 12px;border-left:2px solid var(--line);color:var(--faint);text-decoration:none;font-size:14px;line-height:1.35;transition:color .15s,border-color .15s}
+.lidx a .n{font-size:12px;font-weight:900;font-variant-numeric:tabular-nums}
+.lidx a:hover{color:var(--ink)}
+.lidx a.on{color:var(--ink);font-weight:800;border-left-color:var(--accent)}
+.lidx a.on .n{color:var(--accent-ink)}
+.lidx a[hidden]{display:none}
+@media (max-width:1439px){.lidx{display:none}}

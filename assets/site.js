@@ -69,8 +69,8 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     if(!FORM_URL){el.hidden=true;return}
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
-  buildRail();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=20261111103849";document.body.appendChild(sc);
+  buildRail();buildIndex();
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261111105533";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
@@ -117,3 +117,28 @@ function buildRail(){
   draw();
 }
 
+
+/* Left index: the numbered sections (01 02 03…) of the page, current one marked. */
+function buildIndex(){
+  const heads=[...document.querySelectorAll("main h2")].filter(h=>h.querySelector(".no")&&!h.closest("aside"));
+  if(heads.length<2)return;
+  const nav=document.createElement("nav");nav.className="lidx";nav.setAttribute("aria-label","本頁目錄");
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const links=heads.map(h=>{
+    const sec=h.closest("section")||h;
+    const a=document.createElement("a");a.href=sec.id?"#"+sec.id:"#";
+    const no=h.querySelector(".no").textContent.trim();
+    const t=h.textContent.replace(no,"").replace(/\s+/g," ").trim();
+    a.innerHTML='<span class="n">'+no+'</span><span class="t"></span>';a.querySelector(".t").textContent=t;
+    a.onclick=e=>{e.preventDefault();sec.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})};
+    nav.appendChild(a);return [sec,a];
+  });
+  document.body.appendChild(nav);
+  const mark=()=>{
+    let k=0;links.forEach(([sec],i)=>{if(sec.getBoundingClientRect().top<160)k=i});
+    if(innerHeight+scrollY>=document.documentElement.scrollHeight-4)k=links.length-1;
+    links.forEach(([,a],i)=>a.classList.toggle("on",i===k));
+    links.forEach(([sec,a])=>{a.hidden=sec.offsetParent===null});
+  };
+  addEventListener("scroll",mark,{passive:true});addEventListener("resize",mark);mark();
+}
