@@ -3,7 +3,7 @@
 (function(){
   const box=document.querySelector(".search");if(!box)return;
   const input=box.querySelector("input"), panel=box.querySelector(".sresults");
-  const TEXT_PAGES=[["sharing.html","推甄須知"],["docs.html","書審撰寫"],["interview.html","面試準備"],["faq.html","FAQ"]];
+  const TEXT_PAGES=[["sharing.html","簡章細則"],["docs.html","書審撰寫"],["interview.html","面試準備"],["faq.html","FAQ"]];
   const PROF_PAGES=[["ba.html","商研教授"],["ib.html","國企教授"]];
   let index=null, loading=null, active=-1;
 
@@ -34,7 +34,7 @@
 
     // 心得文
     if(typeof SOURCES==="undefined"){
-      await new Promise(res=>{const s=document.createElement("script");s.src="assets/sources.js?v=20261110232948";s.onload=res;s.onerror=res;document.head.appendChild(s)});
+      await new Promise(res=>{const s=document.createElement("script");s.src="assets/sources.js?v=20261111103849";s.onload=res;s.onerror=res;document.head.appendChild(s)});
     }
     if(typeof SOURCES!=="undefined")SOURCES.forEach(s=>{
       out.push({g:"心得文",t:s.t,x:[s.t,SITE_NAME[s.site],s.y+" 學年度",s.d.map(k=>DEPT_NAME[k]).join("、"),s.note||""].join(" "),

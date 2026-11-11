@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="國企師資陣容：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261110232948">
+<link rel="stylesheet" href="assets/site.css?v=20261111103849">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -162,7 +162,7 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
         <a href="ib.html" class="d-ib" aria-current="page">國企<small>7070</small></a>
       </nav>
     </div>
-    <p class="lede">專任教授的研究領域、開課，以及 106–116 學年度的面試官紀錄。每位教授都有 Note 欄位可以做筆記，內容只存在自己的瀏覽器。開課資訊可到<a href="https://course.ntu.edu.tw/" target="_blank" rel="noopener">台大課程網</a>查詢。</p>
+    <p class="lede">專任教授的研究領域、近年開課狀況，以及近 10 年的面試官紀錄。開課資訊可到<a href="https://course.ntu.edu.tw/" target="_blank" rel="noopener">台大課程網</a>查詢。</p>
   </header>
 
   <div class="tabs" role="tablist" aria-label="檢視">
@@ -287,7 +287,7 @@ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=
 (function(){
   const box=$("#y116");
   const h=el("div");h.appendChild(el("h3",null,"116 學年度面試題目"));
-  h.appendChild(el("p","note","本站作者的面試紀錄，只列題目。"+Q116.note));box.appendChild(h);
+  h.appendChild(el("p","note","本站作者的面試紀錄。"+Q116.note));box.appendChild(h);
   const g=el("div","stages");
   Q116.stages.forEach(st=>{
     const b=el("div","st");const hd=el("div","st-head");
@@ -428,6 +428,6 @@ function follow(){const h=decodeURIComponent(location.hash.slice(1));
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261110232948"></script>
+<script src="assets/site.js?v=20261111103849"></script>
 </body>
 </html>

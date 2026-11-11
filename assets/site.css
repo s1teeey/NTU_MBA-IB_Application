@@ -102,6 +102,9 @@ mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;p
 :root[data-only="ba"] [data-d="ib"],:root[data-only="ib"] [data-d="ba"]{display:none!important}
 :root[data-only] .cmp.two{table-layout:auto}
 
+.only-note{font-size:14px;color:var(--muted);margin:0}
+.only-note button{font:inherit;font-weight:800;color:var(--ink);background:none;border:0;padding:0;margin-left:6px;cursor:pointer;text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:4px}
+
 /* search */
 .search{position:relative;flex:0 1 190px;min-width:110px}
 .search input{width:100%;font:inherit;font-size:14px;line-height:1.4;padding:7px 10px 7px 30px;border:1px solid var(--line);border-radius:6px;color:var(--ink);

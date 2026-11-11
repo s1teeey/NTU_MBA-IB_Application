@@ -13,7 +13,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   try{if(PROF.includes(here))localStorage.setItem("dept",here);const d=localStorage.getItem("dept");if(PROF.includes(d))lastDept=d}catch(e){}
   if(only)lastDept=only+".html";
   const PAGES=[
-    ["sharing.html","推甄須知"],
+    ["sharing.html","簡章細則"],
     [lastDept,"師資陣容",PROF],
     ["docs.html","書審撰寫"],
     ["interview.html","面試準備"],
@@ -46,9 +46,19 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   bar.querySelectorAll('.opts[data-k="only"] button').forEach(b=>b.onclick=()=>{
     const v=b.dataset.v;try{v?localStorage.setItem("only",v):localStorage.removeItem("only")}catch(e){}
     if(v&&PROF.includes(here)&&here!==v+".html"){location.href=v+".html";return}
-    if(v)root.dataset.only=v;else delete root.dataset.only;press("only",b);
+    if(v)root.dataset.only=v;else delete root.dataset.only;press("only",b);notice();
     const pl=bar.querySelector('.menu a[href="ba.html"],.menu a[href="ib.html"]');if(pl&&v)pl.setAttribute("href",v+".html");
   });
+  // 有系所篩選時，在頁首明講，避免內容「不見了」
+  function notice(){
+    let n=document.querySelector(".only-note");
+    const v=root.dataset.only, head=document.querySelector(".page-head");
+    if(!v||!head||PROF.includes(here)||!document.querySelector("[data-d]")){if(n)n.remove();return}
+    if(!n){n=document.createElement("p");n.className="only-note";head.appendChild(n)}
+    n.innerHTML='目前只顯示<span class="hl-'+v+'">'+(v==="ba"?"商研":"國企")+'</span>的內容。<button type="button">顯示兩所</button>';
+    n.querySelector("button").onclick=()=>bar.querySelector('.opts[data-k="only"] button[data-v=""]').click();
+  }
+  notice();
   const cur=bar.querySelector('[aria-current="page"]');if(cur)cur.scrollIntoView({block:"nearest",inline:"center"});
 
   const foot=document.createElement("footer");foot.className="foot";
@@ -60,7 +70,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=20261110232948";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261111103849";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */

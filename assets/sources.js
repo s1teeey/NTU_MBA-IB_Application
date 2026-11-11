@@ -2,7 +2,7 @@
    109 學年度（含）以前每所一篇，用簡單列表；110 以後可能多篇，用卡片。 */
 const DC="https://www.dcard.tw/f/graduate_school/p/";
 const SOURCES=[
-  {y:116,d:["ba","ib"],site:"own",t:"116 學年度面試題目",u:"#y116",note:"網站作者的紀錄，只列題目"},
+  {y:116,d:["ba","ib"],site:"own",t:"116 學年度面試題目",u:"#y116",note:"網站作者的紀錄"},
 
   {y:115,d:["ba","ib"],site:"dcard",t:"115 商管推甄正取分享：台大商研／台大國企",u:DC+"260371156"},
   {y:115,d:["ba","ib"],site:"dcard",t:"商研／企研／國企複試懶人包＋連結",u:DC+"261008223",note:"整理多篇連結"},

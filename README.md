@@ -5,7 +5,7 @@ https://s1teeey.github.io/NTU_MBA-IB_Application/
 | 頁面 | 檔案 |
 |---|---|
 | 首頁 | `index.html` |
-| 推甄須知（簡章重點、時程） | `sharing.html` |
+| 簡章細則（簡章重點、時程） | `sharing.html` |
 | 商研師資陣容 | `ba.html` |
 | 國企師資陣容 | `ib.html` |
 | 書審撰寫 | `docs.html` |
