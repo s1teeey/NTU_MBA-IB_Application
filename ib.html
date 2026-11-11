@@ -327,6 +327,7 @@ function render(){
     const show=state.filter==="all"||(state.filter==="iv"&&p.iv.length)||(state.filter==="recent"&&p.iv.some(i=>i.y>=112)); const hay=[p.n,p.t,p.cat,(p.res||[]).join(" "),p.edu||"",p.c||""].join(" ").toLowerCase();
     const hit=!state.q||state.q.split(/\s+/).every(w=>hay.includes(w));
     if(!show||!hit)return;n++;
+    if(/[?&]sample/.test(location.search)&&n>4)return; /* Canva 示意圖：只放兩排 */
     g.appendChild(card(p));
   });
   $("#count").textContent=n+" 位";
