@@ -109,11 +109,11 @@ table.cmp.yrs{min-width:0}
         <thead><tr><th scope="col"></th><th scope="col"><small>2026</small>116</th><th scope="col"><small>2025</small>115</th><th scope="col"><small>2024</small>114</th></tr></thead>
         <tbody>
           <tr><th scope="row">簡章公告</th><td>9/11（五）</td><td>9/11（四）</td><td>9/13（五）</td></tr>
-          <tr><th scope="row">繳費、填報名資料</th><td>9/30（三） ~ 10/7（三）</td><td>10/1（三） ~ 10/8（三）</td><td>10/3（四） ~ 10/10（四）</td></tr>
+          <tr><th scope="row">報名、繳費</th><td>9/30（三）~ 10/7（三）</td><td>10/1（三）~ 10/8（三）</td><td>10/3（四）~ 10/10（四）</td></tr>
           <tr><th scope="row">上傳審查資料截止</th><td>10/8（四）17:00</td><td>10/9（四）17:00</td><td>10/11（五）17:00</td></tr>
           <tr><th scope="row">放榜（第 2 梯次）</th><td>11/19（四）</td><td>11/20（四）</td><td>11/20（三）</td></tr>
-          <tr><th scope="row">網路報到</th><td>11/24（二） ~ 11/26（四）</td><td>11/25（二） ~ 11/27（四）</td><td>11/26（二） ~ 11/28（四）</td></tr>
-          <tr><th scope="row">備取遞補</th><td>12/2（三） ~ 1/21（四）</td><td>12/3（三） ~ 1/22（四）</td><td>12/4（三） ~ 1/22（三）</td></tr>
+          <tr><th scope="row">網路報到</th><td>11/24（二）~ 11/26（四）</td><td>11/25（二）~ 11/27（四）</td><td>11/26（二）~ 11/28（四）</td></tr>
+          <tr><th scope="row">備取遞補</th><td>12/2（三）~ 1/21（四）</td><td>12/3（三）~ 1/22（四）</td><td>12/4（三）~ 1/22（三）</td></tr>
         </tbody>
       </table>
     </div>
@@ -124,7 +124,7 @@ table.cmp.yrs{min-width:0}
           <thead><tr><th scope="col"></th><th scope="col">116</th><th scope="col">115</th><th scope="col">114</th></tr></thead>
           <tbody>
             <tr><th scope="row">口試名單</th><td>11/2（一）</td><td>11/3（一）</td><td>11/4（一）</td></tr>
-            <tr><th scope="row">口試</th><td><mark>11/6（五）</mark></td><td><mark>11/7（五）</mark></td><td><mark>11/8（五）</mark></td></tr>
+            <tr><th scope="row">口試日期</th><td><mark>11/6（五）</mark></td><td><mark>11/7（五）</mark></td><td><mark>11/8（五）</mark></td></tr>
           </tbody>
         </table>
       </div>
@@ -134,12 +134,12 @@ table.cmp.yrs{min-width:0}
           <thead><tr><th scope="col"></th><th scope="col">116</th><th scope="col">115</th><th scope="col">114</th></tr></thead>
           <tbody>
             <tr><th scope="row">口試名單</th><td>10/23（五）</td><td>10/27（一）</td><td>10/28（一）</td></tr>
-            <tr><th scope="row">口試</th><td><mark>10/30（五）</mark></td><td><mark>10/31（五）</mark></td><td><mark>11/1（五）</mark></td></tr>
+            <tr><th scope="row">口試日期</th><td><mark>10/30（五）</mark></td><td><mark>10/31（五）</mark></td><td><mark>11/1（五）</mark></td></tr>
           </tbody>
         </table>
       </div>
     </div>
-    <p class="muted small">審查費 1,000 元，進口試再繳第 2 階段 500 元。未完成上傳視同未報名；未網路報到即取消資格。</p>
+    <p class="muted small">口試時間依照准考證號碼排序（即報名之順序）</p>
   </section>
 
   <section>
@@ -175,7 +175,7 @@ table.cmp.yrs{min-width:0}
 </main>
 <script>
 /* 年份表：每欄內容置中成一塊，塊內靠左，讓同一欄的內容左緣對齊 */
-document.querySelectorAll(".cmp.yrs:not(.stat)").forEach(t=>{
+document.querySelectorAll(".cmp.yrs:not(.stat)").forEach(t=>{if(t.closest(".oral"))return;
   const cols={};
   t.querySelectorAll("tr").forEach(r=>[...r.cells].forEach((c,i)=>{
     if(i===0)return;
