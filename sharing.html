@@ -175,7 +175,7 @@ table.cmp.yrs{min-width:0}
 </main>
 <script>
 /* 年份表：每欄內容置中成一塊，塊內靠左，讓同一欄的內容左緣對齊 */
-document.querySelectorAll(".cmp.yrs").forEach(t=>{
+document.querySelectorAll(".cmp.yrs:not(.stat)").forEach(t=>{
   const cols={};
   t.querySelectorAll("tr").forEach(r=>[...r.cells].forEach((c,i)=>{
     if(i===0)return;
