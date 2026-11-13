@@ -34,7 +34,7 @@
 
     // 心得文
     if(typeof SOURCES==="undefined"){
-      await new Promise(res=>{const s=document.createElement("script");s.src="assets/sources.js?v=20261111110651";s.onload=res;s.onerror=res;document.head.appendChild(s)});
+      await new Promise(res=>{const s=document.createElement("script");s.src="assets/sources.js?v=20261113200712";s.onload=res;s.onerror=res;document.head.appendChild(s)});
     }
     if(typeof SOURCES!=="undefined")SOURCES.forEach(s=>{
       out.push({g:"心得文",t:s.t,x:[s.t,SITE_NAME[s.site],s.y+" 學年度",s.d.map(k=>DEPT_NAME[k]).join("、"),s.note||""].join(" "),
