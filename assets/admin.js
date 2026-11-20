@@ -76,10 +76,8 @@ function splitMain(text){
 function editorDoc(text,inner){
   const parts=splitMain(text);
   let html=parts.before+inner+parts.after;
-  html=html.replace(/<script\b[\s\S]*?<\/script>/gi,"");
   html=html.replace(/<head>/i,'<head><base href="'+BASE+'">');
   html=html.replace(/<\/head>/i,"<style>"+EDIT_CSS+"</style></head>");
-  html=html.replace(/<html\b/i,'<html data-theme="light"');
   return html;
 }
 async function openPage(path){
@@ -90,6 +88,9 @@ async function openPage(path){
   const parts=splitMain(f.text);
   if(!parts){toast("這頁沒有 <main>，不能編輯。");return}
   cur={path,text:f.text,sha:f.sha,dirty:false,previewed:false};
+  { const tmp=new DOMParser().parseFromString("<main>"+parts.inner+"</main>","text/html");
+    cur.nokey=[...tmp.querySelectorAll("main [data-nokey]")].map(n=>n.innerHTML);
+    cur.today=[...tmp.querySelectorAll("main .today")].map(n=>n.innerHTML); }
   let inner=parts.inner;
   const dr=drafts()[path];
   if(dr&&dr.html!==inner){
@@ -104,6 +105,7 @@ async function openPage(path){
 }
 function setupEditor(){
   const d=idoc(),main=d.querySelector("main");
+  delete d.documentElement.dataset.only;d.querySelectorAll(".only-note").forEach(n=>n.remove());
   main.contentEditable="true";
   d.execCommand("styleWithCSS",false,false);
   d.execCommand("defaultParagraphSeparator",false,"p");
@@ -180,7 +182,12 @@ function renumber(main){
 /* 序列化：清掉編輯用的東西 */
 function serialize(forPublish){
   const main=idoc().querySelector("main").cloneNode(true);
-  main.querySelectorAll(".adm-ctl").forEach(n=>n.remove());
+  main.querySelectorAll(".adm-ctl,.only-note").forEach(n=>n.remove());
+  // 還原網站程式在正文裡做的事：表格對齊包裝、今天日期、程式產生的清單
+  main.querySelectorAll("td > span.c, th > span.c").forEach(w=>{const c=w.parentElement;if(w.dataset.k)c.dataset.k=w.dataset.k;w.replaceWith(...w.childNodes)});
+  main.querySelectorAll("[data-nokey]").forEach((n,i)=>{if(cur.nokey&&i<cur.nokey.length)n.innerHTML=cur.nokey[i]});
+  main.querySelectorAll("[data-form] a.form-link").forEach(a=>{a.setAttribute("href","#");a.removeAttribute("target");a.removeAttribute("rel")});
+  main.querySelectorAll(".today").forEach((n,i)=>{if(cur.today&&i<cur.today.length)n.innerHTML=cur.today[i]});
   main.querySelectorAll(".adm-hover").forEach(n=>n.classList.remove("adm-hover"));
   main.querySelectorAll("[class='']").forEach(n=>n.removeAttribute("class"));
   main.querySelectorAll("[contenteditable]").forEach(n=>n.removeAttribute("contenteditable"));
