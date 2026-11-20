@@ -32,7 +32,7 @@ async function putFile(path,b64,msg,sha){
 /* ---------- UI helpers ---------- */
 function toast(t,ms=2600){const e=$("#toast");e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),ms)}
 function setState(){
-  const d=cur&&cur.dirty;$("#state").textContent=!cur?"":d?"有未發布的修改":"已是最新";$("#state").classList.toggle("dirty",!!d);
+  const d=cur&&cur.dirty;$("#state").textContent=!cur?"":!d?"已是最新":cur.previewed?"已預覽，可以發布":"草稿已自動儲存｜預覽後才能發布";$("#state").classList.toggle("dirty",!!d);
   $("#b-publish").disabled=!(d&&cur.previewed);
   document.querySelectorAll("#pages a").forEach(a=>{const dot=a.querySelector(".dot");const dr=drafts()[a.dataset.p];if(dr&&!dot)a.insertAdjacentHTML("beforeend",'<span class="dot" title="有草稿"></span>');if(!dr&&dot)dot.remove()});
 }
@@ -65,6 +65,8 @@ main [data-nokey]{opacity:.55}
 .adm-ctl button{border:0;background:none;padding:5px 7px;border-radius:4px;cursor:pointer;color:#121322;font:inherit}
 .adm-ctl button:hover{background:#F1ECFD}
 .adm-ctl .lbl{padding:5px 6px;color:#9496A3}
+.adm-rs{position:absolute;z-index:98;width:8px;cursor:ew-resize;border-radius:4px;background:repeating-linear-gradient(#8F5CF0 0 2px,transparent 2px 5px);opacity:.35}
+.adm-rs:hover{opacity:1}
 figure.shot .ph{cursor:pointer}
 figure.shot .ph:hover{border-color:#8F5CF0;color:#8F5CF0}
 `;
@@ -114,10 +116,12 @@ function setupEditor(){
   const changed=()=>{if(!cur)return;cur.dirty=true;cur.previewed=false;clearTimeout(changed.t);changed.t=setTimeout(()=>saveDraft(cur.path,serialize(false).inner,cur.sha),400);setState()};
   const real=r=>{
     if(isCtl(r.target))return false;
+    if(r.type==="attributes"&&r.attributeName==="style"&&r.target.matches("span.c"))return false;
     if(r.type==="attributes"&&r.attributeName==="class"){const k=v=>(v||"").replace(/\badm-hover\b/g,"").trim();return k(r.oldValue)!==k(r.target.getAttribute("class"))}
     return true;
   };
-  new MutationObserver(m=>{if(m.some(real))changed()}).observe(main,{subtree:true,childList:true,characterData:true,attributes:true,attributeOldValue:true,attributeFilter:["class","href","src"]});
+  new MutationObserver(m=>{if(m.some(real))changed()}).observe(main,{subtree:true,childList:true,characterData:true,attributes:true,attributeOldValue:true,attributeFilter:["class","href","src","style"]});
+  main.addEventListener("paste",e=>{e.preventDefault();const t=(e.clipboardData||window.clipboardData).getData("text/plain");d.execCommand("insertText",false,t)});
   d.addEventListener("keydown",e=>{
     if((e.metaKey||e.ctrlKey)&&e.key==="s"){e.preventDefault();doPreview()}
   });
@@ -125,12 +129,24 @@ function setupEditor(){
   main.addEventListener("click",e=>{const ph=e.target.closest("figure.shot .ph");if(ph){pickImage(img=>{ph.replaceWith(img)})}});
   setupBlocks(d,main);
 }
-const isCtl=n=>!!(n&&(n.nodeType===1?n:n.parentElement)?.closest?.(".adm-ctl"));
+const isCtl=n=>!!(n&&(n.nodeType===1?n:n.parentElement)?.closest?.(".adm-ctl,.adm-rs"));
 
 /* 區塊工具：滑過段落或區塊時顯示 ↑ ↓ ✕ */
 function setupBlocks(d,main){
   const ctl=d.createElement("div");ctl.className="adm-ctl";ctl.contentEditable="false";ctl.hidden=true;d.body.appendChild(ctl);
-  let target=null,hide=0;
+  const rs=d.createElement("div");rs.className="adm-rs";rs.contentEditable="false";rs.hidden=true;rs.title="拖曳調整寬度｜雙擊恢復預設";d.body.appendChild(rs);
+  let target=null,hide=0,dragging=false;
+  const placeRs=()=>{if(!target){rs.hidden=true;return}const r=target.getBoundingClientRect(),w=d.defaultView;rs.hidden=false;rs.style.top=(r.top+w.scrollY)+"px";rs.style.height=r.height+"px";rs.style.left=(r.right+w.scrollX+4)+"px"};
+  rs.addEventListener("mousedown",e=>{
+    if(!target)return;e.preventDefault();dragging=true;clearTimeout(hide);const el=target,left=el.getBoundingClientRect().left;
+    const max=(el.parentElement.closest("section,main")||el.parentElement).getBoundingClientRect().right-left;
+    const mv=ev=>{let w=Math.round((ev.clientX-left)/10)*10;w=Math.max(240,w);el.style.maxWidth=w>=max-10?"none":w+"px";placeRs();place(el,true)};
+    const up=()=>{dragging=false;d.removeEventListener("mousemove",mv);d.removeEventListener("mouseup",up)};
+    d.addEventListener("mousemove",mv);d.addEventListener("mouseup",up);
+  });
+  rs.addEventListener("dblclick",()=>{if(target){target.style.removeProperty("max-width");if(!target.getAttribute("style"))target.removeAttribute("style");placeRs()}});
+  rs.addEventListener("mouseenter",()=>clearTimeout(hide));
+  rs.addEventListener("mouseleave",()=>{if(!dragging)hide=setTimeout(()=>place(null),400)});
   const blockOf=el=>{
     while(el&&el!==main){
       const p=el.parentElement;
@@ -138,9 +154,10 @@ function setupBlocks(d,main){
       el=p;
     }return null;
   };
-  const place=el=>{
+  const place=(el,keep)=>{
+    if(dragging&&!keep)return;
     if(target)target.classList.remove("adm-hover");
-    target=el;if(!el){ctl.hidden=true;return}
+    target=el;if(!el){ctl.hidden=true;rs.hidden=true;return}
     el.classList.add("adm-hover");
     const isSec=el.tagName==="SECTION";
     ctl.innerHTML='<span class="lbl">'+(isSec?"區塊":"段落")+'</span><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button>'+(isSec?'<button data-a="add" title="在下面新增區塊">＋</button>':'<button data-a="dup" title="複製">⧉</button>')+'<button data-a="del" title="刪除">✕</button>';
@@ -148,6 +165,7 @@ function setupBlocks(d,main){
     ctl.hidden=false;
     ctl.style.top=(r.top+d.defaultView.scrollY-30)+"px";
     ctl.style.left=Math.max(4,r.right+d.defaultView.scrollX-ctl.offsetWidth)+"px";
+    placeRs();
   };
   main.addEventListener("mouseover",e=>{
     clearTimeout(hide);
@@ -155,7 +173,7 @@ function setupBlocks(d,main){
     const pick=(e.altKey&&sec)?sec:(b&&b.matches(".sec-head")?sec:b);
     if(pick&&pick!==target)place(pick);
   });
-  main.addEventListener("mouseleave",()=>{hide=setTimeout(()=>place(null),400)});
+  main.addEventListener("mouseleave",()=>{if(!dragging)hide=setTimeout(()=>place(null),400)});
   ctl.addEventListener("mouseenter",()=>clearTimeout(hide));
   ctl.addEventListener("mouseleave",()=>{hide=setTimeout(()=>place(null),400)});
   ctl.addEventListener("mousedown",e=>e.preventDefault());
@@ -182,7 +200,7 @@ function renumber(main){
 /* 序列化：清掉編輯用的東西 */
 function serialize(forPublish){
   const main=idoc().querySelector("main").cloneNode(true);
-  main.querySelectorAll(".adm-ctl,.only-note").forEach(n=>n.remove());
+  main.querySelectorAll(".adm-ctl,.adm-rs,.only-note").forEach(n=>n.remove());
   // 還原網站程式在正文裡做的事：表格對齊包裝、今天日期、程式產生的清單
   main.querySelectorAll("td > span.c, th > span.c").forEach(w=>{const c=w.parentElement;if(w.dataset.k)c.dataset.k=w.dataset.k;w.replaceWith(...w.childNodes)});
   main.querySelectorAll("[data-nokey]").forEach((n,i)=>{if(cur.nokey&&i<cur.nokey.length)n.innerHTML=cur.nokey[i]});
@@ -193,7 +211,6 @@ function serialize(forPublish){
   main.querySelectorAll("[contenteditable]").forEach(n=>n.removeAttribute("contenteditable"));
   main.removeAttribute("contenteditable");
   main.querySelectorAll("span[style]:not([class]),font").forEach(n=>n.replaceWith(...n.childNodes));
-  main.querySelectorAll("[style]").forEach(n=>{if(!n.closest("figure"))n.removeAttribute("style")});
   main.querySelectorAll("strike").forEach(n=>{const s=main.ownerDocument.createElement("s");s.append(...n.childNodes);n.replaceWith(s)});
   main.querySelectorAll("p:empty,mark:empty,b:empty,i:empty,u:empty,s:empty").forEach(n=>n.remove());
   const uploads=[];

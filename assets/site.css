@@ -231,7 +231,8 @@ main h2,.src-year,.src-past,.faq-group{scroll-margin-top:84px}
 .sw a+a{border-left:1px solid var(--line)}
 .sw a:hover{background:var(--bg-soft)}
 .sw a[aria-current]{background:var(--ink);color:var(--bg)}
-.prose{max-width:720px;display:grid;gap:14px;font-size:15.5px;line-height:1.85}
+.prose{display:grid;gap:14px;font-size:15.5px;line-height:1.85}
+.prose>*{max-width:720px}
 .prose h3{font-size:17px;margin-top:14px;padding-bottom:8px;border-bottom:2px solid var(--rule)}
 .prose ul,.prose ol{margin:0;padding-left:22px;display:grid;gap:4px}
 .prose .note{color:var(--muted);font-size:14.5px}
