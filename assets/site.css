@@ -252,3 +252,20 @@ figure.shot{margin:8px 0;display:grid;gap:8px}
 figure.shot .ph{aspect-ratio:210/297;max-width:320px;border:1px dashed var(--line);display:grid;place-items:center;color:var(--faint);font-size:14px;background:var(--bg-soft)}
 figure.shot figcaption{font-size:13.5px;color:var(--faint)}
 .shots{display:flex;flex-wrap:wrap;gap:16px}
+
+/* 螢光筆四色（後台可用）：紫＝預設 mark、紅 r、綠 g、灰 k */
+mark.r{background:linear-gradient(transparent 55%,rgba(214,38,72,.22) 55%)}
+mark.g{background:linear-gradient(transparent 55%,rgba(22,160,138,.26) 55%)}
+mark.k{background:linear-gradient(transparent 55%,rgba(120,122,138,.24) 55%)}
+:root[data-theme="dark"] mark.r{background:linear-gradient(transparent 55%,rgba(240,100,130,.38) 55%)}
+:root[data-theme="dark"] mark.g{background:linear-gradient(transparent 55%,rgba(95,211,188,.32) 55%)}
+:root[data-theme="dark"] mark.k{background:linear-gradient(transparent 55%,rgba(161,164,181,.30) 55%)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) mark.r{background:linear-gradient(transparent 55%,rgba(240,100,130,.38) 55%)}
+  :root:not([data-theme="light"]) mark.g{background:linear-gradient(transparent 55%,rgba(95,211,188,.32) 55%)}
+  :root:not([data-theme="light"]) mark.k{background:linear-gradient(transparent 55%,rgba(161,164,181,.30) 55%)}
+}
+h4{font-size:16px;font-weight:800;margin:0}
+.prose h4{margin-top:6px}
+figure.shot img{display:block;max-width:100%;height:auto;border:1px solid var(--line)}
+.prose figure.shot{margin:10px 0}

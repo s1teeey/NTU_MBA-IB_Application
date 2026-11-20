@@ -97,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=20261120221647";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261120222009";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
@@ -170,40 +170,3 @@ function buildIndex(){
   addEventListener("scroll",mark,{passive:true});addEventListener("resize",mark);mark();
   addEventListener("content",()=>links.forEach(([sec,a],i)=>{const h=heads[i],no=h.querySelector(".no").textContent.trim();a.querySelector(".t").textContent=h.textContent.replace(no,"").replace(/\s+/g," ").trim()}));
 }
-
-/* 網站文字：Google 試算表「修改後」欄有填的才覆蓋（試算表需「知道連結的任何人可檢視」）。
-   【文字】＝強調，儲存格內換行＝換行。 */
-const CONTENT_SHEET="1Ul8bB5FaA3C92hKFSCFK_GFhJsuo_UyEOcEjkTRWuqQ", CONTENT_TAB="推甄分享";
-function fmtText(t){
-  const esc=String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  return esc.replace(/【([^】]*)】/g,'<mark>$1</mark>').replace(/\r?\n/g,"<br>");
-}
-function applyContent(map){
-  if(!map)return;
-  document.querySelectorAll("[data-k]").forEach(el=>{const v=map[el.dataset.k];if(typeof v==="string"&&v.trim()!=="")el.innerHTML=fmtText(v)});
-  window.dispatchEvent(new Event("content"));
-}
-function parseCSV(t){
-  const rows=[];let row=[],f="",q=false;
-  for(let i=0;i<t.length;i++){const c=t[i];
-    if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
-    else if(c==='"')q=true;else if(c===","){row.push(f);f=""}else if(c==="\n"){row.push(f);rows.push(row);row=[];f=""}else if(c!=="\r")f+=c}
-  if(f||row.length){row.push(f);rows.push(row)}
-  return rows;
-}
-function loadContent(){
-  const KEY="content:"+CONTENT_TAB;let cached=null;
-  try{cached=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}
-  if(cached)applyContent(cached);
-  const url="https://docs.google.com/spreadsheets/d/"+CONTENT_SHEET+"/gviz/tq?tqx=out:csv&headers=1&sheet="+encodeURIComponent(CONTENT_TAB);
-  fetch(url).then(r=>r.ok?r.text():Promise.reject()).then(t=>{
-    /* 依標題找欄位：「修改後」和「key」可以放在任何一欄 */
-    const rows=parseCSV(t),head=(rows[0]||[]).map(h=>h.trim().toLowerCase());
-    const vi=head.findIndex(h=>h.includes("修改後")),ki=head.findIndex(h=>h==="key"||h.includes("key"));
-    if(vi<0||ki<0)return;
-    const map={};rows.slice(1).forEach(r=>{const k=(r[ki]||"").trim(),v=r[vi]||"";if(k&&v.trim())map[k]=v});
-    try{localStorage.setItem(KEY,JSON.stringify(map))}catch(e){}
-    if(JSON.stringify(map)!==JSON.stringify(cached))applyContent(map);
-  }).catch(()=>{});
-}
-loadContent();
