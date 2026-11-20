@@ -32,7 +32,7 @@ async function putFile(path,b64,msg,sha){
 /* ---------- UI helpers ---------- */
 function toast(t,ms=2600){const e=$("#toast");e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),ms)}
 function setState(){
-  const d=cur&&cur.dirty;$("#state").textContent=!cur?"":!d?"已是最新":cur.previewed?"已預覽，可以發布":"草稿已自動儲存｜預覽後才能發布";$("#state").classList.toggle("dirty",!!d);
+  const d=cur&&cur.dirty;$("#state").textContent=!cur?"":!d?"已發布":cur.previewed?"可發布":"草稿";$("#state").title=!cur?"":!d?"網站上是最新版本":cur.previewed?"已預覽，可以發布":"修改已自動存成草稿，預覽後才能發布";$("#state").classList.toggle("dirty",!!d);
   $("#b-publish").disabled=!(d&&cur.previewed);
   document.querySelectorAll("#pages a").forEach(a=>{const dot=a.querySelector(".dot");const dr=drafts()[a.dataset.p];if(dr&&!dot)a.insertAdjacentHTML("beforeend",'<span class="dot" title="有草稿"></span>');if(!dr&&dot)dot.remove()});
 }

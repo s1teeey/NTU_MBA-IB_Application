@@ -25,12 +25,14 @@ body.adm{margin:0;background:var(--bg-soft);height:100vh;overflow:hidden}
 .adm-side-foot button{font-size:13px;padding:4px 10px}
 
 .adm-main{display:grid;grid-template-rows:auto 1fr;min-width:0;min-height:0;height:100%}
-.adm-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--line)}
-.tb{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
-.tb button{min-width:34px;height:32px;padding:0 8px;font-size:14px}
-.tb .sep{width:1px;height:20px;background:var(--line);margin:0 4px}
+.adm-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:nowrap;padding:8px 12px;background:var(--bg);border-bottom:1px solid var(--line)}
+.tb{display:flex;flex-wrap:nowrap;align-items:center;gap:3px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.tb::-webkit-scrollbar{display:none}
+.tb button{flex:none;min-width:30px;height:30px;padding:0 7px;font-size:13.5px;white-space:nowrap}
+.tb .sep{flex:none;width:1px;height:18px;background:var(--line);margin:0 3px}
 .tb .sw-c{display:block;width:16px;height:16px;border-radius:3px;background:linear-gradient(transparent 45%,var(--c) 45%);opacity:.75}
-.acts{display:flex;align-items:center;gap:8px}
+.acts{flex:none;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.acts button{height:30px;padding:0 12px}
 .adm-state{font-size:13px;color:var(--faint);margin-right:4px}
 .adm-state.dirty{color:#B07A00}
 #ed{width:100%;height:100%;border:0;background:var(--bg)}
