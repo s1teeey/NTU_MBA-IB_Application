@@ -15,7 +15,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   const PAGES=[
     ["sharing.html","簡章細則"],
     ["師資陣容",[["ba.html","台大商研"],["ib.html","台大國企"]]],
-    ["準備方法",[["docs.html","書審撰寫"],["interview.html","面試準備"]]],
+    ["推甄準備",[["docs.html","書審撰寫"],["interview.html","面試準備"]]],
     ["個人心得",[["my-docs.html","書審"],["my-interview.html","面試"]]],
     ["faq.html","FAQ"],
   ];
@@ -23,7 +23,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   const menuHTML=PAGES.map(([h,t],i)=>{
     if(!Array.isArray(t))return '<a href="'+h+'"'+(h===here?' aria-current="page"':"")+'>'+t+'</a>';
     const cur=t.some(([u])=>u===here);
-    return '<button type="button" class="dd-btn" data-i="'+i+'" aria-haspopup="true" aria-expanded="false"'+(cur?' aria-current="page"':"")+'>'+h+CARET+'</button>';
+    return '<button type="button" class="dd-btn" data-i="'+i+'" aria-haspopup="true" aria-expanded="false"'+(cur?' aria-current="page"':"")+'>'+h+'</button>';
   }).join("");
   let theme="";try{theme=localStorage.getItem("theme")||""}catch(e){}
 
@@ -97,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=20261120220411";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261120221647";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */

@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="國企師資陣容：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261120220411">
+<link rel="stylesheet" href="assets/site.css?v=20261120221647">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -164,7 +164,7 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
         <a href="ib.html" class="d-ib" aria-current="page">國企<small>7070</small></a>
       </nav>
     </div>
-    <p class="lede">專任教授的研究領域、近年開課狀況，以及近 10 年的面試官紀錄。開課資訊可到<a href="https://course.ntu.edu.tw/" target="_blank" rel="noopener">台大課程網</a>查詢。</p>
+    <p class="lede">專任、講座教授的研究領域、近年開課狀況，以及近 10 年的面試官紀錄。開課資訊可到<a href="https://course.ntu.edu.tw/" target="_blank" rel="noopener">台大課程網</a>查詢。</p>
   </header>
 
   <div class="tabs" role="tablist" aria-label="檢視">
@@ -334,7 +334,7 @@ function render(){
     if(/[?&]sample/.test(location.search)&&n>4)return; /* Canva 示意圖：只放兩排 */
     g.appendChild(card(p));
   });
-  $("#count").textContent=n+" 位";
+  $("#count").textContent=(n<PROFS.length?n+" / "+PROFS.length:n)+" 位";
 }
 
 function card(p){
@@ -433,6 +433,6 @@ function follow(){const h=decodeURIComponent(location.hash.slice(1));
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261120220411"></script>
+<script src="assets/site.js?v=20261120221647"></script>
 </body>
 </html>

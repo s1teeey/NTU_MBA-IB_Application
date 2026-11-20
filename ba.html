@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="商研師資陣容：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261120220411">
+<link rel="stylesheet" href="assets/site.css?v=20261120221647">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -164,7 +164,7 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
         <a href="ib.html" class="d-ib">國企<small>7070</small></a>
       </nav>
     </div>
-    <p class="lede">專任教授的研究領域、近年開課狀況，以及近 10 年的面試官紀錄。開課資訊可到<a href="https://course.ntu.edu.tw/" target="_blank" rel="noopener">台大課程網</a>查詢。</p>
+    <p class="lede">專任、講座教授的研究領域、近年開課狀況，以及近 10 年的面試官紀錄。開課資訊可到<a href="https://course.ntu.edu.tw/" target="_blank" rel="noopener">台大課程網</a>查詢。</p>
   </header>
 
   <div class="tabs" role="tablist" aria-label="檢視">
@@ -203,6 +203,7 @@ const EDU={liunq:"明尼蘇達大學 人力資源與勞資關係博士",chisc:"�
 const PROFS=[
  {k:"liunq",n:"劉念琪",t:"系主任",cat:"組織 / 人資",sn:384,res:["策略人力資源管理","組織變革與發展","雇用關係與員工福祉"],c:"人力資源管理；高科技企業經營管理實務",
   iv:[{y:113,s:3,kind:"邏輯（抽題）"}]},
+ {k:"cheungg",n:"張偉雄",t:"特聘講座教授",cat:"組織 / 研究方法",sn:444,res:["行為研究方法","測量恆等性","中介分析","結構方程模型"],edu:"維吉尼亞理工大學 企業管理博士",c:"未查得碩班課程",iv:[]},
  {k:"chisc",n:"戚樹誠",t:"專任教授",cat:"組織 / 人資",sn:109,res:["組織行為","人力資源管理","協商談判","衝突管理"],c:"領導與衝突管理；組織行為研討",iv:[]},
  {k:"kuorx",n:"郭瑞祥",t:"專任教授",cat:"營運 / 數據",sc:1,sn:110,res:["品質與服務管理","資料探勘與商業智慧","供應鏈與流通管理","高科技創新模式"],c:"作業管理；人工智慧時代之商業競爭策略",iv:[]},
  {k:"lul",n:"陸洛",t:"專任教授",cat:"組織 / 人資",sn:116,res:["組織行為與人力資源","工作壓力與職場健康","跨文化管理","人格與社會心理學"],c:"115-1 課表未查得",iv:[]},
@@ -324,7 +325,7 @@ function render(){
     if(/[?&]sample/.test(location.search)&&n>4)return; /* Canva 示意圖：只放兩排 */
     g.appendChild(card(p));
   });
-  $("#count").textContent=n+" 位";
+  $("#count").textContent=(n<PROFS.length?n+" / "+PROFS.length:n)+" 位";
 }
 
 function card(p){
@@ -423,6 +424,6 @@ function follow(){const h=decodeURIComponent(location.hash.slice(1));
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261120220411"></script>
+<script src="assets/site.js?v=20261120221647"></script>
 </body>
 </html>

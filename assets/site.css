@@ -76,8 +76,6 @@ mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;p
 .menu a[aria-current="page"],.menu .dd-btn[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
 .menu .dd-btn{flex:none;display:flex;align-items:center;gap:3px;font:inherit;font-size:14.5px;font-weight:600;color:var(--muted);background:none;border:0;border-bottom:2px solid transparent;padding:20px 0 18px;cursor:pointer;white-space:nowrap}
 .menu .dd-btn:hover,.menu .dd-btn[aria-expanded="true"]{color:var(--ink)}
-.menu .dd-btn svg{width:12px;height:12px;transition:transform .15s}
-.menu .dd-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
 .dd{position:absolute;z-index:45;min-width:168px;background:var(--bg);border:1px solid var(--line);border-top:2px solid var(--rule);display:flex;flex-direction:column}
 .dd[hidden]{display:none}
 .dd a{padding:13px 18px;font-size:14.5px;font-weight:600;color:var(--muted);text-decoration:none;white-space:nowrap}
@@ -220,11 +218,16 @@ main h2,.src-year,.src-past,.faq-group{scroll-margin-top:84px}
 .lidx a.on{color:var(--ink);font-weight:800;border-left-color:var(--accent)}
 .lidx a.on .n{color:var(--accent-ink)}
 .lidx a[hidden]{display:none}
-@media (max-width:1439px){.lidx{display:none}}
+@media (max-width:1439px){
+  .lidx{left:20px;width:150px}
+  body:has(.lidx) main.wrap{margin-left:196px;margin-right:max(20px,calc(100vw - 1276px));max-width:none}
+}
+@media (max-width:1199px){.lidx{display:none}body:has(.lidx) main.wrap{margin:0 auto;max-width:1080px}}
 
 /* 個人心得（my-docs / my-interview） */
+.head-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
 .sw{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
-.sw a{padding:8px 18px;font-weight:900;font-size:15px;text-decoration:none;color:var(--muted)}
+.sw a{padding:8px 20px;font-weight:900;font-size:15px;text-decoration:none;color:var(--muted)}
 .sw a+a{border-left:1px solid var(--line)}
 .sw a:hover{background:var(--bg-soft)}
 .sw a[aria-current]{background:var(--ink);color:var(--bg)}
