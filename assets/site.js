@@ -14,11 +14,17 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   if(only)lastDept=only+".html";
   const PAGES=[
     ["sharing.html","簡章細則"],
-    [lastDept,"師資陣容",PROF],
-    ["docs.html","書審撰寫"],
-    ["interview.html","面試準備"],
+    ["師資陣容",[["ba.html","台大商研"],["ib.html","台大國企"]]],
+    ["準備方法",[["docs.html","書審撰寫"],["interview.html","面試準備"]]],
+    ["個人心得",[["my-docs.html","書審"],["my-interview.html","面試"]]],
     ["faq.html","FAQ"],
   ];
+  const CARET='<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const menuHTML=PAGES.map(([h,t],i)=>{
+    if(!Array.isArray(t))return '<a href="'+h+'"'+(h===here?' aria-current="page"':"")+'>'+t+'</a>';
+    const cur=t.some(([u])=>u===here);
+    return '<button type="button" class="dd-btn" data-i="'+i+'" aria-haspopup="true" aria-expanded="false"'+(cur?' aria-current="page"':"")+'>'+h+CARET+'</button>';
+  }).join("");
   let theme="";try{theme=localStorage.getItem("theme")||""}catch(e){}
 
   // 顯示設定：外觀（淺色/深色/跟隨系統）＋系所（All/商研/國企）
@@ -26,7 +32,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   const opts=(k,cur,list)=>'<div class="opts" data-k="'+k+'">'+list.map(([v,t,hl])=>'<button type="button" data-v="'+v+'" aria-pressed="'+(cur===v)+'"><span class="'+hl+'">'+t+'</span></button>').join("")+'</div>';
   const bar=document.createElement("header");bar.className="topbar";
   bar.innerHTML='<div class="wrap"><a class="brand" href="./"><span>推甄分享</span>｜台大商研、台大國企</a>'+
-    '<nav class="menu" aria-label="主選單">'+PAGES.map(([h,t,also])=>'<a href="'+h+'"'+(h===here||(also&&also.includes(here))?' aria-current="page"':"")+'>'+t+'</a>').join("")+'</nav>'+
+    '<nav class="menu" aria-label="主選單">'+menuHTML+'</nav>'+
     '<div class="search" role="search"><input type="search" placeholder="搜尋" aria-label="搜尋全站" autocomplete="off"><div class="sresults" hidden></div></div>'+
     '<div class="prefs"><button class="prefs-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="顯示設定" title="顯示設定">'+ICON+'</button>'+
     '<div class="prefs-pop">'+
@@ -34,6 +40,27 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
       '<p class="grp">系所</p>'+opts("only",only,[["","All","hl-all"],["ba","商研","hl-ba"],["ib","國企","hl-ib"]])+
     '</div></div></div>';
   document.body.prepend(bar);
+  // 下拉選單：桌機滑過展開，手機點一下展開
+  const dd=document.createElement("div");dd.className="dd";dd.hidden=true;bar.appendChild(dd);
+  let ddBtn=null,ddTimer=0;
+  const ddClose=()=>{if(ddBtn)ddBtn.setAttribute("aria-expanded","false");ddBtn=null;dd.hidden=true};
+  const ddOpen=b=>{
+    clearTimeout(ddTimer);if(ddBtn===b)return;ddClose();ddBtn=b;b.setAttribute("aria-expanded","true");
+    dd.innerHTML=PAGES[b.dataset.i][1].map(([u,t])=>'<a href="'+u+'"'+(u===here?' aria-current="page"':"")+'>'+t+'</a>').join("");
+    dd.hidden=false;
+    const r=b.getBoundingClientRect(),br=bar.getBoundingClientRect();
+    dd.style.top=(r.bottom-br.top)+"px";
+    dd.style.left=Math.max(8,Math.min(r.left-br.left-18,br.width-dd.offsetWidth-8))+"px";
+  };
+  const fine=matchMedia("(hover:hover)").matches;
+  bar.querySelectorAll(".dd-btn").forEach(b=>{
+    b.addEventListener("click",e=>{e.stopPropagation();ddBtn===b?ddClose():ddOpen(b)});
+    if(fine){b.addEventListener("mouseenter",()=>ddOpen(b));b.addEventListener("mouseleave",()=>{ddTimer=setTimeout(ddClose,180)})}
+  });
+  if(fine){dd.addEventListener("mouseenter",()=>clearTimeout(ddTimer));dd.addEventListener("mouseleave",()=>{ddTimer=setTimeout(ddClose,180)})}
+  document.addEventListener("click",e=>{if(!dd.contains(e.target))ddClose()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")ddClose()});
+  bar.querySelector(".menu").addEventListener("scroll",ddClose,{passive:true});
   const prefs=bar.querySelector(".prefs"),pbtn=bar.querySelector(".prefs-btn");
   pbtn.onclick=()=>{const o=!prefs.classList.contains("open");prefs.classList.toggle("open",o);pbtn.setAttribute("aria-expanded",String(o))};
   document.addEventListener("click",e=>{if(!prefs.contains(e.target)){prefs.classList.remove("open");pbtn.setAttribute("aria-expanded","false")}});
@@ -70,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=20261113205008";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261120220325";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */

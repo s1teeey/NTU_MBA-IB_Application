@@ -3,7 +3,7 @@
 (function(){
   const box=document.querySelector(".search");if(!box)return;
   const input=box.querySelector("input"), panel=box.querySelector(".sresults");
-  const TEXT_PAGES=[["sharing.html","簡章細則"],["docs.html","書審撰寫"],["interview.html","面試準備"],["faq.html","FAQ"]];
+  const TEXT_PAGES=[["sharing.html","簡章細則"],["docs.html","書審撰寫"],["interview.html","面試準備"],["my-docs.html","個人心得｜書審"],["my-interview.html","個人心得｜面試"],["faq.html","FAQ"]];
   const PROF_PAGES=[["ba.html","商研教授"],["ib.html","國企教授"]];
   let index=null, loading=null, active=-1;
 
