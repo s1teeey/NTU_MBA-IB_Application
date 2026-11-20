@@ -329,7 +329,7 @@ $("#layout").onclick=()=>applyLayout(!document.body.classList.contains("tabs-top
 /* ---------- start ---------- */
 function start(){
   $("#login").hidden=true;$("#app").hidden=false;
-  $(".adm-site").textContent=SITE.name;$("#live").href=BASE;
+  $(".adm-site").textContent=SITE.name.split("｜")[0];$(".adm-site").title=SITE.name;$("#live").href=BASE;
   $("#pages").innerHTML=SITE.pages.map(([p,t])=>'<a href="#'+p+'" data-p="'+p+'">'+t+'</a>').join("");
   $("#pages").onclick=e=>{const a=e.target.closest("a");if(!a)return;e.preventDefault();openPage(a.dataset.p)};
   const want=decodeURIComponent(location.hash.slice(1));

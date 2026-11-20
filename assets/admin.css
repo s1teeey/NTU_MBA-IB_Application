@@ -12,10 +12,10 @@ body.adm{margin:0;background:var(--bg-soft);height:100vh;overflow:hidden}
 
 .adm-app{display:grid;grid-template-columns:220px 1fr;height:100vh}
 .adm-side{border-right:1px solid var(--line);background:var(--bg);padding:20px 16px;display:flex;flex-direction:column;gap:6px;overflow:auto}
-.adm-site{font-weight:900;font-size:15px;margin:0 0 10px}
+.adm-site{font-weight:900;font-size:15px;margin:0 0 10px;white-space:nowrap}
 .adm-side .grp{font-size:12px;font-weight:800;color:var(--faint);margin:6px 0 2px;letter-spacing:.04em}
 #pages{display:grid;gap:2px}
-#pages a{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:14.5px;font-weight:600}
+#pages a{white-space:nowrap;display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:14.5px;font-weight:600}
 #pages a:hover{background:var(--bg-soft);color:var(--ink)}
 #pages a[aria-current]{background:var(--bg-soft);color:var(--ink);font-weight:800}
 #pages a .dot{width:7px;height:7px;border-radius:50%;background:#E0A100}
