@@ -298,6 +298,17 @@ $("#b-publish").onclick=async()=>{
 };
 addEventListener("beforeunload",e=>{if(cur&&cur.dirty){e.preventDefault();e.returnValue=""}});
 
+/* ---------- 分頁位置：側邊／頂部 ---------- */
+const IC_SIDE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>';
+const IC_TOP='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>';
+function applyLayout(top){
+  document.body.classList.toggle("tabs-top",top);
+  $("#layout").innerHTML=top?IC_SIDE+"側邊分頁":IC_TOP+"頂部分頁";
+  try{localStorage.setItem("adm-layout",top?"top":"side")}catch(e){}
+}
+$("#layout").onclick=()=>applyLayout(!document.body.classList.contains("tabs-top"));
+{let l="side";try{l=localStorage.getItem("adm-layout")||"side"}catch(e){}applyLayout(l==="top")}
+
 /* ---------- start ---------- */
 function start(){
   $("#login").hidden=true;$("#app").hidden=false;
