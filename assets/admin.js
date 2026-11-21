@@ -45,14 +45,15 @@ function toTrash(p,dr){if(!dr)return;const t=trash();t[p]=[dr,...(t[p]||[])].sli
 function saveDraft(p,html,sha){const d=drafts();if(html===null)delete d[p];else d[p]={html,sha,at:Date.now()};try{localStorage.setItem("adm-drafts:"+REPO,JSON.stringify(d))}catch(e){}}
 
 /* ---------- login ---------- */
+/* 真的測一次寫入權限：建立一個沒有被引用的小 blob（不會改到網站，GitHub 之後會自動清掉） */
 async function login(){
-  const r=await gh("https://api.github.com/repos/"+OWNER+"/"+REPO);
-  if(!r.ok)return false;const j=await r.json();return !!(j.permissions&&j.permissions.push);
+  const r=await gh("https://api.github.com/repos/"+OWNER+"/"+REPO+"/git/blobs",{method:"POST",body:JSON.stringify({content:"ok",encoding:"utf-8"})});
+  return r.status===201;
 }
 $("#login-form").onsubmit=async e=>{
   e.preventDefault();token=$("#token").value.trim();$("#login-msg").textContent="檢查中…";
   if(await login()){try{localStorage.setItem("adm-token",token)}catch(e){}start()}
-  else $("#login-msg").textContent="這組 token 不能寫入 "+REPO+"，請確認 repo 和 Contents 權限。";
+  else $("#login-msg").textContent="這組 token 不能寫入 "+REPO+"。請在 GitHub 勾選這個 repo，並把 Contents 設成 Read and write。";
 };
 $("#logout").onclick=()=>{if(!confirm("登出後要重新貼 token，確定？"))return;try{localStorage.removeItem("adm-token")}catch(e){}location.reload()};
 
@@ -355,6 +356,6 @@ function start(){
 }
 (async()=>{
   if(token&&await login().catch(()=>false))start();
-  else{$("#login").hidden=false;if(token)$("#login-msg").textContent="token 已失效，請重新貼上。"}
+  else{$("#login").hidden=false;if(token)$("#login-msg").textContent="這組 token 失效或沒有寫入權限（Contents 要 Read and write），請修正後重新貼上。"}
 })();
 })();
