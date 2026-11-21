@@ -156,11 +156,14 @@ function setupBlocks(d,main){
   rs.addEventListener("mousedown",e=>{
     if(!target)return;e.preventDefault();dragging=true;clearTimeout(hide);const el=target,left=el.getBoundingClientRect().left;
     const max=(el.parentElement.closest("section,main")||el.parentElement).getBoundingClientRect().right-left;
-    const mv=ev=>{let w=Math.round((ev.clientX-left)/10)*10;w=Math.max(240,w);el.style.maxWidth=w>=max-10?"none":w+"px";placeRs();place(el,true)};
+    const isSec=el.tagName==="SECTION";
+    const mv=ev=>{let w=Math.round((ev.clientX-left)/10)*10;w=Math.max(240,w);const v=w>=max-10?"none":w+"px";
+      if(isSec)el.style.setProperty("--pw",v);else el.style.maxWidth=v; // 區塊：裡面的段落一起變寬
+      placeRs();place(el,true)};
     const up=()=>{dragging=false;d.removeEventListener("mousemove",mv);d.removeEventListener("mouseup",up)};
     d.addEventListener("mousemove",mv);d.addEventListener("mouseup",up);
   });
-  rs.addEventListener("dblclick",()=>{if(target){target.style.removeProperty("max-width");if(!target.getAttribute("style"))target.removeAttribute("style");placeRs()}});
+  rs.addEventListener("dblclick",()=>{if(target){target.style.removeProperty("max-width");target.style.removeProperty("--pw");if(!target.getAttribute("style"))target.removeAttribute("style");placeRs()}});
   rs.addEventListener("mouseenter",()=>clearTimeout(hide));
   rs.addEventListener("mouseleave",()=>{if(!dragging)hide=setTimeout(()=>place(null),400)});
   const blockOf=el=>{
