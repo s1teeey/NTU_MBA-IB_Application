@@ -456,7 +456,7 @@ const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(
 function rowHTML(r){
   const d=r.d||[];
   return '<tr><td><input class="y" type="number" value="'+esc(r.y)+'"></td>'+
-    '<td class="dd"><label><input type="checkbox" data-d="ba"'+(d.includes("ba")?" checked":"")+'>商研</label><label><input type="checkbox" data-d="ib"'+(d.includes("ib")?" checked":"")+'>國企</label></td>'+
+    '<td class="dpt"><label><input type="checkbox" data-d="ba"'+(d.includes("ba")?" checked":"")+'>商研</label><label><input type="checkbox" data-d="ib"'+(d.includes("ib")?" checked":"")+'>國企</label></td>'+
     '<td><select>'+Object.entries(SITES_OPT).map(([k,v])=>'<option value="'+k+'"'+(r.site===k?" selected":"")+'>'+v+'</option>').join("")+'</select></td>'+
     '<td><input class="t" value="'+esc(r.t)+'" placeholder="標題"></td>'+
     '<td><input class="u" value="'+esc(r.u)+'" placeholder="https://"></td>'+
