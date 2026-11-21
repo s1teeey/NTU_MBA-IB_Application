@@ -460,7 +460,7 @@ function rowHTML(r){
     '<td><select>'+Object.entries(SITES_OPT).map(([k,v])=>'<option value="'+k+'"'+(r.site===k?" selected":"")+'>'+v+'</option>').join("")+'</select></td>'+
     '<td class="pin"><input type="checkbox" class="p" title="預設收藏"'+(r.pin?" checked":"")+'></td>'+
     '<td><input class="t" value="'+esc(r.t)+'" placeholder="原標題"></td>'+
-    '<td><input class="s" value="'+esc(r.s)+'" placeholder="115｜台大商研、台大國企｜推甄分享"></td>'+
+    '<td><input class="s" value="'+esc(r.s)+'" placeholder="115 推甄分享｜台大商研、台大國企"></td>'+
     '<td><input class="u" value="'+esc(r.u)+'" placeholder="https://"></td>'+
     '<td><input class="n" value="'+esc(r.note)+'" placeholder="備註（選填）"></td>'+
     '<td class="ops"><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button><button data-a="del" title="刪除">✕</button></td></tr>';
