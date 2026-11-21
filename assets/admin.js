@@ -301,6 +301,23 @@ function highlight(d,cls){
   });
   sel.removeAllRanges();hist.push();
 }
+/* 小字：選字後按一下包成 <small>；游標在小字裡再按一下就取消 */
+$("#b-small").onclick=()=>{
+  if(!cur)return;const d=idoc(),sel=d.getSelection();if(!sel.rangeCount)return;const r=sel.getRangeAt(0);
+  const elOf=n=>n.nodeType===1?n:n.parentElement;
+  const sm=elOf(r.startContainer).closest("main small");
+  hist.push();
+  if(sm){sm.replaceWith(...sm.childNodes);hist.push();return}
+  if(r.collapsed){
+    // 沒選字：在游標後面插入一段小字
+    const s=d.createElement("small");s.textContent="補充說明";r.insertNode(s);
+    const nr=d.createRange();nr.selectNodeContents(s);sel.removeAllRanges();sel.addRange(nr);hist.push();return;
+  }
+  const s=d.createElement("small");s.appendChild(r.extractContents());
+  s.querySelectorAll("small").forEach(x=>x.replaceWith(...x.childNodes));
+  if(s.querySelector("p,h1,h2,h3,h4,table,ul,ol,div,section")){toast("小字只能用在同一行的文字上");hist.go(-1);return}
+  r.insertNode(s);sel.removeAllRanges();hist.push();
+};
 $("#b-link").onclick=()=>{
   if(!cur)return;const d=idoc();const sel=d.getSelection();
   const a=sel.anchorNode&&(sel.anchorNode.nodeType===1?sel.anchorNode:sel.anchorNode.parentElement).closest("a");
