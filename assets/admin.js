@@ -24,8 +24,9 @@ const b64enc=t=>bytesTo64(new TextEncoder().encode(t));
 async function getFile(path){const r=await gh(path+"?ref=main&t="+Date.now());if(!r.ok)throw new Error("讀取失敗 "+r.status);const j=await r.json();return {text:b64dec(j.content),sha:j.sha}}
 async function putFile(path,b64,msg,sha){
   const r=await gh(path,{method:"PUT",body:JSON.stringify({message:msg,content:b64,branch:"main",...(sha?{sha}:{})})});
-  if(r.status===409||r.status===422){throw new Error("檔案在別處被改過了，請重新整理後再編輯。")}
-  if(!r.ok)throw new Error("發布失敗 "+r.status);
+  if(r.status===409||r.status===422){throw new Error("發布失敗：這頁在別處被改過了。草稿還在，請重新整理後再發布。")}
+  if(r.status===401||r.status===403||r.status===404)throw new Error("發布失敗：這組 token 沒有寫入權限。\n請到 GitHub 把 token 的 Contents 權限改成「Read and write」，並確認有勾這個 repo。\n草稿還在，不會不見。");
+  if(!r.ok)throw new Error("發布失敗（"+r.status+"）。草稿還在，請稍後再試。");
   return (await r.json()).content.sha;
 }
 
@@ -34,9 +35,13 @@ function toast(t,ms=2600){const e=$("#toast");e.textContent=t;e.classList.add("s
 function setState(){
   const d=cur&&cur.dirty;$("#state").textContent=!cur?"":!d?"已發布":cur.previewed?"可發布":"草稿";$("#state").title=!cur?"":!d?"網站上是最新版本":cur.previewed?"已預覽，可以發布":"修改已自動存成草稿，預覽後才能發布";$("#state").classList.toggle("dirty",!!d);
   $("#b-publish").disabled=!(d&&cur.previewed);
+  $("#b-discard").hidden=!d;
+  $("#b-restore").hidden=!!d||!cur||!(trash()[cur.path]||[]).length;
   document.querySelectorAll("#pages a").forEach(a=>{const dot=a.querySelector(".dot");const dr=drafts()[a.dataset.p];if(dr&&!dot)a.insertAdjacentHTML("beforeend",'<span class="dot" title="有草稿"></span>');if(!dr&&dot)dot.remove()});
 }
 const drafts=()=>{try{return JSON.parse(localStorage.getItem("adm-drafts:"+REPO)||"{}")}catch(e){return {}}};
+const trash=()=>{try{return JSON.parse(localStorage.getItem("adm-trash:"+REPO)||"{}")}catch(e){return {}}};
+function toTrash(p,dr){if(!dr)return;const t=trash();t[p]=[dr,...(t[p]||[])].slice(0,10);try{localStorage.setItem("adm-trash:"+REPO,JSON.stringify(t))}catch(e){}}
 function saveDraft(p,html,sha){const d=drafts();if(html===null)delete d[p];else d[p]={html,sha,at:Date.now()};try{localStorage.setItem("adm-drafts:"+REPO,JSON.stringify(d))}catch(e){}}
 
 /* ---------- login ---------- */
@@ -52,7 +57,7 @@ $("#login-form").onsubmit=async e=>{
 $("#logout").onclick=()=>{if(!confirm("登出後要重新貼 token，確定？"))return;try{localStorage.removeItem("adm-token")}catch(e){}location.reload()};
 
 /* ---------- editor ---------- */
-let cur=null; // {path, text, sha, dirty, previewed}
+let quiet=false;let cur=null; // {path, text, sha, dirty, previewed}
 const ifr=$("#ed");
 const idoc=()=>ifr.contentDocument;
 const EDIT_CSS=`
@@ -82,8 +87,9 @@ function editorDoc(text,inner){
   html=html.replace(/<\/head>/i,"<style>"+EDIT_CSS+"</style></head>");
   return html;
 }
+function flushDraft(){try{if(cur&&cur.dirty&&idoc()&&idoc().querySelector("main"))saveDraft(cur.path,serialize(false).inner,cur.sha)}catch(e){}}
 async function openPage(path){
-  if(cur&&cur.dirty&&!confirm("這頁有未發布的修改（已存成草稿）。切換頁面？"))return;
+  flushDraft();
   document.querySelectorAll("#pages a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.p===path));
   $("#state").textContent="載入中…";
   let f;try{f=await getFile(path)}catch(e){toast(e.message);return}
@@ -96,11 +102,9 @@ async function openPage(path){
   let inner=parts.inner;
   const dr=drafts()[path];
   if(dr&&dr.html!==inner){
-    if(confirm("這頁有上次沒發布的草稿（"+new Date(dr.at).toLocaleString()+"）。要接著編輯草稿嗎？\n按「取消」會丟掉草稿。")){
-      inner=dr.html;cur.dirty=true;
-      if(dr.sha!==f.sha)toast("提醒：草稿之後網站上這頁有被改過，發布會蓋掉那些修改。",5000);
-    }else saveDraft(path,null);
-  }
+    inner=dr.html;cur.dirty=true;
+    toast(dr.sha!==f.sha?"已載入草稿。提醒：網站上這頁之後有被改過，發布會蓋掉那些修改。":"已載入未發布的草稿",4000);
+  }else if(dr)saveDraft(path,null);
   try{history.replaceState(null,"","#"+path)}catch(e){}
   ifr.srcdoc=editorDoc(f.text,inner);
   ifr.onload=()=>{setupEditor();setState()};
@@ -113,7 +117,7 @@ function setupEditor(){
   d.execCommand("defaultParagraphSeparator",false,"p");
   main.querySelectorAll("[data-nokey]").forEach(el=>el.contentEditable="false");
   d.addEventListener("click",e=>{const a=e.target.closest("a");if(a)e.preventDefault()});
-  const changed=()=>{if(!cur)return;cur.dirty=true;cur.previewed=false;clearTimeout(changed.t);changed.t=setTimeout(()=>saveDraft(cur.path,serialize(false).inner,cur.sha),400);setState()};
+  const changed=()=>{if(!cur||quiet)return;cur.dirty=true;cur.previewed=false;clearTimeout(changed.t);changed.t=setTimeout(()=>saveDraft(cur.path,serialize(false).inner,cur.sha),400);setState()};
   const real=r=>{
     if(isCtl(r.target))return false;
     if(r.type==="attributes"&&r.attributeName==="style"&&r.target.matches("span.c"))return false;
@@ -293,12 +297,25 @@ $("#b-img").onclick=()=>{
 /* ---------- 預覽、發布 ---------- */
 function doPreview(){
   if(!cur)return;
-  const html=fullHTML(serialize(false).inner).replace(/<head>/i,'<head><base href="'+BASE+'">');
+  const bar='<div style="position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:9999;background:#C8264A;color:#fff;font:700 14px/1 system-ui;padding:10px 16px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.2)">預覽｜尚未發布</div>';
+  const html=fullHTML(serialize(false).inner).replace(/<head>/i,'<head><base href="'+BASE+'"><title>預覽｜尚未發布</title>').replace(/<\/body>/i,bar+"</body>");
   const w=window.open(URL.createObjectURL(new Blob([html],{type:"text/html"})),"adm-preview");
   if(!w){toast("瀏覽器擋住了預覽視窗，請允許彈出視窗。");return}
   cur.previewed=true;setState();
 }
 $("#b-preview").onclick=doPreview;
+$("#b-discard").onclick=()=>{
+  if(!cur||!cur.dirty)return;
+  if(!confirm("放棄這頁的修改，回到網站上的版本？\n（之後可以按「找回」復原）"))return;
+  toTrash(cur.path,drafts()[cur.path]||{html:serialize(false).inner,sha:cur.sha,at:Date.now()});
+  saveDraft(cur.path,null);cur.dirty=false;const p=cur.path;cur=null;openPage(p);
+};
+$("#b-restore").onclick=()=>{
+  if(!cur)return;const list=trash()[cur.path]||[];if(!list.length)return;
+  const dr=list[0];const t=trash();t[cur.path]=list.slice(1);try{localStorage.setItem("adm-trash:"+REPO,JSON.stringify(t))}catch(e){}
+  saveDraft(cur.path,dr.html,dr.sha);const p=cur.path;cur=null;openPage(p);
+  toast("已找回 "+new Date(dr.at).toLocaleString()+" 的草稿");
+};
 $("#b-publish").onclick=async()=>{
   if(!cur||!cur.dirty)return;
   const btn=$("#b-publish");btn.disabled=true;$("#state").textContent="發布中…";
@@ -309,11 +326,12 @@ $("#b-publish").onclick=async()=>{
     cur.sha=await putFile(cur.path,b64enc(text),"Update "+cur.path,cur.sha);
     cur.text=text;cur.dirty=false;cur.previewed=false;saveDraft(cur.path,null);
     // 編輯區的圖片改用正式路徑
-    idoc().querySelectorAll("main img[data-up]").forEach(img=>{img.setAttribute("src",img.dataset.up);img.removeAttribute("data-up")});
+    quiet=true;idoc().querySelectorAll("main img[data-up]").forEach(img=>{img.setAttribute("src",img.dataset.up);img.removeAttribute("data-up")});
+    setTimeout(()=>{quiet=false},100);
     setState();toast("已發布，大約 1 分鐘後網站會更新。",4000);
-  }catch(e){toast(e.message,5000);btn.disabled=false;setState()}
+  }catch(e){btn.disabled=false;setState();alert(e.message)}
 };
-addEventListener("beforeunload",e=>{if(cur&&cur.dirty){e.preventDefault();e.returnValue=""}});
+addEventListener("pagehide",flushDraft);addEventListener("beforeunload",flushDraft);
 
 /* ---------- 分頁位置：側邊／頂部 ---------- */
 const IC_SIDE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>';

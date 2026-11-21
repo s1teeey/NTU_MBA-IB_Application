@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow"/>
 <title>後台</title>
 <link href="assets/site.css?v=20261120225558" rel="stylesheet"/>
-<link href="assets/admin.css?v=20261120230118" rel="stylesheet"/>
+<link href="assets/admin.css?v=20261121094915" rel="stylesheet"/>
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 </head>
 <body class="adm">
@@ -58,7 +58,7 @@
       </div>
       <div class="acts">
         <span id="state" class="adm-state"></span>
-        <button id="b-preview" type="button">預覽</button>
+        <button id="b-restore" type="button" hidden title="找回上次放棄的草稿">找回</button><button id="b-discard" type="button" hidden title="放棄修改，回到網站上的版本">放棄</button><button id="b-preview" type="button">預覽</button>
         <button id="b-publish" type="button" class="pri" disabled title="先按預覽，確認後再發布">發布</button>
       </div>
     </header>
@@ -67,6 +67,6 @@
 </div>
 <input id="file" type="file" accept="image/*" hidden>
 <p id="toast" class="adm-toast" role="status"></p>
-<script src="assets/admin.js?v=20261120230118"></script>
+<script src="assets/admin.js?v=20261121094915"></script>
 </body>
 </html>
