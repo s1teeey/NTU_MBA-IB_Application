@@ -83,7 +83,7 @@ function renderSources(box,opts){
     const a=mk("a","t",uni?short(s):s.t);a.dataset.full=s.t;a.dataset.short=short(s);a.title=s.t;a.href=s.u;
     if(s.site!=="own"){a.target="_blank";a.rel="noopener"}
     const star=mk("button","star",fav.includes(s.u)?"★":"☆");star.type="button";star.dataset.u=s.u;
-    star.setAttribute("aria-label",fav.includes(s.u)?"取消收藏":"收藏");star.setAttribute("aria-pressed",String(fav.includes(s.u)));
+    star.setAttribute("aria-label",fav.includes(s.u)?"移除書籤":"加入書籤");star.setAttribute("aria-pressed",String(fav.includes(s.u)));
     const top=mk("div","ln");top.append(a,star);li.appendChild(top);
     const m=mk("span","meta");m.appendChild(mk("span","site "+(s.site==="own"?"mine":s.site),SITE_NAME[s.site]));
     if(!opts.dept)s.d.forEach(d=>m.appendChild(mk("span","d-"+d,DEPT_NAME[d])));
@@ -99,10 +99,10 @@ function renderSources(box,opts){
     tools.appendChild(sw);box.appendChild(tools);
     // 收藏
     const fb=mk("div","src-year src-fav");
-    const fh=mk("div","yr");fh.innerHTML='收藏<small>'+fav.length+' / '+FAV_MAX+'</small>';fb.appendChild(fh);
+    const fh=mk("div","yr");fh.innerHTML='書籤<small>'+fav.length+' / '+FAV_MAX+'</small>';fb.appendChild(fh);
     const ful=mk("ul","src-items");
     fav.forEach(u=>{const s=SOURCES.find(x=>x.u===u);if(s)ful.appendChild(item(s))});
-    if(!fav.length)ful.appendChild(mk("li","empty","點文章旁的 ☆ 收藏，最多 "+FAV_MAX+" 則。"));
+    if(!fav.length)ful.appendChild(mk("li","empty","點文章旁的 ☆ 加入書籤，最多 "+FAV_MAX+" 則。"));
     fb.appendChild(ful);box.appendChild(fb);
     // 各學年度
     const years=[...new Set(rows.map(s=>s.y))].sort((a,b)=>b-a);
@@ -134,7 +134,7 @@ function renderSources(box,opts){
   box.addEventListener("click",e=>{
     const b=e.target.closest("button.star");if(!b)return;const u=b.dataset.u;
     if(fav.includes(u))fav=fav.filter(x=>x!==u);
-    else{if(fav.length>=FAV_MAX){b.classList.add("full");b.title="收藏最多 "+FAV_MAX+" 則";setTimeout(()=>b.classList.remove("full"),900);return}fav=[...fav,u]}
+    else{if(fav.length>=FAV_MAX){b.classList.add("full");b.title="書籤最多 "+FAV_MAX+" 則";setTimeout(()=>b.classList.remove("full"),900);return}fav=[...fav,u]}
     set("src-fav",fav);draw();
   });
   draw();

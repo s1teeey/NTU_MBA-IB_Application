@@ -172,8 +172,9 @@ section{display:grid;gap:16px}
 .src-items .star:hover{color:#E0A100}
 .src-items .star.full{animation:shake .3s}
 @keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
-.src-fav .yr{font-size:22px}
-.src-fav .yr small{display:block;font-size:12.5px;color:var(--faint);font-weight:700;margin-top:6px}
+.src-fav .yr{font-size:15px;font-weight:400;letter-spacing:0;display:flex;gap:6px;align-items:baseline;white-space:nowrap}
+.src-fav .yr small{font-size:12.5px;color:var(--faint);font-weight:400}
+.src-fav .src-items{gap:8px 40px}
 .src-items .empty{color:var(--faint);font-size:14px}
 .src-year{display:grid;grid-template-columns:84px 1fr;gap:18px;border-top:1px solid var(--line);padding:18px 0;align-content:start}
 .src-year .yr{font-weight:900;font-size:28px;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
@@ -292,7 +293,7 @@ h1 small,h2 small,h3 small,h4 small{font-size:14px;font-weight:600;color:var(--m
 small{color:var(--muted)}
 
 /* 收藏底色、往年收合 */
-.src-fav{background:var(--accent-soft);border-top:0;border-radius:8px;padding:18px 20px;margin-bottom:8px}
+.src-fav{background:var(--accent-soft);border-top:0;border-radius:6px;padding:12px 16px;margin-bottom:6px;align-items:baseline}
 .src-fold{display:block;padding:0}
 .src-fold>summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:14px;padding:18px 0}
 .src-fold>summary::-webkit-details-marker{display:none}
