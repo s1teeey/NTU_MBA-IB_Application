@@ -99,7 +99,7 @@ function renderSources(box,opts){
     tools.appendChild(sw);box.appendChild(tools);
     // 收藏
     const fb=mk("div","src-year src-fav");
-    const fh=mk("div","yr");fh.innerHTML='<mark>書籤</mark><small>'+fav.length+' / '+FAV_MAX+'</small>';fb.appendChild(fh);
+    const fh=mk("div","yr");fh.innerHTML='<svg class="bm" viewBox="0 0 24 24" aria-label="書籤" role="img"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>';fb.appendChild(fh);
     const ful=mk("ul","src-items");
     fav.forEach(u=>{const s=SOURCES.find(x=>x.u===u);if(s){const li=item(s);li.querySelector(".meta").remove();ful.appendChild(li)}});
     if(!fav.length)ful.appendChild(mk("li","empty","點文章旁的 ☆ 加入書籤，最多 "+FAV_MAX+" 則。"));

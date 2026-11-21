@@ -6,28 +6,31 @@
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <title>書審撰寫｜推甄分享｜台大商研、台大國企</title>
 <meta content="Royee Chu" name="author"/>
-<meta content="台大商研所、國企所推甄書審：應繳資料、頁數限制、寫法與參考心得。" name="description"/>
+<meta content="台大商研所、國企所推甄書審：個人資料表、學習計畫書、其他有利審查資料與 Checklist。" name="description"/>
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link href="assets/site.css?v=20261121162353" rel="stylesheet"/>
+<link href="assets/site.css?v=20261121162645" rel="stylesheet"/>
 <style>
-.limits{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));border-top:2px solid var(--rule);border-bottom:1px solid var(--line)}
-.limit{padding:18px 18px 18px 0;display:grid;gap:2px;align-content:start}
-.limit+.limit{padding-left:18px;border-left:1px solid var(--line)}
-.limit .n{font-size:34px;font-weight:900;letter-spacing:-.03em;line-height:1.1}
-.limit .k{font-weight:800}
-.limit .s{color:var(--muted);font-size:13.5px;line-height:1.6}
-@media (max-width:640px){.limit+.limit{border-left:0;padding-left:0;border-top:1px solid var(--line)}}
-
-.tips{list-style:none;margin:0;padding:0;counter-reset:tip}
-.tips li{display:grid;grid-template-columns:52px 1fr;gap:4px 12px;padding:22px 0;border-top:1px solid var(--line)}
-.tips li:last-child{border-bottom:1px solid var(--line)}
-.tips li::before{counter-increment:tip;content:counter(tip,decimal-leading-zero);grid-row:span 3;font-size:26px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
-.tips p{color:var(--muted)}
-.tips .from{font-size:13.5px;font-weight:700}
-
+.cl-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 56px;align-items:start}
+@media (max-width:820px){.cl-grid{grid-template-columns:1fr}}
+.cl-grid h3{font-size:16px;padding-bottom:8px;border-bottom:2px solid var(--rule);margin-bottom:4px}
+/* 預設清單（後台編輯這份）；網站上由程式換成可以勾選的版本 */
 .check{list-style:none;margin:0;padding:0}
 .check li{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
 .check li::before{content:"";width:16px;height:16px;margin-top:6px;border:2px solid var(--ink);border-radius:3px}
+.check-app:not(:empty)~.check{display:none}
+.ck{list-style:none;margin:0;padding:0}
+.ck li{display:grid;grid-template-columns:26px 1fr 24px;gap:10px;align-items:start;padding:10px 0;border-bottom:1px dashed var(--line);cursor:pointer}
+.ck .box{width:16px;height:16px;margin-top:6px;border:2px solid var(--ink);border-radius:3px;display:grid;place-items:center;font-size:12px;line-height:1;color:var(--bg)}
+.ck li.done .box{background:var(--accent);border-color:var(--accent)}
+.ck li.done .tx{text-decoration:line-through;color:var(--faint)}
+.ck .rm{border:0;background:none;color:var(--faint);cursor:pointer;font-size:14px;opacity:0;padding:4px}
+.ck li:hover .rm{opacity:1}
+.ck .rm:hover{color:var(--ink)}
+.ck-add{display:flex;gap:8px;margin-top:12px}
+.ck-add input{flex:1;min-width:0;font:inherit;font-size:14.5px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.ck-add button,.ck-reset{font:inherit;font-size:13.5px;font-weight:700;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);cursor:pointer;white-space:nowrap}
+.ck-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px;color:var(--faint)}
+.ck-reset{padding:4px 10px;font-size:12.5px}
 </style>
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -41,46 +44,65 @@
 </header>
 <div class="stack">
 <section>
-<div class="sec-head"><h2><span class="no">01</span><span data-k="docs.005">頁數與期限</span></h2><p class="muted"><span data-k="docs.006">參考自 114–116 學年度簡章，完整應繳資料可至</span><a data-k="docs.007" href="sharing.html">簡章細則</a>查看<span data-k="docs.008">。</span></p></div>
-<div class="limits">
-<div class="limit"><h4><span class="n" data-k="docs.009">≤2 頁</span></h4><span class="k" data-k="docs.010">商研個人資料表</span><span class="s" data-k="docs.011">A4，用當年系網格式</span></div>
-<div class="limit"><span class="n" data-k="docs.012">1 頁</span><span class="k" data-k="docs.013">國企個人資料表</span><span class="s" data-k="docs.014">A4 單面</span></div>
-<div class="limit"><span class="n" data-k="docs.015">15 頁</span><span class="k" data-k="docs.016">商研學習計畫書</span><span class="s" data-k="docs.017">國企沒有寫頁數</span></div>
-<div class="limit"><span class="n" data-k="docs.018">10 月上旬</span><span class="k" data-k="docs.019">上傳截止</span><span class="s" data-k="docs.020">116：10/8｜115：10/9｜114：10/11，17:00，確認後不能改</span></div>
-</div>
+<div class="sec-head"><h2><span class="no">01</span>個人資料表</h2></div>
+<div class="prose"><p class="note">整理中。</p></div>
 </section>
 <section>
-<div class="sec-head"><h2><span class="no">02</span><span data-k="docs.021">心得裡常見的書審寫法</span></h2></div>
-<ol class="tips">
-<li><h3 data-k="docs.022">個人資料表</h3><p data-k="docs.023">心得提到面試教授可能只看過這張表就開始提問。116 年國企個人關，教授也是一邊翻成績單和個人資料表一邊問。</p><a class="from" data-k="docs.024" href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" rel="noopener" target="_blank">PTT・109 學年度心得</a></li>
-<li><h3 data-k="docs.025">貫穿全篇的故事線</h3><p><span data-k="docs.026">作者先整理申請動機、職涯目標和商研能提供的資源，再把系所</span><a data-k="docs.027" href="https://management.ntu.edu.tw/BA/introduction/coreability" rel="noopener" target="_blank">核心能力</a><span data-k="docs.028">和自己的經驗列成兩欄對照，決定要放哪些經歷。</span></p><a class="from" data-k="docs.029" href="https://www.dcard.tw/f/graduate_school/p/241103555" rel="noopener" target="_blank">Dcard・112 學年度商研心得</a></li>
-<li><h3 data-k="docs.030">以事件為單位的 STAR 寫法</h3><p data-k="docs.031">每段經歷依情境、任務、行動、結果撰寫，段落短，亮點在前。</p><a class="from" data-k="docs.032" href="https://www.dcard.tw/f/graduate_school/p/241103555" rel="noopener" target="_blank">Dcard・112 學年度商研心得</a></li>
-<li><h3 data-k="docs.033">經歷圖表化、數字化</h3><p data-k="docs.034">學長姐的建議：長文重點放最前面，經歷用圖表和數字呈現，粗體與底線適量。</p><a class="from" data-k="docs.035" href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" rel="noopener" target="_blank">PTT・109 學年度心得</a></li>
-<li><h3 data-k="docs.036">說明會後請學長姐看初稿</h3><p data-k="docs.037">作者在說明會前擬好初版，會後直接請學長姐給意見。</p><a class="from" data-k="docs.038" href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" rel="noopener" target="_blank">PTT・109 學年度心得</a></li>
-</ol>
+<div class="sec-head"><h2><span class="no">02</span>學習計畫書</h2></div>
+<div class="prose"><p class="note">整理中。</p></div>
 </section>
 <section>
-<div class="sec-head"><h2><span class="no">03</span><span data-k="docs.039">書審 Checklist</span></h2></div>
+<div class="sec-head"><h2><span class="no">03</span>其他有利審查資料</h2></div>
+<div class="prose"><p class="note">整理中。</p></div>
+</section>
+<section>
+<div class="sec-head"><h2><span class="no">04</span>Checklist 與參考資料</h2></div>
+<div class="cl-grid">
+<div>
+<h3>書審 Checklist</h3>
+<div class="check-app" data-nokey=""></div>
 <ul class="check">
-<li data-k="docs.040">個人資料表｜確認為當年系網格式、未超過限制頁數</li>
-<li data-k="docs.041">成績單、名次證明｜正本掃描後上傳（申請需幾個工作天）</li>
-<li data-k="docs.042">學習計畫書｜包括自傳、就讀動機及計畫、自我能力評估、未來規劃等</li>
-<li data-k="docs.043">其他有利審查資料｜個人資料表經歷的相關證明</li>
-<li data-k="docs.044">再次確認資料是最新版、沒有錯字、系所名正確</li>
-<li data-k="docs.045">確認提交｜提交後不可修改</li>
+<li>個人資料表｜確認為當年系網格式、未超過限制頁數</li>
+<li>成績單、名次證明｜正本掃描後上傳（申請需幾個工作天）</li>
+<li>學習計畫書｜包括自傳、就讀動機及計畫、自我能力評估、未來規劃等</li>
+<li>其他有利審查資料｜個人資料表經歷的相關證明</li>
+<li>再次確認資料是最新版、沒有錯字、系所名正確</li>
+<li>確認提交｜提交後不可修改</li>
 </ul>
-</section>
-<section>
-<div class="sec-head"><h2><span class="no">04</span><span data-k="docs.046">書審相關心得</span></h2></div>
-<ul class="src-items">
-<li><a data-k="docs.047" href="https://www.dcard.tw/f/graduate_school/p/241103555" rel="noopener" target="_blank">〚理工轉商管〛台大商研推甄經驗分享</a><span class="meta"><span class="site dcard" data-k="docs.048">Dcard</span><span data-k="docs.049"> · 112 · 商研 · 書審步驟很完整</span></span></li>
-<li><a data-k="docs.050" href="https://medium.com/@huang2321/2022%E6%8E%A8%E7%94%84%E5%BF%83%E5%BE%97-%E5%8F%B0%E5%A4%A7%E5%95%86%E7%A0%94-%E5%8F%B0%E5%A4%A7%E5%9C%8B%E4%BC%81-%E6%94%BF%E5%A4%A7%E4%BC%81%E7%A0%94-%E6%94%BF%E5%A4%A7%E7%A7%91%E7%AE%A1-%E6%9B%B8%E5%AF%A9-%E9%9D%A2%E8%A9%A6-978d8a2c38e3" rel="noopener" target="_blank">【2022 推甄心得】台大商研．台大國企．政大企研．政大科管 書審＆面試</a><span class="meta"><span class="site medium" data-k="docs.051">Medium</span><span data-k="docs.052"> · 112 · 商研、國企</span></span></li>
-<li><a data-k="docs.053" href="https://www.pttweb.cc/bbs/graduate/M.1574230048.A.082" rel="noopener" target="_blank">台大商研／台大國企 推甄正取心得</a><span class="meta"><span class="site ptt" data-k="docs.054">PTT</span><span data-k="docs.055"> · 109 · 商研、國企</span></span></li>
-<li><a data-k="docs.056" href="https://www.dcard.tw/f/graduate_school/p/257352226" rel="noopener" target="_blank">114 推甄心得：28% 跨領域非應屆</a><span class="meta"><span class="site dcard" data-k="docs.057">Dcard</span><span data-k="docs.058"> · 114 · 商研、國企</span></span></li>
-</ul>
+</div>
+<div>
+<h3>推薦參考資料</h3>
+<div class="prose"><p class="note">整理中。</p></div>
+</div>
+</div>
 </section>
 </div>
 </main>
-<script src="assets/site.js?v=20261121162353"></script>
+<script>
+/* 書審 Checklist：預設項目＝上面 .check 清單（後台可改）；訪客的勾選、增刪只存在自己的瀏覽器 */
+(function(){
+  const src=document.querySelector("ul.check"),app=document.querySelector(".check-app");if(!src||!app)return;
+  const defs=[...src.querySelectorAll("li")].map(li=>li.textContent.trim()).filter(Boolean);
+  const KEY="checklist:docs",sig=defs.join("\n");
+  let st=null;try{st=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}
+  if(!st||st.sig!==sig&&!st.custom)st={sig,custom:false,items:defs.map(t=>({t,done:false}))};
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+  const esc=t=>t.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+  const draw=()=>{
+    const n=st.items.filter(x=>x.done).length;
+    app.innerHTML='<ul class="ck">'+st.items.map((x,i)=>'<li data-i="'+i+'" class="'+(x.done?"done":"")+'"><span class="box">'+(x.done?"✓":"")+'</span><span class="tx">'+esc(x.t)+'</span><button class="rm" type="button" title="刪除" data-rm="'+i+'">✕</button></li>').join("")+'</ul>'+
+      '<form class="ck-add"><input placeholder="新增項目" aria-label="新增項目"><button type="submit">新增</button></form>'+
+      '<div class="ck-foot"><span>完成 '+n+' / '+st.items.length+'</span><button class="ck-reset" type="button">回到預設</button></div>';
+  };
+  app.addEventListener("click",e=>{
+    const rm=e.target.closest("[data-rm]");if(rm){st.items.splice(+rm.dataset.rm,1);st.custom=true;save();draw();return}
+    if(e.target.closest(".ck-reset")){if(!confirm("清除勾選和自己加的項目，回到預設清單？"))return;st={sig,custom:false,items:defs.map(t=>({t,done:false}))};save();draw();return}
+    const li=e.target.closest("li[data-i]");if(li){const x=st.items[+li.dataset.i];x.done=!x.done;save();draw()}
+  });
+  app.addEventListener("submit",e=>{e.preventDefault();const inp=app.querySelector(".ck-add input");const t=inp.value.trim();if(!t)return;st.items.push({t,done:false});st.custom=true;save();draw();app.querySelector(".ck-add input").focus()});
+  draw();
+})();
+</script>
+<script src="assets/site.js?v=20261121162645"></script>
 </body>
 </html>

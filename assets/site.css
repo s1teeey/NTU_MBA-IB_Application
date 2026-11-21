@@ -306,3 +306,5 @@ small{color:var(--muted)}
 .src-past.src-fold>summary .yr{font-weight:900;font-size:28px;line-height:1;letter-spacing:-.02em}
 .src-past.src-fold>table{margin-bottom:20px}
 @media (max-width:560px){.src-fold>.src-items{padding-left:0}}
+
+.src-year.src-fav .yr .bm{width:22px;height:22px;fill:var(--accent);display:block;margin-top:2px}

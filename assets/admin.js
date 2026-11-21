@@ -73,6 +73,8 @@ const EDIT_CSS=`
 html{scroll-padding-top:40px}
 main{outline:none;padding-top:8px}
 main [data-nokey]{opacity:.55}
+.check-app{display:none!important}
+ul.check{display:block!important}
 #src{cursor:pointer;position:relative;outline:1px dashed transparent;outline-offset:6px}
 #src:hover{outline-color:#8F5CF0}
 #src:hover::before{content:"點一下編輯心得文清單";position:absolute;right:0;top:-30px;background:#8F5CF0;color:#fff;font:600 12px/1 system-ui;padding:6px 10px;border-radius:5px;z-index:5}
