@@ -5,7 +5,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   const here=(location.pathname.split("/").pop()||"index.html");
   const root=document.documentElement;
   try{const t=localStorage.getItem("theme");if(t==="light"||t==="dark")root.dataset.theme=t}catch(e){}
-  // 師資陣容：商研、國企同一個選單項目，連到上次看的那一所
+  // 師資名冊：商研、國企同一個選單項目，連到上次看的那一所
   const PROF=["ba.html","ib.html"];
   let only="";try{only=localStorage.getItem("only")||""}catch(e){}
   if(only)root.dataset.only=only;
@@ -14,7 +14,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   if(only)lastDept=only+".html";
   const PAGES=[
     ["sharing.html","簡章細則"],
-    ["師資陣容",[["ba.html","台大商研"],["ib.html","台大國企"]]],
+    ["師資名冊",[["ba.html","台大商研"],["ib.html","台大國企"]]],
     ["推甄準備",[["docs.html","書審撰寫"],["interview.html","面試準備"]]],
     ["個人心得",[["my-docs.html","書審"],["my-interview.html","面試"]]],
     ["faq.html","FAQ"],
@@ -97,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=20261121110125";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261121110335";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
