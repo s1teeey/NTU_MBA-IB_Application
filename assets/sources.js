@@ -110,14 +110,18 @@ function renderSources(box,opts){
     fb.appendChild(ful);box.appendChild(fb);
     // 各學年度
     const years=[...new Set(rows.map(s=>s.y))].sort((a,b)=>b-a);
+    const OPEN_FROM=Math.max(...years); // 最新一年展開，其餘收合
     years.filter(y=>y>=110).forEach(y=>{
-      const g=mk("div","src-year");g.appendChild(mk("div","yr",String(y)));
-      const ul=mk("ul","src-items");rows.filter(s=>s.y===y).forEach(s=>ul.appendChild(item(s)));
-      g.appendChild(ul);box.appendChild(g);
+      const list=rows.filter(s=>s.y===y);
+      const ul=mk("ul","src-items");list.forEach(s=>ul.appendChild(item(s)));
+      if(y>=OPEN_FROM){const g=mk("div","src-year");g.appendChild(mk("div","yr",String(y)));g.appendChild(ul);box.appendChild(g);return}
+      const g=mk("details","src-year src-fold");const sm=mk("summary");
+      sm.appendChild(mk("span","yr",String(y)));sm.appendChild(mk("span","cnt",list.length+" 篇"));
+      g.appendChild(sm);g.appendChild(ul);box.appendChild(g);
     });
     const old=years.filter(y=>y<110);
     if(old.length){
-      const wrap=mk("div","src-past");wrap.appendChild(mk("h3",null,"109 學年度以前"));
+      const wrap=mk("details","src-past src-fold");const ps=mk("summary");ps.appendChild(mk("span","yr","109 以前"));ps.appendChild(mk("span","cnt",rows.filter(s=>s.y<110).length+" 篇"));wrap.appendChild(ps);
       const tbl=mk("table");const hr=tbl.createTHead().insertRow();
       ["學年度"].concat(opts.dept?[]:["所"]).concat(["心得文","平台"]).forEach(h=>{const th=mk("th",null,h);th.scope="col";hr.appendChild(th)});
       const tb=tbl.createTBody();
