@@ -152,7 +152,7 @@ function setupBlocks(d,main){
   const ctl=d.createElement("div");ctl.className="adm-ctl";ctl.contentEditable="false";ctl.hidden=true;d.body.appendChild(ctl);
   const rs=d.createElement("div");rs.className="adm-rs";rs.contentEditable="false";rs.hidden=true;rs.title="拖曳調整寬度｜雙擊恢復預設";d.body.appendChild(rs);
   let target=null,hide=0,dragging=false;
-  const placeRs=()=>{if(!target){rs.hidden=true;return}const r=target.getBoundingClientRect(),w=d.defaultView;rs.hidden=false;rs.style.top=(r.top+w.scrollY)+"px";rs.style.height=r.height+"px";rs.style.left=(r.right+w.scrollX+4)+"px"};
+  const placeRs=()=>{if(!target){rs.hidden=true;return}const r=target.getBoundingClientRect(),w=d.defaultView;rs.hidden=false;rs.style.top=(r.top+w.scrollY)+"px";rs.style.height=r.height+"px";rs.style.left=(r.right+w.scrollX-5)+"px"};
   rs.addEventListener("mousedown",e=>{
     if(!target)return;e.preventDefault();dragging=true;clearTimeout(hide);const el=target,left=el.getBoundingClientRect().left;
     const max=(el.parentElement.closest("section,main")||el.parentElement).getBoundingClientRect().right-left;
@@ -189,7 +189,12 @@ function setupBlocks(d,main){
   main.addEventListener("mouseover",e=>{
     clearTimeout(hide);
     const sec=e.target.closest("section");const b=blockOf(e.target);
-    const pick=(e.altKey&&sec)?sec:(b&&b.matches(".sec-head")?sec:b);
+    let pick=(e.altKey&&sec)?sec:(b&&b.matches(".sec-head")?sec:b);
+    // 滑鼠還在目前框框附近（例如移向把手、工具）時，不換成外層的區塊
+    if(target&&pick&&pick!==target&&pick.contains(target)){
+      const r=target.getBoundingClientRect(),m=18;
+      if(e.clientX>=r.left-m&&e.clientX<=r.right+m&&e.clientY>=r.top-36&&e.clientY<=r.bottom+m)pick=target;
+    }
     if(pick&&pick!==target)place(pick);
   });
   main.addEventListener("mouseleave",()=>{if(!dragging)hide=setTimeout(()=>place(null),400)});
