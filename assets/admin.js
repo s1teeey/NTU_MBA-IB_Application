@@ -73,7 +73,9 @@ const EDIT_CSS=`
 html{scroll-padding-top:40px}
 main{outline:none;padding-top:8px}
 main [data-nokey]{opacity:.55}
-#src:empty::before{content:"（這一區由程式產生，在後台不能編輯）";color:#9496A3;font-size:14px}
+#src{cursor:pointer;position:relative;outline:1px dashed transparent;outline-offset:6px}
+#src:hover{outline-color:#8F5CF0}
+#src:hover::before{content:"點一下編輯心得文清單";position:absolute;right:0;top:-30px;background:#8F5CF0;color:#fff;font:600 12px/1 system-ui;padding:6px 10px;border-radius:5px;z-index:5}
 .adm-hover{outline:1px dashed #8F5CF0;outline-offset:4px}
 .adm-ctl{position:absolute;z-index:99;display:flex;gap:2px;background:#fff;border:1px solid #E6E5EB;border-radius:6px;padding:2px;font:600 12px/1 system-ui;box-shadow:0 4px 14px rgba(18,19,34,.08)}
 .adm-ctl button{border:0;background:none;padding:5px 7px;border-radius:4px;cursor:pointer;color:#121322;font:inherit}
@@ -154,6 +156,7 @@ function setupEditor(){
     if((e.metaKey||e.ctrlKey)&&e.key==="y"){e.preventDefault();hist.go(1)}
   });
   // 圖片預留位置：點一下換成圖片
+  main.addEventListener("click",e=>{if(e.target.closest("#src")&&(SITE.lists||[]).length){e.preventDefault();openPage(SITE.lists[0][0]);return}});
   main.addEventListener("click",e=>{const ph=e.target.closest("figure.shot .ph");if(ph){pickImage(img=>{ph.replaceWith(img)})}});
   setupBlocks(d,main);
 }
