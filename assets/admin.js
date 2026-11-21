@@ -80,6 +80,12 @@ main [data-nokey]{opacity:.55}
 .adm-ctl .lbl{padding:5px 6px;color:#9496A3}
 .adm-rs{position:absolute;z-index:98;width:8px;cursor:ew-resize;border-radius:4px;background:repeating-linear-gradient(#8F5CF0 0 2px,transparent 2px 5px);opacity:.35}
 .adm-rs:hover{opacity:1}
+.adm-link{position:absolute;z-index:100;display:flex;gap:4px;align-items:center;background:#fff;border:1px solid #E6E5EB;border-radius:8px;padding:6px;box-shadow:0 6px 20px rgba(18,19,34,.12);font:600 13px/1 system-ui}
+.adm-link[hidden]{display:none}
+.adm-link input{width:300px;font:13px system-ui;padding:6px 8px;border:1px solid #E6E5EB;border-radius:5px;color:#121322;background:#fff;outline:none}
+.adm-link input:focus{border-color:#8F5CF0}
+.adm-link button{border:0;background:none;padding:6px 8px;border-radius:5px;cursor:pointer;color:#121322;font:inherit;white-space:nowrap}
+.adm-link button:hover{background:#F1ECFD}
 figure.shot .ph{cursor:pointer}
 figure.shot .ph:hover{border-color:#8F5CF0;color:#8F5CF0}
 `;
@@ -125,7 +131,10 @@ function setupEditor(){
   d.execCommand("styleWithCSS",false,false);
   d.execCommand("defaultParagraphSeparator",false,"p");
   main.querySelectorAll("[data-nokey]").forEach(el=>el.contentEditable="false");
-  d.addEventListener("click",e=>{const a=e.target.closest("a");if(a)e.preventDefault()});
+  d.addEventListener("click",e=>{
+    const a=e.target.closest("a");if(!a)return;e.preventDefault();
+    if(main.contains(a)&&!a.closest("[data-nokey]"))linkPop(a);
+  });
   hist.reset(main);
   const changed=()=>{if(!cur||quiet)return;clearTimeout(changed.h);changed.h=setTimeout(()=>hist.push(),350);cur.dirty=true;cur.previewed=false;clearTimeout(changed.t);changed.t=setTimeout(()=>saveDraft(cur.path,serialize(false).inner,cur.sha),400);setState()};
   const real=r=>{
@@ -145,7 +154,7 @@ function setupEditor(){
   main.addEventListener("click",e=>{const ph=e.target.closest("figure.shot .ph");if(ph){pickImage(img=>{ph.replaceWith(img)})}});
   setupBlocks(d,main);
 }
-const isCtl=n=>!!(n&&(n.nodeType===1?n:n.parentElement)?.closest?.(".adm-ctl,.adm-rs"));
+const isCtl=n=>!!(n&&(n.nodeType===1?n:n.parentElement)?.closest?.(".adm-ctl,.adm-rs,.adm-link"));
 
 /* 區塊工具：滑過段落或區塊時顯示 ↑ ↓ ✕ */
 function setupBlocks(d,main){
@@ -224,7 +233,7 @@ function renumber(main){
 /* 序列化：清掉編輯用的東西 */
 function serialize(forPublish){
   const main=idoc().querySelector("main").cloneNode(true);
-  main.querySelectorAll(".adm-ctl,.adm-rs,.only-note").forEach(n=>n.remove());
+  main.querySelectorAll(".adm-ctl,.adm-rs,.adm-link,.only-note").forEach(n=>n.remove());
   // 還原網站程式在正文裡做的事：表格對齊包裝、今天日期、程式產生的清單
   main.querySelectorAll("td > span.c, th > span.c").forEach(w=>{const c=w.parentElement;if(w.dataset.k)c.dataset.k=w.dataset.k;w.replaceWith(...w.childNodes)});
   main.querySelectorAll("[data-nokey]").forEach((n,i)=>{if(cur.nokey&&i<cur.nokey.length)n.innerHTML=cur.nokey[i]});
@@ -318,17 +327,39 @@ $("#b-small").onclick=()=>{
   if(s.querySelector("p,h1,h2,h3,h4,table,ul,ol,div,section")){toast("小字只能用在同一行的文字上");hist.go(-1);return}
   r.insertNode(s);sel.removeAllRanges();hist.push();
 };
+/* 連結小框：點連結＝修改／移除；選字後按「連結」＝新增 */
+function linkPop(a){
+  const d=idoc();let pop=d.querySelector(".adm-link");
+  if(!pop){pop=d.createElement("div");pop.className="adm-link";pop.contentEditable="false";
+    pop.innerHTML='<input type="url" placeholder="https://"><button data-a="ok">套用</button><button data-a="open">開啟</button><button data-a="rm">移除</button>';
+    d.body.appendChild(pop);
+    pop.addEventListener("mousedown",e=>{if(e.target.tagName!=="INPUT")e.preventDefault()});
+  }
+  const inp=pop.querySelector("input");inp.value=a.getAttribute("href")||"";
+  const r=a.getBoundingClientRect(),w=d.defaultView;
+  pop.style.top=(r.bottom+w.scrollY+6)+"px";pop.style.left=Math.max(8,r.left+w.scrollX)+"px";pop.hidden=false;
+  const close=()=>{pop.hidden=true;d.removeEventListener("mousedown",outside,true);if(a.isConnected&&!a.getAttribute("href"))a.replaceWith(...a.childNodes)};
+  const outside=e=>{if(!pop.contains(e.target))close()};
+  setTimeout(()=>d.addEventListener("mousedown",outside,true),0);
+  const apply=()=>{const v=inp.value.trim();hist.push();
+    if(!v){a.replaceWith(...a.childNodes)}else{a.setAttribute("href",v);if(/^https?:/.test(v)&&!v.startsWith(BASE)){a.target="_blank";a.rel="noopener"}else{a.removeAttribute("target");a.removeAttribute("rel")}}
+    hist.push();close()};
+  pop.onclick=e=>{const k=e.target.dataset.a;if(!k)return;
+    if(k==="ok")apply();
+    if(k==="rm"){hist.push();a.replaceWith(...a.childNodes);hist.push();close()}
+    if(k==="open"&&inp.value.trim())window.open(new URL(inp.value.trim(),BASE).href,"_blank");};
+  inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();apply()}if(e.key==="Escape")close()};
+  setTimeout(()=>{inp.focus();inp.select()},0);
+}
 $("#b-link").onclick=()=>{
-  if(!cur)return;const d=idoc();const sel=d.getSelection();
-  const a=sel.anchorNode&&(sel.anchorNode.nodeType===1?sel.anchorNode:sel.anchorNode.parentElement).closest("a");
-  const url=prompt(a?"修改連結（留空＝移除連結）":"連結網址",a?a.getAttribute("href"):"https://");
-  if(url===null)return;
-  if(a&&!url.trim()){a.replaceWith(...a.childNodes);return}
-  if(a){a.setAttribute("href",url.trim());return}
+  if(!cur)return;const d=idoc(),sel=d.getSelection();if(!sel.rangeCount)return;
+  const n=sel.anchorNode,el=n&&(n.nodeType===1?n:n.parentElement);
+  const a=el&&el.closest("main a");if(a){linkPop(a);return}
   if(sel.isCollapsed){toast("先選取要加連結的文字");return}
-  d.execCommand("createLink",false,url.trim());
-  d.querySelectorAll('main a[href="'+CSS.escape(url.trim())+'"]').forEach(x=>{if(/^https?:/.test(url)){x.target="_blank";x.rel="noopener"}});
+  hist.push();d.execCommand("createLink",false,"#adm-new");
+  const na=d.querySelector('main a[href="#adm-new"]');if(na){na.setAttribute("href","");linkPop(na)}
 };
+
 $("#b-sec").onclick=()=>{
   if(!cur)return;const d=idoc(),main=d.querySelector("main");
   const sel=d.getSelection();let at=sel.anchorNode&&(sel.anchorNode.nodeType===1?sel.anchorNode:sel.anchorNode.parentElement).closest("main section");
