@@ -99,9 +99,9 @@ function renderSources(box,opts){
     tools.appendChild(sw);box.appendChild(tools);
     // 收藏
     const fb=mk("div","src-year src-fav");
-    const fh=mk("div","yr");fh.innerHTML='書籤<small>'+fav.length+' / '+FAV_MAX+'</small>';fb.appendChild(fh);
+    const fh=mk("div","yr");fh.innerHTML='<mark>書籤</mark><small>'+fav.length+' / '+FAV_MAX+'</small>';fb.appendChild(fh);
     const ful=mk("ul","src-items");
-    fav.forEach(u=>{const s=SOURCES.find(x=>x.u===u);if(s)ful.appendChild(item(s))});
+    fav.forEach(u=>{const s=SOURCES.find(x=>x.u===u);if(s){const li=item(s);li.querySelector(".meta").remove();ful.appendChild(li)}});
     if(!fav.length)ful.appendChild(mk("li","empty","點文章旁的 ☆ 加入書籤，最多 "+FAV_MAX+" 則。"));
     fb.appendChild(ful);box.appendChild(fb);
     // 各學年度
