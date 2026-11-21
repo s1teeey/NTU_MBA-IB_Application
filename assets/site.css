@@ -172,8 +172,8 @@ section{display:grid;gap:16px}
 .src-items .star:hover{color:#E0A100}
 .src-items .star.full{animation:shake .3s}
 @keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
-.src-fav .yr{font-size:16px;font-weight:400;letter-spacing:0;display:flex;gap:6px;align-items:baseline;white-space:nowrap}
-.src-fav .yr small{font-size:12.5px;color:var(--faint);font-weight:400}
+.src-year.src-fav .yr{font-size:16px;font-weight:400;letter-spacing:0;display:flex;gap:6px;align-items:baseline;white-space:nowrap}
+.src-year.src-fav .yr small{font-size:12.5px;color:var(--faint);font-weight:400}
 .src-fav .src-items{gap:8px 40px}
 .src-items .empty{color:var(--faint);font-size:14px}
 .src-year{display:grid;grid-template-columns:84px 1fr;gap:18px;border-top:1px solid var(--line);padding:18px 0;align-content:start}
