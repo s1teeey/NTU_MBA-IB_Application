@@ -5,7 +5,8 @@ const OWNER="s1teeey";
 const SITES={
   "NTU_MBA-IB_Application":{name:"推甄分享｜台大商研、台大國企",pages:[
     ["index.html","首頁"],["sharing.html","簡章細則"],["docs.html","書審撰寫"],["interview.html","面試準備"],
-    ["my-docs.html","個人心得｜書審"],["my-interview.html","個人心得｜面試"],["faq.html","FAQ"]]},
+    ["my-docs.html","個人心得｜書審"],["my-interview.html","個人心得｜面試"],["faq.html","FAQ"]],
+    lists:[["assets/sources.js","心得文清單"]]},
   "NTHU_Transfer":{name:"寒轉分享｜清大經濟",pages:[
     ["index.html","首頁"],["sharing.html","簡章細則"],["story.html","上榜心得"],["resources.html","軍火庫"]]},
 };
@@ -33,8 +34,8 @@ async function putFile(path,b64,msg,sha){
 /* ---------- UI helpers ---------- */
 function toast(t,ms=2600){const e=$("#toast");e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),ms)}
 function setState(){
-  const d=cur&&cur.dirty;$("#state").textContent=!cur?"":!d?"已發布":cur.previewed?"可發布":"草稿";$("#state").title=!cur?"":!d?"網站上是最新版本":cur.previewed?"已預覽，可以發布":"修改已自動存成草稿，預覽後才能發布";$("#state").classList.toggle("dirty",!!d);
-  $("#b-publish").disabled=!(d&&cur.previewed);
+  const d=cur&&cur.dirty;$("#state").textContent=!cur?"":!d?"已發布":"草稿";$("#state").title=!cur?"":!d?"網站上是最新版本":"修改已自動存成草稿";$("#state").classList.toggle("dirty",!!d);
+  $("#b-publish").disabled=!d;$("#b-preview").hidden=!!(cur&&cur.kind==="list");
   $("#b-discard").hidden=!d;
   $("#b-restore").hidden=!!d||!cur||!(trash()[cur.path]||[]).length;
   document.querySelectorAll("#pages a").forEach(a=>{const dot=a.querySelector(".dot");const dr=drafts()[a.dataset.p];if(dr&&!dot)a.insertAdjacentHTML("beforeend",'<span class="dot" title="有草稿"></span>');if(!dr&&dot)dot.remove()});
@@ -101,9 +102,11 @@ function editorDoc(text,inner){
   html=html.replace(/<\/head>/i,"<style>"+EDIT_CSS+"</style></head>");
   return html;
 }
-function flushDraft(){try{if(cur&&cur.dirty&&idoc()&&idoc().querySelector("main"))saveDraft(cur.path,serialize(false).inner,cur.sha)}catch(e){}}
+function flushDraft(){try{if(cur&&cur.kind==="list"){if(cur.dirty)saveDraft(cur.path,JSON.stringify(readRows()),cur.sha);return}if(cur&&cur.dirty&&idoc()&&idoc().querySelector("main"))saveDraft(cur.path,serialize(false).inner,cur.sha)}catch(e){}}
 async function openPage(path){
   flushDraft();
+  if((SITE.lists||[]).some(([p])=>p===path))return openList(path);
+  document.querySelector(".adm-main").classList.remove("list-mode");
   document.querySelectorAll("#pages a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.p===path));
   $("#state").textContent="載入中…";
   let f;try{f=await getFile(path)}catch(e){toast(e.message);return}
@@ -420,6 +423,8 @@ $("#b-restore").onclick=()=>{
 };
 $("#b-publish").onclick=async()=>{
   if(!cur||!cur.dirty)return;
+  if(!confirm("確定要發布「"+($("#pages a[aria-current]")?.textContent||cur.path)+"」？"))return;
+  if(cur.kind==="list")return publishList();
   const btn=$("#b-publish");btn.disabled=true;$("#state").textContent="發布中…";
   try{
     const {inner,uploads}=serialize(true);
@@ -434,6 +439,70 @@ $("#b-publish").onclick=async()=>{
   }catch(e){btn.disabled=false;setState();alert(e.message)}
 };
 addEventListener("pagehide",flushDraft);addEventListener("beforeunload",flushDraft);
+
+/* ---------- 心得文清單（assets/sources.js 的 SOURCES） ---------- */
+const SITES_OPT={dcard:"Dcard",ptt:"PTT",medium:"Medium",notion:"Notion",own:"本站"};
+let DCV="";
+function parseList(text){
+  const a=text.indexOf("const SOURCES=[");const b=text.indexOf("\n];",a);
+  if(a<0||b<0)throw new Error("清單格式讀不到");
+  const m=text.match(/const DC="([^"]*)"/);DCV=m?m[1]:"";
+  return {rows:new Function("DC","return ["+text.slice(a+15,b)+"]")(DCV),a,b};
+}
+const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+function rowHTML(r){
+  const d=r.d||[];
+  return '<tr><td><input class="y" type="number" value="'+esc(r.y)+'"></td>'+
+    '<td class="dd"><label><input type="checkbox" data-d="ba"'+(d.includes("ba")?" checked":"")+'>商研</label><label><input type="checkbox" data-d="ib"'+(d.includes("ib")?" checked":"")+'>國企</label></td>'+
+    '<td><select>'+Object.entries(SITES_OPT).map(([k,v])=>'<option value="'+k+'"'+(r.site===k?" selected":"")+'>'+v+'</option>').join("")+'</select></td>'+
+    '<td><input class="t" value="'+esc(r.t)+'" placeholder="標題"></td>'+
+    '<td><input class="u" value="'+esc(r.u)+'" placeholder="https://"></td>'+
+    '<td><input class="n" value="'+esc(r.note)+'" placeholder="備註（選填）"></td>'+
+    '<td class="ops"><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button><button data-a="del" title="刪除">✕</button></td></tr>';
+}
+function readRows(){
+  return [...document.querySelectorAll("#lst tbody tr")].map(tr=>{
+    const o={y:+tr.querySelector(".y").value||0,d:[...tr.querySelectorAll("[data-d]:checked")].map(x=>x.dataset.d),site:tr.querySelector("select").value,t:tr.querySelector(".t").value.trim(),u:tr.querySelector(".u").value.trim()};
+    const n=tr.querySelector(".n").value.trim();if(n)o.note=n;return o;
+  }).filter(o=>o.t||o.u);
+}
+function listText(rows){
+  const q=v=>JSON.stringify(v);
+  const lit=o=>"  {y:"+o.y+",d:"+q(o.d)+",site:"+q(o.site)+",t:"+q(o.t)+",u:"+(DCV&&o.u.startsWith(DCV)?"DC+"+q(o.u.slice(DCV.length)):q(o.u))+(o.note?",note:"+q(o.note):"")+"}";
+  let out="",prev=null;rows.forEach((o,i)=>{if(prev!==null&&o.y!==prev)out+="\n";out+=lit(o)+(i<rows.length-1?",\n":"\n");prev=o.y});
+  const P=parseList(cur.text);return cur.text.slice(0,P.a+15)+"\n"+out+cur.text.slice(P.b+1);
+}
+async function openList(path){
+  document.querySelectorAll("#pages a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.p===path));
+  document.querySelector(".adm-main").classList.add("list-mode");$("#state").textContent="載入中…";
+  let f;try{f=await getFile(path)}catch(e){toast(e.message);return}
+  cur={path,text:f.text,sha:f.sha,dirty:false,kind:"list"};
+  let rows;try{rows=parseList(f.text).rows}catch(e){toast(e.message);return}
+  const dr=drafts()[path];
+  if(dr){try{rows=JSON.parse(dr.html);cur.dirty=true;toast("已載入未發布的草稿")}catch(e){}}
+  try{history.replaceState(null,"","#"+path)}catch(e){}
+  $("#lst").innerHTML='<div class="lst-head"><h2>心得文清單</h2><p>面試準備頁「歷年心得文」和搜尋會用到。每列一篇。</p><button id="lst-add" type="button">＋新增一篇</button></div>'+
+    '<div class="lst-scroll"><table><thead><tr><th>學年度</th><th>系所</th><th>來源</th><th>標題</th><th>網址</th><th>備註</th><th></th></tr></thead><tbody>'+rows.map(rowHTML).join("")+'</tbody></table></div>';
+  const tb=$("#lst tbody");
+  const dirty=()=>{cur.dirty=true;clearTimeout(dirty.t);dirty.t=setTimeout(()=>saveDraft(path,JSON.stringify(readRows()),cur.sha),300);setState()};
+  $("#lst").oninput=dirty;$("#lst").onchange=dirty;
+  $("#lst-add").onclick=()=>{const y=(readRows()[0]||{}).y||"";tb.insertAdjacentHTML("afterbegin",rowHTML({y,d:["ba","ib"],site:"dcard",t:"",u:""}));tb.querySelector("tr .t").focus();dirty()};
+  tb.onclick=e=>{const a=e.target.closest("button")?.dataset.a;if(!a)return;const tr=e.target.closest("tr");
+    if(a==="up"&&tr.previousElementSibling)tr.previousElementSibling.before(tr);
+    if(a==="down"&&tr.nextElementSibling)tr.nextElementSibling.after(tr);
+    if(a==="del"){if(!confirm("刪除「"+(tr.querySelector(".t").value||"這一篇")+"」？"))return;tr.remove()}
+    dirty()};
+  setState();
+}
+async function publishList(){
+  const btn=$("#b-publish");btn.disabled=true;$("#state").textContent="發布中…";
+  try{
+    const text=listText(readRows());
+    new Function("DC","return ["+text.slice(text.indexOf("const SOURCES=[")+15,text.indexOf("\n];"))+"]")(DCV); // 確認格式沒壞
+    cur.sha=await putFile(cur.path,b64enc(text),"Update reading list",cur.sha);
+    cur.text=text;cur.dirty=false;saveDraft(cur.path,null);setState();toast("已發布，大約 1 分鐘後網站會更新。",4000);
+  }catch(e){btn.disabled=false;setState();alert(e.message)}
+}
 
 /* ---------- 分頁位置：側邊／頂部 ---------- */
 const IC_SIDE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>';
@@ -450,10 +519,11 @@ $("#layout").onclick=()=>applyLayout(!document.body.classList.contains("tabs-top
 function start(){
   $("#login").hidden=true;$("#app").hidden=false;
   $(".adm-site").textContent=SITE.name.split("｜")[0];$(".adm-site").title=SITE.name;$("#live").href=BASE;
-  $("#pages").innerHTML=SITE.pages.map(([p,t])=>'<a href="#'+p+'" data-p="'+p+'">'+t+'</a>').join("");
+  $("#pages").innerHTML=SITE.pages.map(([p,t])=>'<a href="#'+p+'" data-p="'+p+'">'+t+'</a>').join("")+
+    (SITE.lists||[]).map(([p,t])=>'<a href="#'+p+'" data-p="'+p+'">'+t+'</a>').join("");
   $("#pages").onclick=e=>{const a=e.target.closest("a");if(!a)return;e.preventDefault();openPage(a.dataset.p)};
   const want=decodeURIComponent(location.hash.slice(1));
-  openPage(SITE.pages.some(([p])=>p===want)?want:SITE.pages[0][0]);
+  openPage([...SITE.pages,...(SITE.lists||[])].some(([p])=>p===want)?want:SITE.pages[0][0]);
 }
 (async()=>{
   if(token&&await login().catch(()=>false))start();
