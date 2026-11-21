@@ -73,8 +73,9 @@ function renderSources(box,opts){
   const mk=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
   const recent=years.filter(y=>y>=110), old=years.filter(y=>y<110);
 
-  const grid=mk("div","src-cols");
-  recent.forEach(y=>{
+  // Z 字排：115 左、114 右、113 左…；兩欄各自往上接，不留空白
+  const grid=mk("div","src-cols"),cols=[mk("div","src-col"),mk("div","src-col")];cols.forEach(c=>grid.appendChild(c));
+  recent.forEach((y,i)=>{
     const g=mk("div","src-year");
     g.appendChild(mk("div","yr",String(y)));
     const ul=mk("ul","src-items");
@@ -88,7 +89,7 @@ function renderSources(box,opts){
       if(s.note)m.appendChild(mk("span",null,s.note));
       li.appendChild(m);ul.appendChild(li);
     });
-    g.appendChild(ul);grid.appendChild(g);
+    g.appendChild(ul);g.style.order=i;cols[i%2].appendChild(g);
   });
   box.appendChild(grid);
 
