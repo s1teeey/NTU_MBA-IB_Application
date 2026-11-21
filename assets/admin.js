@@ -58,7 +58,14 @@ $("#login-form").onsubmit=async e=>{
 $("#logout").onclick=()=>{if(!confirm("登出後要重新貼 token，確定？"))return;try{localStorage.removeItem("adm-token")}catch(e){}location.reload()};
 
 /* ---------- editor ---------- */
-let quiet=false;let cur=null; // {path, text, sha, dirty, previewed}
+let quiet=false;let cur=null;
+/* 自己的復原紀錄：打字、螢光筆、移動區塊都能 ↶ */
+const hist={list:[],i:-1,main:null,busy:false,
+  snap(){return this.main.innerHTML.replace(/ ?adm-hover/g,"")},
+  reset(main){this.main=main;this.list=[this.snap()];this.i=0},
+  push(){if(!this.main||this.busy)return;const v=this.snap();if(v===this.list[this.i])return;this.list=this.list.slice(0,this.i+1);this.list.push(v);if(this.list.length>200)this.list.shift();this.i=this.list.length-1},
+  go(k){if(!this.main)return;this.push();const j=this.i+k;if(j<0||j>=this.list.length)return;this.i=j;this.busy=true;this.main.innerHTML=this.list[j];setTimeout(()=>{this.busy=false},0)}
+}; // {path, text, sha, dirty, previewed}
 const ifr=$("#ed");
 const idoc=()=>ifr.contentDocument;
 const EDIT_CSS=`
@@ -113,12 +120,14 @@ async function openPage(path){
 function setupEditor(){
   const d=idoc(),main=d.querySelector("main");
   delete d.documentElement.dataset.only;d.querySelectorAll(".only-note").forEach(n=>n.remove());
+  cleanMarks(main);
   main.contentEditable="true";
   d.execCommand("styleWithCSS",false,false);
   d.execCommand("defaultParagraphSeparator",false,"p");
   main.querySelectorAll("[data-nokey]").forEach(el=>el.contentEditable="false");
   d.addEventListener("click",e=>{const a=e.target.closest("a");if(a)e.preventDefault()});
-  const changed=()=>{if(!cur||quiet)return;cur.dirty=true;cur.previewed=false;clearTimeout(changed.t);changed.t=setTimeout(()=>saveDraft(cur.path,serialize(false).inner,cur.sha),400);setState()};
+  hist.reset(main);
+  const changed=()=>{if(!cur||quiet)return;clearTimeout(changed.h);changed.h=setTimeout(()=>hist.push(),350);cur.dirty=true;cur.previewed=false;clearTimeout(changed.t);changed.t=setTimeout(()=>saveDraft(cur.path,serialize(false).inner,cur.sha),400);setState()};
   const real=r=>{
     if(isCtl(r.target))return false;
     if(r.type==="attributes"&&r.attributeName==="style"&&r.target.matches("span.c"))return false;
@@ -129,6 +138,8 @@ function setupEditor(){
   main.addEventListener("paste",e=>{e.preventDefault();const t=(e.clipboardData||window.clipboardData).getData("text/plain");d.execCommand("insertText",false,t)});
   d.addEventListener("keydown",e=>{
     if((e.metaKey||e.ctrlKey)&&e.key==="s"){e.preventDefault();doPreview()}
+    if((e.metaKey||e.ctrlKey)&&(e.key==="z"||e.key==="Z")){e.preventDefault();hist.go(e.shiftKey?1:-1)}
+    if((e.metaKey||e.ctrlKey)&&e.key==="y"){e.preventDefault();hist.go(1)}
   });
   // 圖片預留位置：點一下換成圖片
   main.addEventListener("click",e=>{const ph=e.target.closest("figure.shot .ph");if(ph){pickImage(img=>{ph.replaceWith(img)})}});
@@ -217,6 +228,7 @@ function serialize(forPublish){
   main.removeAttribute("contenteditable");
   main.querySelectorAll("span[style]:not([class]),font").forEach(n=>n.replaceWith(...n.childNodes));
   main.querySelectorAll("strike").forEach(n=>{const s=main.ownerDocument.createElement("s");s.append(...n.childNodes);n.replaceWith(s)});
+  cleanMarks(main);
   main.querySelectorAll("p:empty,mark:empty,b:empty,i:empty,u:empty,s:empty").forEach(n=>n.remove());
   const uploads=[];
   main.querySelectorAll("img[data-up]").forEach(img=>{
@@ -231,22 +243,51 @@ const tb=$("#tb");
 tb.addEventListener("mousedown",e=>{if(e.target.closest("button"))e.preventDefault()});
 tb.addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b||!cur)return;const d=idoc();
-  if(b.dataset.cmd){d.execCommand(b.dataset.cmd,false,null);return}
-  if(b.dataset.block){d.execCommand("formatBlock",false,b.dataset.block);return}
-  if("mark" in b.dataset){highlight(d,b.dataset.mark);return}
+  if(b.dataset.cmd==="undo"){hist.go(-1);return}
+  if(b.dataset.cmd==="redo"){hist.go(1);return}
+  if(b.dataset.cmd){hist.push();d.execCommand(b.dataset.cmd,false,null);hist.push();return}
+  if(b.dataset.block){hist.push();d.execCommand("formatBlock",false,b.dataset.block);hist.push();return}
+  if("mark" in b.dataset){hist.push();highlight(d,b.dataset.mark);return}
 });
+/* 螢光筆：mark（紫）、mark.r／.g／.k，網站原本的 span.hl-ba（紅）、span.hl-ib（綠）也算 */
+const HL="mark,span.hl-ba,span.hl-ib";
+const BLOCK="p,h1,h2,h3,h4,h5,h6,ul,ol,li,table,thead,tbody,tr,td,th,div,section,figure,blockquote,dl,dt,dd,details,summary,aside,nav,header";
+const hlColor=el=>el.matches("span.hl-ba")?"r":el.matches("span.hl-ib")?"g":(el.getAttribute("class")||"").trim();
+const unwrap=el=>el.replaceWith(...el.childNodes);
+function setColor(el,cls){
+  if(el.tagName==="MARK"){cls?el.className=cls:el.removeAttribute("class");return}
+  const m=el.ownerDocument.createElement("mark");if(cls)m.className=cls;m.append(...el.childNodes);el.replaceWith(m);
+}
+/* 修掉壞掉的螢光筆：包住段落、表格的就拆掉，空的就刪掉 */
+function cleanMarks(root){
+  root.querySelectorAll(HL).forEach(m=>{if(m.querySelector(BLOCK))unwrap(m)});
+  root.querySelectorAll(HL).forEach(m=>{if(!m.textContent.trim()&&!m.querySelector("img,br"))m.remove()});
+}
 function highlight(d,cls){
   const sel=d.getSelection();if(!sel.rangeCount)return;const r=sel.getRangeAt(0);
-  const anc=(r.commonAncestorContainer.nodeType===1?r.commonAncestorContainer:r.commonAncestorContainer.parentElement).closest("mark");
-  if(anc){ // 已經畫過：同色就取消，不同色就換色
-    if((anc.className||"")===cls){anc.replaceWith(...anc.childNodes)}else{cls?anc.className=cls:anc.removeAttribute("class")}
-    return;
+  const main=d.querySelector("main");if(!main.contains(r.commonAncestorContainer))return;
+  const elOf=n=>n.nodeType===1?n:n.parentElement;
+  if(r.collapsed){ // 游標停在螢光筆裡：同色＝取消，不同色＝換色
+    const anc=elOf(r.startContainer).closest(HL);if(!anc)return;
+    hlColor(anc)===cls?unwrap(anc):setColor(anc,cls);hist.push();return;
   }
-  if(r.collapsed)return;
-  const m=d.createElement("mark");if(cls)m.className=cls;
-  m.appendChild(r.extractContents());
-  m.querySelectorAll("mark").forEach(x=>x.replaceWith(...x.childNodes));
-  r.insertNode(m);sel.removeAllRanges();const nr=d.createRange();nr.selectNodeContents(m);sel.addRange(nr);
+  // 範圍內的文字節點（只處理文字，不會包住段落或表格）
+  const w=d.createTreeWalker(r.commonAncestorContainer.nodeType===3?r.commonAncestorContainer.parentNode:r.commonAncestorContainer,NodeFilter.SHOW_TEXT);
+  const texts=[];let n;while((n=w.nextNode())){if(r.intersectsNode(n)&&n.data.trim()&&!isCtl(n))texts.push(n)}
+  if(!texts.length)return;
+  const ancs=texts.map(t=>elOf(t).closest(HL));
+  if(ancs.every(a=>a&&hlColor(a)===cls)){new Set(ancs).forEach(unwrap);hist.push();return} // 全部已是同色：取消
+  const done=new Set();
+  texts.forEach((t,k)=>{
+    const a=ancs[k];
+    if(a){if(!done.has(a)){done.add(a);if(hlColor(a)!==cls)setColor(a,cls)}return}
+    let s0=t===r.startContainer?r.startOffset:0,e0=t===r.endContainer?r.endOffset:t.length;
+    if(e0<=s0)return;
+    if(e0<t.length)t.splitText(e0);
+    const mid=s0>0?t.splitText(s0):t;
+    const m=d.createElement("mark");if(cls)m.className=cls;mid.replaceWith(m);m.appendChild(mid);
+  });
+  sel.removeAllRanges();hist.push();
 }
 $("#b-link").onclick=()=>{
   if(!cur)return;const d=idoc();const sel=d.getSelection();
