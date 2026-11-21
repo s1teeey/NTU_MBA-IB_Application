@@ -458,7 +458,9 @@ function rowHTML(r){
   return '<tr><td><input class="y" type="number" value="'+esc(r.y)+'"></td>'+
     '<td class="dpt"><label><input type="checkbox" data-d="ba"'+(d.includes("ba")?" checked":"")+'>商研</label><label><input type="checkbox" data-d="ib"'+(d.includes("ib")?" checked":"")+'>國企</label></td>'+
     '<td><select>'+Object.entries(SITES_OPT).map(([k,v])=>'<option value="'+k+'"'+(r.site===k?" selected":"")+'>'+v+'</option>').join("")+'</select></td>'+
-    '<td><input class="t" value="'+esc(r.t)+'" placeholder="標題"></td>'+
+    '<td class="pin"><input type="checkbox" class="p" title="預設收藏"'+(r.pin?" checked":"")+'></td>'+
+    '<td><input class="t" value="'+esc(r.t)+'" placeholder="原標題"></td>'+
+    '<td><input class="s" value="'+esc(r.s)+'" placeholder="115｜台大商研、台大國企｜推甄分享"></td>'+
     '<td><input class="u" value="'+esc(r.u)+'" placeholder="https://"></td>'+
     '<td><input class="n" value="'+esc(r.note)+'" placeholder="備註（選填）"></td>'+
     '<td class="ops"><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button><button data-a="del" title="刪除">✕</button></td></tr>';
@@ -466,12 +468,13 @@ function rowHTML(r){
 function readRows(){
   return [...document.querySelectorAll("#lst tbody tr")].map(tr=>{
     const o={y:+tr.querySelector(".y").value||0,d:[...tr.querySelectorAll("[data-d]:checked")].map(x=>x.dataset.d),site:tr.querySelector("select").value,t:tr.querySelector(".t").value.trim(),u:tr.querySelector(".u").value.trim()};
-    const n=tr.querySelector(".n").value.trim();if(n)o.note=n;return o;
+    const sv=tr.querySelector(".s").value.trim();if(sv)o.s=sv;
+    const n=tr.querySelector(".n").value.trim();if(n)o.note=n;if(tr.querySelector(".p").checked)o.pin=1;return o;
   }).filter(o=>o.t||o.u);
 }
 function listText(rows){
   const q=v=>JSON.stringify(v);
-  const lit=o=>"  {y:"+o.y+",d:"+q(o.d)+",site:"+q(o.site)+",t:"+q(o.t)+",u:"+(DCV&&o.u.startsWith(DCV)?"DC+"+q(o.u.slice(DCV.length)):q(o.u))+(o.note?",note:"+q(o.note):"")+"}";
+  const lit=o=>"  {y:"+o.y+",d:"+q(o.d)+",site:"+q(o.site)+",t:"+q(o.t)+(o.s?",s:"+q(o.s):"")+",u:"+(DCV&&o.u.startsWith(DCV)?"DC+"+q(o.u.slice(DCV.length)):q(o.u))+(o.note?",note:"+q(o.note):"")+(o.pin?",pin:1":"")+"}";
   let out="",prev=null;rows.forEach((o,i)=>{if(prev!==null&&o.y!==prev)out+="\n";out+=lit(o)+(i<rows.length-1?",\n":"\n");prev=o.y});
   const P=parseList(cur.text);return cur.text.slice(0,P.a+15)+"\n"+out+cur.text.slice(P.b+1);
 }
@@ -485,10 +488,11 @@ async function openList(path){
   if(dr){try{rows=JSON.parse(dr.html);cur.dirty=true;toast("已載入未發布的草稿")}catch(e){}}
   try{history.replaceState(null,"","#"+path)}catch(e){}
   $("#lst").innerHTML='<div class="lst-head"><h2>心得文清單</h2><p>面試準備頁「歷年心得文」和搜尋會用到。每列一篇。</p><button id="lst-add" type="button">＋新增一篇</button></div>'+
-    '<div class="lst-scroll"><table><thead><tr><th>學年度</th><th>系所</th><th>來源</th><th>標題</th><th>網址</th><th>備註</th><th></th></tr></thead><tbody>'+rows.map(rowHTML).join("")+'</tbody></table></div>';
+    '<div class="lst-scroll"><table><thead><tr><th>學年度</th><th>系所</th><th>來源</th><th title="預設收藏">★</th><th>原標題</th><th>統一標題</th><th>網址</th><th>備註</th><th></th></tr></thead><tbody>'+rows.map(rowHTML).join("")+'</tbody></table></div>';
   const tb=$("#lst tbody");
   const dirty=()=>{cur.dirty=true;clearTimeout(dirty.t);dirty.t=setTimeout(()=>saveDraft(path,JSON.stringify(readRows()),cur.sha),300);setState()};
-  $("#lst").oninput=dirty;$("#lst").onchange=dirty;
+  $("#lst").oninput=dirty;
+  $("#lst").onchange=e=>{if(e.target.matches(".p")&&e.target.checked&&$("#lst").querySelectorAll(".p:checked").length>5){e.target.checked=false;toast("預設收藏最多 5 則");return}dirty()};
   $("#lst-add").onclick=()=>{const y=(readRows()[0]||{}).y||"";tb.insertAdjacentHTML("afterbegin",rowHTML({y,d:["ba","ib"],site:"dcard",t:"",u:""}));tb.querySelector("tr .t").focus();dirty()};
   tb.onclick=e=>{const a=e.target.closest("button")?.dataset.a;if(!a)return;const tr=e.target.closest("tr");
     if(a==="up"&&tr.previousElementSibling)tr.previousElementSibling.before(tr);

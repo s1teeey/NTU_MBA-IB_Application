@@ -73,4 +73,5 @@ body.adm{margin:0;background:var(--bg-soft);height:100vh;overflow:hidden}
 .lst td.ops{white-space:nowrap}
 .lst td.ops button{padding:3px 7px;font-size:12px;border-color:transparent}
 .lst td.ops button:hover{border-color:var(--line)}
-.lst td:nth-child(4){min-width:260px}.lst td:nth-child(5){min-width:220px}
+.lst td.pin{text-align:center}
+.lst td:nth-child(5){min-width:260px}.lst td:nth-child(6){min-width:260px}.lst td:nth-child(7){min-width:200px}
