@@ -261,7 +261,11 @@ function setColor(el,cls){
 /* 修掉壞掉的螢光筆：包住段落、表格的就拆掉，空的就刪掉 */
 function cleanMarks(root){
   root.querySelectorAll(HL).forEach(m=>{if(m.querySelector(BLOCK))unwrap(m)});
-  root.querySelectorAll(HL).forEach(m=>{if(!m.textContent.trim()&&!m.querySelector("img,br"))m.remove()});
+  root.querySelectorAll(HL).forEach(m=>{if(!m.textContent.trim()&&!m.querySelector("img"))m.remove()});
+  // 跑版留下的空標題、空段落
+  root.querySelectorAll("h1,h2,h3,h4,p").forEach(e=>{
+    if(!e.textContent.trim()&&!e.id&&!e.hasAttribute("data-nokey")&&!e.querySelector("img,table,iframe,input,[data-nokey],[id],.ph"))e.remove();
+  });
 }
 function highlight(d,cls){
   const sel=d.getSelection();if(!sel.rangeCount)return;const r=sel.getRangeAt(0);
