@@ -169,18 +169,25 @@ function setupBlocks(d,main){
   const ctl=d.createElement("div");ctl.className="adm-ctl";ctl.contentEditable="false";ctl.hidden=true;d.body.appendChild(ctl);
   const rs=d.createElement("div");rs.className="adm-rs";rs.contentEditable="false";rs.hidden=true;rs.title="拖曳調整寬度｜雙擊恢復預設";d.body.appendChild(rs);
   let target=null,hide=0,dragging=false;
-  const placeRs=()=>{if(!target){rs.hidden=true;return}const r=target.getBoundingClientRect(),w=d.defaultView;rs.hidden=false;rs.style.top=(r.top+w.scrollY)+"px";rs.style.height=r.height+"px";rs.style.left=(r.right+w.scrollX-5)+"px"};
+  const placeRs=()=>{if(!target){rs.hidden=true;return}const r=target.getBoundingClientRect(),w=d.defaultView;rs.hidden=false;rs.style.top=(r.top+w.scrollY)+"px";rs.style.height=r.height+"px";rs.style.left=((isFigCol(target)?r.left:r.right)+w.scrollX-5)+"px"};
+  const isFigCol=el=>!!(el&&el.matches("figure")&&el.closest(".cols.fig"));
   rs.addEventListener("mousedown",e=>{
     if(!target)return;e.preventDefault();dragging=true;clearTimeout(hide);const el=target,left=el.getBoundingClientRect().left;
     const max=(el.parentElement.closest("section,main")||el.parentElement).getBoundingClientRect().right-left;
     const isSec=el.tagName==="SECTION";
+    if(isFigCol(el)){ // 並排的圖片：拖左邊緣調圖片欄寬
+      const cols=el.closest(".cols.fig"),right=el.getBoundingClientRect().right,maxF=cols.getBoundingClientRect().width-240;
+      const mvF=ev=>{let w=Math.round((right-ev.clientX)/10)*10;w=Math.min(maxF,Math.max(160,w));cols.style.setProperty("--fw",w+"px");placeRs();place(el,true)};
+      const upF=()=>{dragging=false;d.removeEventListener("mousemove",mvF);d.removeEventListener("mouseup",upF);hist.push()};
+      d.addEventListener("mousemove",mvF);d.addEventListener("mouseup",upF);return;
+    }
     const mv=ev=>{let w=Math.round((ev.clientX-left)/10)*10;w=Math.max(240,w);const v=w>=max-10?"none":w+"px";
       if(isSec)el.style.setProperty("--pw",v);else el.style.maxWidth=v; // 區塊：裡面的段落一起變寬
       placeRs();place(el,true)};
     const up=()=>{dragging=false;d.removeEventListener("mousemove",mv);d.removeEventListener("mouseup",up)};
     d.addEventListener("mousemove",mv);d.addEventListener("mouseup",up);
   });
-  rs.addEventListener("dblclick",()=>{if(target){target.style.removeProperty("max-width");target.style.removeProperty("--pw");if(!target.getAttribute("style"))target.removeAttribute("style");placeRs()}});
+  rs.addEventListener("dblclick",()=>{if(target&&isFigCol(target)){const c=target.closest(".cols.fig");c.style.removeProperty("--fw");if(!c.getAttribute("style"))c.removeAttribute("style");placeRs();return}if(target){target.style.removeProperty("max-width");target.style.removeProperty("--pw");if(!target.getAttribute("style"))target.removeAttribute("style");placeRs()}});
   rs.addEventListener("mouseenter",()=>clearTimeout(hide));
   rs.addEventListener("mouseleave",()=>{if(!dragging)hide=setTimeout(()=>place(null),400)});
   const blockOf=el=>{

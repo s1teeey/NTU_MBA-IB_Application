@@ -358,6 +358,6 @@ ol[data-check] li small,ul[data-check] li small,.files li small{display:block;co
 .cols>.col>*{max-width:none!important}
 .prose ul.row:not(.keys),.prose ol.row:not(.keys){padding-left:0;column-gap:40px}
 .prose ul.row:not(.keys)>li,.prose ol.row:not(.keys)>li{margin-left:22px}
-.cols.fig{grid-template-columns:minmax(0,1fr) minmax(220px,340px)}
+.cols.fig{grid-template-columns:minmax(0,1fr) var(--fw,340px)}
 .cols.fig figure.shot{margin:0}
 @media (max-width:760px){.cols.fig{grid-template-columns:1fr}}
