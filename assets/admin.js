@@ -169,15 +169,18 @@ function setupBlocks(d,main){
   const ctl=d.createElement("div");ctl.className="adm-ctl";ctl.contentEditable="false";ctl.hidden=true;d.body.appendChild(ctl);
   const rs=d.createElement("div");rs.className="adm-rs";rs.contentEditable="false";rs.hidden=true;rs.title="拖曳調整寬度｜雙擊恢復預設";d.body.appendChild(rs);
   let target=null,hide=0,dragging=false;
-  const placeRs=()=>{if(!target){rs.hidden=true;return}const r=target.getBoundingClientRect(),w=d.defaultView;rs.hidden=false;rs.style.top=(r.top+w.scrollY)+"px";rs.style.height=r.height+"px";rs.style.left=((isFigCol(target)?r.left:r.right)+w.scrollX-5)+"px"};
+  const placeRs=()=>{if(!target){rs.hidden=true;return}const r=target.getBoundingClientRect(),w=d.defaultView;rs.hidden=false;rs.style.top=(r.top+w.scrollY)+"px";rs.style.height=r.height+"px";rs.style.left=(r.right+w.scrollX-5)+"px"};
   const isFigCol=el=>!!(el&&el.matches("figure")&&el.closest(".cols.fig"));
   rs.addEventListener("mousedown",e=>{
     if(!target)return;e.preventDefault();dragging=true;clearTimeout(hide);const el=target,left=el.getBoundingClientRect().left;
     const max=(el.parentElement.closest("section,main")||el.parentElement).getBoundingClientRect().right-left;
     const isSec=el.tagName==="SECTION";
-    if(isFigCol(el)){ // 並排的圖片：拖左邊緣調圖片欄寬
-      const cols=el.closest(".cols.fig"),right=el.getBoundingClientRect().right,maxF=cols.getBoundingClientRect().width-240;
-      const mvF=ev=>{let w=Math.round((right-ev.clientX)/10)*10;w=Math.min(maxF,Math.max(160,w));cols.style.setProperty("--fw",w+"px");placeRs();place(el,true)};
+    if(isFigCol(el)){ // 並排的圖片：拖右邊緣，圖片往右變寬，左邊文字不動
+      const cols=el.closest(".cols.fig"),x0=e.clientX,fw0=el.getBoundingClientRect().width,cr=cols.getBoundingClientRect(),cw0=cr.width;
+      const maxC=(cols.parentElement.closest("section,main")||cols.parentElement).getBoundingClientRect().right-cr.left;
+      const mvF=ev=>{const dx=ev.clientX-x0;const cw=Math.min(maxC,Math.max(500,Math.round((cw0+dx)/10)*10));
+        const fw=Math.min(cw-280,Math.max(160,Math.round((fw0+dx)/10)*10));
+        cols.style.maxWidth=cw>=maxC-10?"none":cw+"px";cols.style.setProperty("--fw",fw+"px");placeRs();place(el,true)};
       const upF=()=>{dragging=false;d.removeEventListener("mousemove",mvF);d.removeEventListener("mouseup",upF);hist.push()};
       d.addEventListener("mousemove",mvF);d.addEventListener("mouseup",upF);return;
     }
