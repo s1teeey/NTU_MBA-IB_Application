@@ -186,7 +186,7 @@ function setupBlocks(d,main){
   const blockOf=el=>{
     while(el&&el!==main){
       const p=el.parentElement;
-      if(p&&(p.matches("section,.prose,.stack,.faq-group,details>.a,aside,.cols")||p===main))return el;
+      if(p&&(p.matches("section,.prose,.stack,.faq-group,details>.a,aside,.cols,.cols>.col")||p===main))return el;
       el=p;
     }return null;
   };
@@ -196,7 +196,7 @@ function setupBlocks(d,main){
     target=el;if(!el){ctl.hidden=true;rs.hidden=true;return}
     el.classList.add("adm-hover");
     const isSec=el.tagName==="SECTION";
-    ctl.innerHTML='<span class="lbl">'+(isSec?"區塊":"段落")+'</span><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button>'+(isSec?'<button data-a="add" title="在下面新增區塊">＋</button>':'<button data-a="dup" title="複製">⧉</button><button data-a="side" title="清單：項目橫排｜段落：和下一段並排（再按一次取消）">並排</button>')+'<button data-a="del" title="刪除">✕</button>';
+    ctl.innerHTML='<span class="lbl">'+(isSec?"區塊":"段落")+'</span><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button>'+(isSec?'<button data-a="add" title="在下面新增區塊">＋</button>':'<button data-a="dup" title="複製">⧉</button><button data-a="side" title="標題：連同內容和下一個標題並排｜清單：項目橫排｜段落：和下一段並排（再按一次取消）">並排</button>')+'<button data-a="del" title="刪除">✕</button>';
     const r=el.getBoundingClientRect();
     ctl.hidden=false;
     ctl.style.top=(r.top+d.defaultView.scrollY-30)+"px";
@@ -225,9 +225,14 @@ function setupBlocks(d,main){
     if(a==="dup"){const c=el.cloneNode(true);c.classList.remove("adm-hover");el.after(c)}
     if(a==="add")el.after(newSection(d));
     if(a==="side"){
-      if(el.matches("ol,ul")){el.classList.toggle("row");if(!el.getAttribute("class"))el.removeAttribute("class")}
-      else if(el.matches(".cols")){el.replaceWith(...el.children)}
-      else if(el.parentElement.matches(".cols")){const c=el.parentElement;c.replaceWith(...c.children)}
+      const cc=el.closest(".cols"),isH=/^H[2-4]$/.test(el.tagName);
+      const grp=h=>{const L=+h.tagName[1],g=[h];let n=h.nextElementSibling;while(n&&!(/^H[2-4]$/.test(n.tagName)&&+n.tagName[1]<=L)){g.push(n);n=n.nextElementSibling}return g};
+      if(el.matches("ol,ul")&&!(cc&&el.parentElement===cc)){el.classList.toggle("row");if(!el.getAttribute("class"))el.removeAttribute("class")}
+      else if(el.matches(".cols")||cc){const c=el.matches(".cols")?el:cc,out=[];[...c.children].forEach(k=>k.matches(".col")?out.push(...k.children):out.push(k));c.replaceWith(...out)}
+      else if(isH){const g1=grp(el),nx=g1[g1.length-1].nextElementSibling;
+        if(!nx||nx.tagName!==el.tagName){toast("下面沒有同層標題可並排");return}
+        const g2=grp(nx),w=d.createElement("div");w.className="cols";el.before(w);
+        [g1,g2].forEach(g=>{const c=d.createElement("div");c.className="col";c.append(...g);w.append(c)})}
       else{const nx=el.nextElementSibling;if(!nx){toast("下面沒有可以並排的段落");return}
         const w=d.createElement("div");w.className="cols";el.before(w);w.append(el,nx)}
       hist.push();renumber(main);return;
