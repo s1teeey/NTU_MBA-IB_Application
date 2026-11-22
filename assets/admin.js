@@ -4,8 +4,8 @@
 const OWNER="s1teeey";
 const SITES={
   "NTU_MBA-IB_Application":{name:"推甄分享｜台大商研、台大國企",pages:[
-    ["index.html","首頁"],["sharing.html","簡章細則"],["docs.html","書審撰寫"],["interview.html","面試準備"],
-    ["my-docs.html","個人心得｜書審"],["my-interview.html","個人心得｜面試"],["faq.html","FAQ"]],
+    ["index.html","首頁"],["sharing.html","簡章細則"],["docs.html","書審"],["interview.html","口試"],
+    ["reviews.html","歷年心得文"],["my.html","個人心得"],["faq.html","FAQ"]],
     lists:[["assets/sources.js","心得文清單"]]},
   "NTHU_Transfer":{name:"寒轉分享｜清大經濟",pages:[
     ["index.html","首頁"],["sharing.html","簡章細則"],["story.html","上榜心得"],["resources.html","軍火庫"]]},
@@ -242,6 +242,10 @@ function renumber(main){
 function serialize(forPublish){
   const main=idoc().querySelector("main").cloneNode(true);
   main.querySelectorAll(".adm-ctl,.adm-rs,.adm-link,.only-note").forEach(n=>n.remove());
+  // 網頁執行時才加上的標記、瀏覽器外掛加的 class，不要存進檔案
+  main.querySelectorAll("[data-done]").forEach(n=>n.removeAttribute("data-done"));
+  main.querySelectorAll(".custom-cursor-on-hover").forEach(n=>{n.classList.remove("custom-cursor-on-hover");if(!n.getAttribute("class"))n.removeAttribute("class")});
+  main.querySelectorAll(".ck-app").forEach(n=>n.remove());main.querySelectorAll("[data-check][hidden]").forEach(n=>n.removeAttribute("hidden"));
   // 還原網站程式在正文裡做的事：表格對齊包裝、今天日期、程式產生的清單
   main.querySelectorAll("td > span.c, th > span.c").forEach(w=>{const c=w.parentElement;if(w.dataset.k)c.dataset.k=w.dataset.k;w.replaceWith(...w.childNodes)});
   main.querySelectorAll("[data-nokey]").forEach((n,i)=>{if(cur.nokey&&i<cur.nokey.length)n.innerHTML=cur.nokey[i]});

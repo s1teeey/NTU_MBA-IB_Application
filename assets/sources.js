@@ -2,7 +2,7 @@
    109 學年度（含）以前每所一篇，用簡單列表；110 以後可能多篇，用卡片。 */
 const DC="https://www.dcard.tw/f/graduate_school/p/";
 const SOURCES=[
-  {y:116,d:["ba","ib"],site:"own",t:"116 台大商研、台大國企推甄面試紀錄",s:"116 面試紀錄｜台大商研、台大國企",u:"my-interview.html",pin:1},
+  {y:116,d:["ba","ib"],site:"own",t:"116 台大商研、台大國企推甄口試紀錄",s:"116 口試紀錄｜台大商研、台大國企",u:"my.html#record",pin:1},
 
   {y:115,d:["ba","ib"],site:"dcard",t:"115 商管推甄正取分享 台大商研/台大國企 📝",s:"115 推甄分享｜台大商研、台大國企",u:DC+"260371156"},
   {y:115,d:["ba"],site:"dcard",t:"115 推甄經驗分享（台大商研/台大國企/政大企研/交大經管/成大國企）",s:"115 推甄分享｜台大商研、台大國企、政大企研、交大經管、成大國企",u:DC+"261160220"},
@@ -73,7 +73,7 @@ function renderSources(box,opts){
   const set=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
   const all=SOURCES.filter(s=>!opts.dept||s.d.includes(opts.dept));
   const rows=all.filter(s=>s.site!=="own");
-  const short=s=>s.s||(s.y+" "+(s.site==="own"?"面試紀錄":"推甄分享")+"｜"+s.d.map(d=>"台大"+DEPT_NAME[d]).join("、"));
+  const short=s=>s.s||(s.y+" "+(s.site==="own"?"口試紀錄":"推甄分享")+"｜"+s.d.map(d=>"台大"+DEPT_NAME[d]).join("、"));
   let uni=get("src-short",false);
   let fav=get("src-fav",null);if(!Array.isArray(fav))fav=SOURCES.filter(s=>s.pin).map(s=>s.u);
   fav=fav.filter(u=>SOURCES.some(s=>s.u===u)).slice(0,FAV_MAX);

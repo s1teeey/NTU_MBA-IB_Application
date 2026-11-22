@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>國企師資名冊｜推甄分享｜台大商研、台大國企</title>
+<title>國企歷年面試官｜推甄分享｜台大商研、台大國企</title>
 <meta name="author" content="Royee Chu">
-<meta name="description" content="國企師資名冊：研究領域、開課與歷年推甄面試官。">
+<meta name="description" content="國企歷年面試官：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261121162645">
+<link rel="stylesheet" href="assets/site.css?v=20261122161324">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -156,9 +156,9 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
 
 <main class="wrap page">
   <header class="page-head">
-    <p class="crumb"><a href="./">首頁</a> / 師資名冊</p>
+    <p class="crumb"><a href="./">首頁</a> / 歷年面試官</p>
     <div class="head-row">
-      <h1>師資名冊</h1>
+      <h1>歷年面試官</h1>
       <nav class="dept-switch" aria-label="切換系所">
         <a href="ba.html" class="d-ba">商研<small>7010</small></a>
         <a href="ib.html" class="d-ib" aria-current="page">國企<small>7070</small></a>
@@ -290,8 +290,8 @@ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=
 /* 116: site owner's own record (questions only) */
 (function(){
   const box=$("#y116");
-  const h=el("div");h.appendChild(el("h3",null,"116 學年度面試題目"));
-  h.appendChild(el("p","note","本站作者的面試紀錄。"+Q116.note));box.appendChild(h);
+  const h=el("div");h.appendChild(el("h3",null,"116 學年度口試題目"));
+  h.appendChild(el("p","note","本站作者的口試紀錄。"+Q116.note));box.appendChild(h);
   const g=el("div","stages");
   Q116.stages.forEach(st=>{
     const b=el("div","st");const hd=el("div","st-head");
@@ -361,7 +361,7 @@ function card(p){
   if(p.edu){const ed=el("div");ed.appendChild(el("p","lbl","學歷"));ed.appendChild(el("p","course",p.edu));c.appendChild(ed)}
   const co=el("div");co.appendChild(el("p","lbl",CL));co.appendChild(el("p","course",p.c));c.appendChild(co);
 
-  const iv=el("div");iv.appendChild(el("p","lbl","面試紀錄（106–116）"));
+  const iv=el("div");iv.appendChild(el("p","lbl","口試紀錄（106–116）"));
   if(!p.iv.length)iv.appendChild(el("p","none","無紀錄"));
   else{
     const list=el("div","iv-list");
@@ -426,13 +426,13 @@ render();
 
 /* deep links: #y116 #tl #src #cards #p-<key> */
 function follow(){const h=decodeURIComponent(location.hash.slice(1));
-  if(h==="src"){location.replace("interview.html#src-sec");return}
+  if(h==="src"){location.replace("reviews.html");return}
   if(h==="y116")setTimeout(goOwn,50);
   else if(TABS.includes(h))showTab(h);
   else if(h.startsWith("p-")){const p=PROFS.find(x=>"p-"+x.k===h);if(p)setTimeout(()=>jump(p.n),50)}
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261121162645"></script>
+<script src="assets/site.js?v=20261122161324"></script>
 </body>
 </html>

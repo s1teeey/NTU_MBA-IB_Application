@@ -14,15 +14,15 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   if(only)lastDept=only+".html";
   const PAGES=[
     ["sharing.html","簡章細則"],
-    ["師資名冊",[["ba.html","台大商研"],["ib.html","台大國企"]]],
-    ["推甄準備",[["docs.html","書審撰寫"],["interview.html","面試準備"]]],
-    ["個人心得",[["my-docs.html","書審"],["my-interview.html","面試"]]],
+    ["推甄準備",[["docs.html","書審"],["interview.html","口試"]]],
+    ["歷年考古",[[lastDept,"歷年面試官",PROF],["reviews.html","歷年心得文"]]],
+    ["my.html","個人心得"],
     ["faq.html","FAQ"],
   ];
   const CARET='<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const menuHTML=PAGES.map(([h,t],i)=>{
     if(!Array.isArray(t))return '<a href="'+h+'"'+(h===here?' aria-current="page"':"")+'>'+t+'</a>';
-    const cur=t.some(([u])=>u===here);
+    const cur=t.some(([u,,also])=>u===here||(also&&also.includes(here)));
     return '<button type="button" class="dd-btn" data-i="'+i+'" aria-haspopup="true" aria-expanded="false"'+(cur?' aria-current="page"':"")+'>'+h+'</button>';
   }).join("");
   let theme="";try{theme=localStorage.getItem("theme")||""}catch(e){}
@@ -46,7 +46,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   const ddClose=()=>{if(ddBtn)ddBtn.setAttribute("aria-expanded","false");ddBtn=null;dd.hidden=true};
   const ddOpen=b=>{
     clearTimeout(ddTimer);if(ddBtn===b)return;ddClose();ddBtn=b;b.setAttribute("aria-expanded","true");
-    dd.innerHTML=PAGES[b.dataset.i][1].map(([u,t])=>'<a href="'+u+'"'+(u===here?' aria-current="page"':"")+'>'+t+'</a>').join("");
+    dd.innerHTML=PAGES[b.dataset.i][1].map(([u,t,also])=>'<a href="'+u+'"'+(u===here||(also&&also.includes(here))?' aria-current="page"':"")+'>'+t+'</a>').join("");
     dd.hidden=false;
     const r=b.getBoundingClientRect(),br=bar.getBoundingClientRect();
     dd.style.top=(r.bottom-br.top)+"px";
@@ -97,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=20261121162645";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261122161324";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
@@ -171,3 +171,34 @@ function buildIndex(){
   addEventListener("scroll",mark,{passive:true});addEventListener("resize",mark);mark();
   addEventListener("content",()=>links.forEach(([sec,a],i)=>{const h=heads[i],no=h.querySelector(".no").textContent.trim();const hc=h.cloneNode(true);hc.querySelectorAll("small").forEach(x=>x.remove());a.querySelector(".t").textContent=hc.textContent.replace(no,"").replace(/\s+/g," ").trim()}));
 }
+
+/* 可勾選清單：<ol|ul data-check="key">。預設項目＝清單內容（後台改這份）；
+   訪客的勾選、新增、刪除只存在自己的瀏覽器。後台編輯區裡不啟用。 */
+(function(){
+  if(window.frameElement&&window.frameElement.id==="ed")return;
+  document.querySelectorAll("[data-check]").forEach(list=>{
+    const key="check:"+list.dataset.check;
+    const defs=[...list.children].map(li=>{const c=li.cloneNode(true);const sm=c.querySelector("small");const n=sm?sm.innerHTML:"";if(sm)sm.remove();return {h:c.innerHTML.trim(),n}});
+    const sig=JSON.stringify(defs);
+    const fresh=()=>({sig,custom:false,items:defs.map(d=>({h:d.h,n:d.n,done:false}))});
+    let st=null;try{st=JSON.parse(localStorage.getItem(key)||"null")}catch(e){}
+    if(!st||(st.sig!==sig&&!st.custom))st=fresh();
+    const save=()=>{try{localStorage.setItem(key,JSON.stringify(st))}catch(e){}};
+    const esc=t=>t.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+    const app=document.createElement("div");app.className="ck-app";list.before(app);list.hidden=true;
+    const draw=()=>{
+      const n=st.items.filter(x=>x.done).length;
+      app.innerHTML='<ul class="ck">'+st.items.map((x,i)=>'<li data-i="'+i+'"'+(x.done?' class="done"':'')+'><span class="box">'+(x.done?"✓":"")+'</span><span class="tx">'+x.h+(x.n?'<small>'+x.n+'</small>':'')+'</span><button class="rm" type="button" title="刪除" data-rm="'+i+'">✕</button></li>').join("")+'</ul>'+
+        '<form class="ck-add"><input placeholder="新增項目" aria-label="新增項目"><button type="submit">新增</button></form>'+
+        '<div class="ck-foot"><span>完成 '+n+' / '+st.items.length+'</span><button class="ck-reset" type="button">回到預設</button></div>';
+    };
+    app.addEventListener("click",e=>{
+      if(e.target.closest("a"))return;
+      const rm=e.target.closest("[data-rm]");if(rm){st.items.splice(+rm.dataset.rm,1);st.custom=true;save();draw();return}
+      if(e.target.closest(".ck-reset")){if(!confirm("清除勾選和自己加的項目，回到預設清單？"))return;st=fresh();save();draw();return}
+      const li=e.target.closest("li[data-i]");if(li){const x=st.items[+li.dataset.i];x.done=!x.done;save();draw()}
+    });
+    app.addEventListener("submit",e=>{e.preventDefault();const inp=app.querySelector(".ck-add input");const t=inp.value.trim();if(!t)return;st.items.push({h:esc(t),n:"",done:false});st.custom=true;save();draw();app.querySelector(".ck-add input").focus()});
+    draw();
+  });
+})();
