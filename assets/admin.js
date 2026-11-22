@@ -137,7 +137,7 @@ function setupEditor(){
   main.contentEditable="true";
   d.execCommand("styleWithCSS",false,false);
   d.execCommand("defaultParagraphSeparator",false,"p");
-  main.querySelectorAll("[data-nokey]").forEach(el=>el.contentEditable="false");
+  main.querySelectorAll("[data-nokey],.crumb").forEach(el=>el.contentEditable="false");
   d.addEventListener("click",e=>{
     const a=e.target.closest("a");if(!a)return;e.preventDefault();
     if(main.contains(a)&&!a.closest("[data-nokey]"))linkPop(a);
