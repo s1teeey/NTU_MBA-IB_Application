@@ -336,4 +336,4 @@ html[data-rec="ba"] .rec[data-rec="ib"],html[data-rec="ib"] .rec[data-rec="ba"]{
 .ck-add button,.ck-reset{font:inherit;font-size:13px;font-weight:700;padding:7px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);cursor:pointer;white-space:nowrap}
 .ck-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px;color:var(--faint)}
 .ck-reset{padding:3px 10px;font-size:12.5px}
-ol[data-check] li small,ul[data-check] li small{display:block;color:var(--muted);font-size:13px}
+ol[data-check] li small,ul[data-check] li small,.files li small{display:block;color:var(--muted);font-size:13px}
