@@ -346,3 +346,10 @@ ol[data-check] li small,ul[data-check] li small,.files li small{display:block;co
 .prose ol.steps{gap:14px}
 .prose ol.steps li::marker{font-weight:800;color:var(--accent-ink)}
 .prose .eg{margin:6px 0 0;padding:6px 0 6px 14px;border-left:2px solid var(--line);color:var(--muted);font-size:14.5px}
+
+/* 並排（後台「並排」按鈕）：清單橫排、或兩個以上區塊並排；手機自動變直排 */
+.prose ol.row,.prose ul.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 32px}
+.prose ol.keys.row li{border-left:2px solid var(--line);padding-left:44px}
+.prose ol.keys.row li::before{left:14px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px 40px;align-items:start}
+.cols>*{margin:0}

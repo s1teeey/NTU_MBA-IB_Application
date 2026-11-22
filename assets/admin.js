@@ -186,7 +186,7 @@ function setupBlocks(d,main){
   const blockOf=el=>{
     while(el&&el!==main){
       const p=el.parentElement;
-      if(p&&(p.matches("section,.prose,.stack,.faq-group,details>.a,aside")||p===main))return el;
+      if(p&&(p.matches("section,.prose,.stack,.faq-group,details>.a,aside,.cols")||p===main))return el;
       el=p;
     }return null;
   };
@@ -196,7 +196,7 @@ function setupBlocks(d,main){
     target=el;if(!el){ctl.hidden=true;rs.hidden=true;return}
     el.classList.add("adm-hover");
     const isSec=el.tagName==="SECTION";
-    ctl.innerHTML='<span class="lbl">'+(isSec?"區塊":"段落")+'</span><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button>'+(isSec?'<button data-a="add" title="在下面新增區塊">＋</button>':'<button data-a="dup" title="複製">⧉</button>')+'<button data-a="del" title="刪除">✕</button>';
+    ctl.innerHTML='<span class="lbl">'+(isSec?"區塊":"段落")+'</span><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button>'+(isSec?'<button data-a="add" title="在下面新增區塊">＋</button>':'<button data-a="dup" title="複製">⧉</button><button data-a="side" title="清單：項目橫排｜段落：和下一段並排（再按一次取消）">並排</button>')+'<button data-a="del" title="刪除">✕</button>';
     const r=el.getBoundingClientRect();
     ctl.hidden=false;
     ctl.style.top=(r.top+d.defaultView.scrollY-30)+"px";
@@ -224,6 +224,14 @@ function setupBlocks(d,main){
     if(a==="down"&&el.nextElementSibling)el.nextElementSibling.after(el);
     if(a==="dup"){const c=el.cloneNode(true);c.classList.remove("adm-hover");el.after(c)}
     if(a==="add")el.after(newSection(d));
+    if(a==="side"){
+      if(el.matches("ol,ul")){el.classList.toggle("row");if(!el.getAttribute("class"))el.removeAttribute("class")}
+      else if(el.matches(".cols")){el.replaceWith(...el.children)}
+      else if(el.parentElement.matches(".cols")){const c=el.parentElement;c.replaceWith(...c.children)}
+      else{const nx=el.nextElementSibling;if(!nx){toast("下面沒有可以並排的段落");return}
+        const w=d.createElement("div");w.className="cols";el.before(w);w.append(el,nx)}
+      hist.push();renumber(main);return;
+    }
     if(a==="del"){if(!confirm("刪除這個"+(el.tagName==="SECTION"?"區塊（整段）":"段落")+"？"))return;place(null);el.remove();renumber(main);return}
     renumber(main);place(el);
   });
