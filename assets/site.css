@@ -337,3 +337,12 @@ html[data-rec="ba"] .rec[data-rec="ib"],html[data-rec="ib"] .rec[data-rec="ba"]{
 .ck-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px;color:var(--faint)}
 .ck-reset{padding:3px 10px;font-size:12.5px}
 ol[data-check] li small,ul[data-check] li small,.files li small{display:block;color:var(--muted);font-size:13px}
+
+/* 口試頁：重點、自介步驟、範例句 */
+.prose ol.keys{list-style:none;padding:0;counter-reset:k;display:grid;gap:10px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0}
+.prose ol.keys li{counter-increment:k;display:grid;grid-template-columns:28px 1fr;gap:0 8px}
+.prose ol.keys li::before{content:"(" counter(k) ")";color:var(--accent-ink);font-weight:800;grid-row:span 2}
+.prose ol.keys small{grid-column:2;color:var(--muted);font-size:13.5px}
+.prose ol.steps{gap:14px}
+.prose ol.steps li::marker{font-weight:800;color:var(--accent-ink)}
+.prose .eg{margin:6px 0 0;padding:6px 0 6px 14px;border-left:2px solid var(--line);color:var(--muted);font-size:14.5px}
