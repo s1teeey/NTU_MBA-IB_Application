@@ -354,3 +354,10 @@ ol[data-check] li small,ul[data-check] li small,.files li small{display:block;co
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px 40px;align-items:start}
 .cols>*{margin:0}
 .cols>.col{display:grid;gap:14px;align-content:start}.cols>.col>:first-child{margin-top:0}.cols>.col>*{max-width:none}
+/* 並排：欄寬、分隔線一致；橫排清單和並排欄位對齊 */
+.cols>.col>*{max-width:none!important}
+.prose ul.row:not(.keys),.prose ol.row:not(.keys){padding-left:0;column-gap:40px}
+.prose ul.row:not(.keys)>li,.prose ol.row:not(.keys)>li{margin-left:22px}
+.cols.fig{grid-template-columns:minmax(0,1fr) minmax(220px,340px)}
+.cols.fig figure.shot{margin:0}
+@media (max-width:760px){.cols.fig{grid-template-columns:1fr}}
