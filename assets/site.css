@@ -363,6 +363,7 @@ ol[data-check] li small,ul[data-check] li small,.files li small{display:block;co
 @media (max-width:760px){.cols.fig{grid-template-columns:1fr}}
 /* 並排圖片：高度跟左邊文字一樣（頂端對齊、底部對齊），多的從下面裁掉 */
 @media (min-width:761px){
+.cols.fig{align-items:stretch}
 .cols.fig>.col:last-child{position:relative;min-height:240px}
 .cols.fig>.col:last-child>figure.shot{position:absolute;inset:0;margin:0;display:block}
 .cols.fig figure.shot img{width:100%;height:100%;object-fit:cover;object-position:top}
