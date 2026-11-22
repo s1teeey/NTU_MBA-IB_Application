@@ -196,7 +196,7 @@ function setupBlocks(d,main){
     target=el;if(!el){ctl.hidden=true;rs.hidden=true;return}
     el.classList.add("adm-hover");
     const isSec=el.tagName==="SECTION";
-    ctl.innerHTML='<span class="lbl">'+(isSec?"區塊":"段落")+'</span><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button>'+(isSec?'<button data-a="add" title="在下面新增區塊">＋</button>':'<button data-a="dup" title="複製">⧉</button><button data-a="side" title="標題：連同內容和下一個標題並排｜圖片：放到上面內容的右邊｜清單：項目橫排｜段落：和下一段並排（再按一次取消）">並排</button>')+'<button data-a="del" title="刪除">✕</button>';
+    ctl.innerHTML='<span class="lbl">'+(isSec?"區塊":"段落")+'</span><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button>'+(isSec?'<button data-a="add" title="在下面新增區塊">＋</button>':'<button data-a="dup" title="複製">⧉</button><button data-a="side" title="標題：連同內容和下一個標題並排｜圖片：放到這個區塊上面全部內容的右邊｜清單：項目橫排｜段落：和下一段並排（再按一次取消）">並排</button>')+'<button data-a="del" title="刪除">✕</button>';
     const r=el.getBoundingClientRect();
     ctl.hidden=false;
     ctl.style.top=(r.top+d.defaultView.scrollY-30)+"px";
@@ -234,7 +234,7 @@ function setupBlocks(d,main){
         const g2=grp(nx),w=d.createElement("div");w.className="cols";el.before(w);
         [g1,g2].forEach(g=>{const c=d.createElement("div");c.className="col";c.append(...g);w.append(c)})}
       else if(el.matches("figure")){const prev=[];let n=el.previousElementSibling;
-        while(n&&!/^H[2-4]$/.test(n.tagName)&&!n.matches(".cols")){prev.unshift(n);n=n.previousElementSibling}
+        while(n&&!/^H2$/.test(n.tagName)&&!n.matches(".sec-head")){prev.unshift(n);n=n.previousElementSibling}
         if(!prev.length){toast("圖片上面沒有可以並排的內容");return}
         const w=d.createElement("div");w.className="cols fig";prev[0].before(w);
         [prev,[el]].forEach(g=>{const c=d.createElement("div");c.className="col";c.append(...g);w.append(c)})}
