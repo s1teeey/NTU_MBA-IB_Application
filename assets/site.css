@@ -375,3 +375,8 @@ ol[data-check] li small,ul[data-check] li small,.files li small{display:block;co
 .cols.fig figure.shot.cap img{flex:1 1 0;min-height:0;height:0}
 .cols.fig figure.shot.cap figcaption{display:block;flex:none;font-size:14px;line-height:1.7;color:var(--muted)}
 }
+
+.prose blockquote.quote{margin:2px 0;padding:2px 0 2px 18px;border-left:3px solid var(--accent,#7c5cff)}
+.prose blockquote.quote p{margin:0;font-style:italic;line-height:1.7}
+.prose blockquote.quote cite{display:block;margin-top:6px;font-style:normal;font-size:13px;color:var(--muted)}
+.prose blockquote.quote cite::before{content:"— "}
