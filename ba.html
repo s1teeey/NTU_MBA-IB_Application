@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="商研歷年面試官：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261123141537">
+<link rel="stylesheet" href="assets/site.css?v=20261123141632">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -78,7 +78,7 @@ ul.res{margin:0;padding-left:18px;display:grid;gap:2px}
 .freq.cut li:nth-child(n+6){display:none}
 .freq-more{justify-self:start;background:none;border:0;padding:0;font:inherit;font-size:13.5px;color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .freq:not(.cut){display:block;columns:2;column-gap:56px}
-.freq:not(.cut) li{break-inside:avoid;margin-bottom:8px}
+.freq:not(.cut) li{break-inside:avoid;margin-bottom:8px;grid-template-columns:7.5em 80px 3em minmax(0,1fr)}
 @media (max-width:900px){.freq:not(.cut){columns:1}}
 .freq{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .freq li{display:grid;grid-template-columns:7.5em minmax(60px,180px) 3.5em minmax(0,1fr);gap:12px;align-items:center;font-size:14px}
@@ -441,6 +441,6 @@ function follow(){const h=decodeURIComponent(location.hash.slice(1));
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261123141537"></script>
+<script src="assets/site.js?v=20261123141632"></script>
 </body>
 </html>
