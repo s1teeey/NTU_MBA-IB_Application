@@ -54,7 +54,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
   };
   const fine=matchMedia("(hover:hover)").matches;
   bar.querySelectorAll(".dd-btn").forEach(b=>{
-    b.addEventListener("click",e=>{e.stopPropagation();if(fine){location.href=PAGES[b.dataset.i][1][0][0];return}(ddBtn===b)?ddClose():ddOpen(b)});
+    b.addEventListener("click",e=>{e.stopPropagation();(ddBtn===b&&!fine)?ddClose():ddOpen(b)});
     if(fine){b.addEventListener("mouseenter",()=>ddOpen(b));b.addEventListener("mouseleave",()=>{ddTimer=setTimeout(ddClose,180)})}
   });
   if(fine){dd.addEventListener("mouseenter",()=>clearTimeout(ddTimer));dd.addEventListener("mouseleave",()=>{ddTimer=setTimeout(ddClose,180)})}
@@ -97,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=20261123135130";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=20261123135438";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
