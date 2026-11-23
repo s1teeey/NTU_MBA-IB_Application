@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="國企歷年面試官：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261123140644">
+<link rel="stylesheet" href="assets/site.css?v=20261123140657">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -74,14 +74,15 @@ ul.res{margin:0;padding-left:18px;display:grid;gap:2px}
 .own .st-head b{color:var(--stamp)}
 .own .how,.own .topic{font-size:13px;color:var(--muted);margin:0}
 .own ol{margin:0;padding-left:20px;font-size:14px;display:grid;gap:2px}
+.who small.prof{font-size:.78em;font-weight:400;color:var(--muted);margin-left:3px;text-decoration:none;display:inline-block}
 .freq{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.freq li{display:grid;grid-template-columns:5.5em minmax(60px,180px) 3.5em minmax(0,1fr);gap:12px;align-items:center;font-size:14px}
+.freq li{display:grid;grid-template-columns:7.5em minmax(60px,180px) 3.5em minmax(0,1fr);gap:12px;align-items:center;font-size:14px}
 .freq .who{white-space:nowrap;justify-self:start}
 .freq .bar{height:8px;border-radius:4px;background:var(--line);position:relative;overflow:hidden}
 .freq .bar::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--stamp);border-radius:4px}
 .freq .n{font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
 .freq .ys{color:var(--faint);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media (max-width:600px){.freq li{grid-template-columns:5em minmax(0,1fr) 3.5em}.freq .ys{grid-column:1/-1;margin-top:-4px}}
+@media (max-width:600px){.freq li{grid-template-columns:7em minmax(0,1fr) 3.5em}.freq .ys{grid-column:1/-1;margin-top:-4px}}
 .own.flash{box-shadow:0 0 0 3px var(--accent)}
 .own .who.in,.iv .who.in{color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;background:none;border:0;padding:0;font:inherit;font-weight:700}
 .own .who.out{color:var(--muted);font-weight:500}
@@ -285,8 +286,8 @@ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=
       who.split("、").forEach((w,i)=>{
         if(i)td.appendChild(document.createTextNode("、"));
         if(w.includes("未知"))td.appendChild(el("span","unk",w));
-        else if(IN.has(w)){const b=el("button","who in",w);b.type="button";b.onclick=()=>jump(w);td.appendChild(b)}
-        else td.appendChild(el("span","who out",w));
+        else if(IN.has(w)){const b=el("button","who in",w);b.type="button";b.onclick=()=>jump(w);b.appendChild(el("small","prof","教授"));td.appendChild(b)}
+        else{const o=el("span","who out",w);o.appendChild(el("small","prof","教授"));td.appendChild(o)}
       });
       td.appendChild(el("span","kind",kind));
     });
@@ -300,11 +301,11 @@ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=
     who.split("、").forEach(w=>{if(w.includes("未知"))return;const o=m[w]=m[w]||{n:0,ys:[],k:[]};o.n++;o.ys.push(y);if(!o.k.includes(kind))o.k.push(kind)})}));
   const list=Object.entries(m).sort((a,b)=>b[1].n-a[1].n||b[1].ys[0]-a[1].ys[0]);
   const max=list.length?list[0][1].n:1;
-  const h=el("div");h.appendChild(el("h3",null,"誰最常當面試官"));
+  const h=el("div");h.appendChild(el("h3",null,"不完全統計"));
   h.appendChild(el("p","note",TL[TL.length-1][0]+"–"+TL[0][0]+" 學年度，已知 "+known+" / "+total+" 關的面試官，共 "+list.length+" 位。"));box.appendChild(h);
   const ol=el("ol","freq");
   list.forEach(([w,o])=>{const li=el("li");let nm;
-    if(IN.has(w)){nm=el("button","who in",w);nm.type="button";nm.onclick=()=>jump(w)}else nm=el("span","who out",w);
+    if(IN.has(w)){nm=el("button","who in",w);nm.type="button";nm.onclick=()=>jump(w)}else nm=el("span","who out",w);nm.appendChild(el("small","prof","教授"));
     const bar=el("span","bar");bar.style.setProperty("--w",(o.n/max*100)+"%");
     li.append(nm,bar,el("span","n",o.n+" 次"),el("span","ys",o.ys.join("、")+"｜"+o.k.join("、")));ol.appendChild(li)});
   box.appendChild(ol);
@@ -434,6 +435,6 @@ function follow(){const h=decodeURIComponent(location.hash.slice(1));
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261123140644"></script>
+<script src="assets/site.js?v=20261123140657"></script>
 </body>
 </html>
