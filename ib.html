@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="國企歷年面試官：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261123140657">
+<link rel="stylesheet" href="assets/site.css?v=20261123141130">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -75,6 +75,8 @@ ul.res{margin:0;padding-left:18px;display:grid;gap:2px}
 .own .how,.own .topic{font-size:13px;color:var(--muted);margin:0}
 .own ol{margin:0;padding-left:20px;font-size:14px;display:grid;gap:2px}
 .who small.prof{font-size:.78em;font-weight:400;color:var(--muted);margin-left:3px;text-decoration:none;display:inline-block}
+.freq.top li:nth-child(n+6){display:none}
+.freq-more{justify-self:start;background:none;border:0;padding:0;font:inherit;font-size:13.5px;color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .freq{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .freq li{display:grid;grid-template-columns:7.5em minmax(60px,180px) 3.5em minmax(0,1fr);gap:12px;align-items:center;font-size:14px}
 .freq .who{white-space:nowrap;justify-self:start}
@@ -309,6 +311,9 @@ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=
     const bar=el("span","bar");bar.style.setProperty("--w",(o.n/max*100)+"%");
     li.append(nm,bar,el("span","n",o.n+" 次"),el("span","ys",o.ys.join("、")+"｜"+o.k.join("、")));ol.appendChild(li)});
   box.appendChild(ol);
+  const TOP=5;
+  if(list.length>TOP){ol.classList.add("top");const more=el("button","freq-more","看全部 "+list.length+" 位");more.type="button";
+    more.onclick=()=>{const open=ol.classList.toggle("top");more.textContent=open?"看全部 "+list.length+" 位":"只看前 "+TOP+" 名"};box.appendChild(more)}
 })();
 function goOwn(){
   showTab("tl");const b=$("#freq");
@@ -435,6 +440,6 @@ function follow(){const h=decodeURIComponent(location.hash.slice(1));
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261123140657"></script>
+<script src="assets/site.js?v=20261123141130"></script>
 </body>
 </html>
