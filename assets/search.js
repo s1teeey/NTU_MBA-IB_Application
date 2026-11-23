@@ -28,13 +28,13 @@
         out.push({g:label,t:p.n+"・"+p.t,x:text,u:u+"#p-"+p.k});
       });
       (d.Q116&&d.Q116.stages||[]).forEach(st=>{
-        out.push({g:label,t:"116 第 "+st.s+" 關 "+st.kind+"・"+st.who,x:[st.how,st.topic||"",...st.q].join(" "),u:u+"#y116"});
+        out.push({g:label,t:"116 第 "+st.s+" 關 "+st.kind+"・"+st.who,x:[st.how,st.topic||"",...st.q].join(" "),u:"my.html#record"});
       });
     });
 
     // 心得文
     if(typeof SOURCES==="undefined"){
-      await new Promise(res=>{const s=document.createElement("script");s.src="assets/sources.js?v=20261123135438";s.onload=res;s.onerror=res;document.head.appendChild(s)});
+      await new Promise(res=>{const s=document.createElement("script");s.src="assets/sources.js?v=20261123140158";s.onload=res;s.onerror=res;document.head.appendChild(s)});
     }
     if(typeof SOURCES!=="undefined")SOURCES.forEach(s=>{
       out.push({g:"心得文",t:s.t,x:[s.t,SITE_NAME[s.site],s.y+" 學年度",s.d.map(k=>DEPT_NAME[k]).join("、"),s.note||""].join(" "),

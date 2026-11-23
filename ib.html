@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="國企歷年面試官：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261123135438">
+<link rel="stylesheet" href="assets/site.css?v=20261123140158">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -74,6 +74,14 @@ ul.res{margin:0;padding-left:18px;display:grid;gap:2px}
 .own .st-head b{color:var(--stamp)}
 .own .how,.own .topic{font-size:13px;color:var(--muted);margin:0}
 .own ol{margin:0;padding-left:20px;font-size:14px;display:grid;gap:2px}
+.freq{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.freq li{display:grid;grid-template-columns:5.5em minmax(60px,180px) 3.5em minmax(0,1fr);gap:12px;align-items:center;font-size:14px}
+.freq .who{white-space:nowrap;justify-self:start}
+.freq .bar{height:8px;border-radius:4px;background:var(--line);position:relative;overflow:hidden}
+.freq .bar::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--stamp);border-radius:4px}
+.freq .n{font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.freq .ys{color:var(--faint);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:600px){.freq li{grid-template-columns:5em minmax(0,1fr) 3.5em}.freq .ys{grid-column:1/-1;margin-top:-4px}}
 .own.flash{box-shadow:0 0 0 3px var(--accent)}
 .own .who.in,.iv .who.in{color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;background:none;border:0;padding:0;font:inherit;font-weight:700}
 .own .who.out{color:var(--muted);font-weight:500}
@@ -164,7 +172,7 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
         <a href="ib.html" class="d-ib" aria-current="page">國企<small>7070</small></a>
       </nav>
     </div>
-    <p class="lede">專任、講座教授的研究領域、近年開課狀況，以及近 10 年的面試官紀錄。開課資訊可到<a href="https://course.ntu.edu.tw/" target="_blank" rel="noopener">台大課程網</a>查詢。</p>
+    <p class="lede">專任教授的研究領域、近年開課狀況，以及近 10 年的面試官紀錄。開課資訊可到<a href="https://course.ntu.edu.tw/" target="_blank" rel="noopener">台大課程網</a>查詢。</p>
   </header>
 
   <div class="tabs" role="tablist" aria-label="檢視">
@@ -173,7 +181,7 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
   </div>
 
   <section id="panel-tl" role="tabpanel" aria-labelledby="tab-tl" hidden>
-    <div class="own" id="y116" data-nokey></div>
+    <div class="own" id="freq" data-nokey></div>
     <div class="tl-scroll"><table class="tl" id="tl" data-nokey></table></div>
   </section>
 
@@ -203,7 +211,6 @@ const PROFS=[
  {k:"wangcy",n:"王之彥",t:"系主任",cat:"財務金融",sn:197,res:["財務工程","風險管理","信用風險與隨機利率模型","隨機波動度模型","資產定價與行為財務","交易策略與機器學習"],edu:"台大國企博士；台大資工碩士、學士",c:"金融計算；國際金融與資產管理實務；資產配置與風險控管實務",
   iv:[{y:114,s:3,kind:"個人資料（個人關）"},
       {y:113,s:2,kind:"邏輯"}]},
- {k:"hungmw",n:"洪茂蔚",t:"講座教授",cat:"財務金融",sn:179,res:["投資管理","公司理財","衍生性金融商品"],edu:"西北大學 財務金融博士",c:"未查得碩班課程",
   iv:[{y:116,s:3,kind:"個人資料（個人關）"}]},
  {k:"huanghc",n:"黃恆獎",t:"專任教授",cat:"行銷",sn:181,res:["國際企業管理","國際行銷","行銷研究與計量模型","消費者行為"],edu:"密西根大學 企業管理博士",c:"行銷計量模式一；行銷管理",iv:[]},
  {k:"linhw",n:"林修葳",t:"專任教授",cat:"財務金融",sn:184,res:["國際財務管理","財務管理","管理會計","財務報表分析","財務金融創新","金融機構風險管理"],edu:"史丹佛大學 商學博士；紐約大學 MBA；台大商學系工管組",c:"財務管理；財務報表分析",
@@ -287,30 +294,25 @@ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=
   });
 })();
 
-/* 116: site owner's own record (questions only) */
+/* 面試官出現次數：從 TL 統計 */
 (function(){
-  const box=$("#y116");
-  const h=el("div");h.appendChild(el("h3",null,"116 學年度口試題目"));
-  h.appendChild(el("p","note","本站作者的口試紀錄。"+Q116.note));box.appendChild(h);
-  const g=el("div","stages");
-  Q116.stages.forEach(st=>{
-    const b=el("div","st");const hd=el("div","st-head");
-    hd.appendChild(el("b",null,"第 "+st.s+" 關"));hd.appendChild(el("span",null,st.kind));
-    if(IN.has(st.who)){const w=el("button","who in",st.who);w.type="button";w.onclick=()=>jump(st.who);hd.appendChild(w)}
-    else hd.appendChild(el("span","who out",st.who));
-    b.appendChild(hd);b.appendChild(el("p","how",st.how));
-    if(st.topic){const t=el("p","topic","文章主題："+st.topic+" ");
-      if(st.link){const a=el("a",null,"原文 ↗");a.href=st.link;a.target="_blank";a.rel="noopener";t.appendChild(a)}
-      b.appendChild(t)}
-    const ol=el("ol");st.q.forEach(q=>ol.appendChild(el("li",null,q)));b.appendChild(ol);
-    g.appendChild(b);
-  });
-  box.appendChild(g);
+  const box=$("#freq");const m={};let known=0,total=0;
+  TL.forEach(([y,...cells])=>cells.forEach(([who,kind])=>{total++;if(who.includes("未知"))return;known++;
+    who.split("、").forEach(w=>{if(w.includes("未知"))return;const o=m[w]=m[w]||{n:0,ys:[],k:[]};o.n++;o.ys.push(y);if(!o.k.includes(kind))o.k.push(kind)})}));
+  const list=Object.entries(m).sort((a,b)=>b[1].n-a[1].n||b[1].ys[0]-a[1].ys[0]);
+  const max=list.length?list[0][1].n:1;
+  const h=el("div");h.appendChild(el("h3",null,"誰最常當面試官"));
+  h.appendChild(el("p","note",TL[TL.length-1][0]+"–"+TL[0][0]+" 學年度，已知 "+known+" / "+total+" 關的面試官，共 "+list.length+" 位。"));box.appendChild(h);
+  const ol=el("ol","freq");
+  list.forEach(([w,o])=>{const li=el("li");let nm;
+    if(IN.has(w)){nm=el("button","who in",w);nm.type="button";nm.onclick=()=>jump(w)}else nm=el("span","who out",w);
+    const bar=el("span","bar");bar.style.setProperty("--w",(o.n/max*100)+"%");
+    li.append(nm,bar,el("span","n",o.n+" 次"),el("span","ys",o.ys.join("、")+"｜"+o.k.join("、")));ol.appendChild(li)});
+  box.appendChild(ol);
 })();
 function goOwn(){
-  showTab("tl");const b=$("#y116");
+  showTab("tl");const b=$("#freq");
   b.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
-  b.classList.add("flash");setTimeout(()=>b.classList.remove("flash"),1600);
 }
 
 
@@ -369,7 +371,7 @@ function card(p){
       const b=el("div","iv");const h=el("div","iv-head");
       h.appendChild(el("span","iv-yr",i.y+" 學年度"));h.appendChild(el("span","iv-st","第 "+i.s+" 關"));h.appendChild(el("span","iv-kind",i.kind));
       b.appendChild(h);
-      if(i.y===116){const o=el("button","who in","看 116 題目 ↓");o.type="button";o.onclick=goOwn;b.appendChild(o);list.appendChild(b);return}
+      if(i.y===116){const o=el("a",null,"本站口試紀錄 →");o.href="my.html#record";b.appendChild(o);list.appendChild(b);return}
       const s=el("a",null,"心得來源 ↗");s.href=SRC[i.y];s.target="_blank";s.rel="noopener";b.appendChild(s);
       list.appendChild(b);
     });
@@ -427,12 +429,12 @@ render();
 /* deep links: #y116 #tl #src #cards #p-<key> */
 function follow(){const h=decodeURIComponent(location.hash.slice(1));
   if(h==="src"){location.replace("reviews.html");return}
-  if(h==="y116")setTimeout(goOwn,50);
+  if(h==="y116"||h==="freq")setTimeout(goOwn,50);
   else if(TABS.includes(h))showTab(h);
   else if(h.startsWith("p-")){const p=PROFS.find(x=>"p-"+x.k===h);if(p)setTimeout(()=>jump(p.n),50)}
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261123135438"></script>
+<script src="assets/site.js?v=20261123140158"></script>
 </body>
 </html>
