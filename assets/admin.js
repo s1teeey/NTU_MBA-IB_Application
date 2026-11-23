@@ -5,7 +5,7 @@ const OWNER="s1teeey";
 const SITES={
   "NTU_MBA-IB_Application":{name:"推甄分享｜台大商研、台大國企",pages:[
     ["index.html","首頁"],["sharing.html","簡章細則"],["docs.html","書審"],["interview.html","口試"],
-    ["reviews.html","歷年心得文"],["my.html","個人心得"],["faq.html","FAQ"]],
+    ["reviews.html","歷年心得文"],["ba.html","歷年面試官・商研"],["ib.html","歷年面試官・國企"],["my.html","個人心得"],["faq.html","FAQ"]],
     lists:[["assets/sources.js","心得文清單"]]},
   "NTHU_Transfer":{name:"寒轉分享｜清大經濟",pages:[
     ["index.html","首頁"],["sharing.html","簡章細則"],["story.html","上榜心得"],["resources.html","軍火庫"]]},

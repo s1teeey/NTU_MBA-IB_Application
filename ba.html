@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="商研歷年面試官：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261122233734">
+<link rel="stylesheet" href="assets/site.css?v=20261123135130">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -173,8 +173,8 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
   </div>
 
   <section id="panel-tl" role="tabpanel" aria-labelledby="tab-tl" hidden>
-    <div class="own" id="y116"></div>
-    <div class="tl-scroll"><table class="tl" id="tl"></table></div>
+    <div class="own" id="y116" data-nokey></div>
+    <div class="tl-scroll"><table class="tl" id="tl" data-nokey></table></div>
   </section>
 
   <section id="panel-cards" role="tabpanel" aria-labelledby="tab-cards">
@@ -183,9 +183,9 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
       <button class="chip" id="f-iv" data-f="iv" aria-pressed="false">曾任面試官</button>
       <button class="chip" id="f-recent" data-f="recent" aria-pressed="false">近五年曾出現</button>
       <input type="search" class="psearch" id="psearch" placeholder="搜尋領域、課程、學歷" aria-label="搜尋教授" autocomplete="off">
-      <span class="count" id="count"></span>
+      <span class="count" id="count" data-nokey></span>
     </div>
-    <div class="grid" id="grid"></div>
+    <div class="grid" id="grid" data-nokey></div>
   </section>
 </main>
 
@@ -424,6 +424,6 @@ function follow(){const h=decodeURIComponent(location.hash.slice(1));
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261122233734"></script>
+<script src="assets/site.js?v=20261123135130"></script>
 </body>
 </html>
