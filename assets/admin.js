@@ -83,6 +83,10 @@ ul.check{display:block!important}
 .adm-ctl button{border:0;background:none;padding:5px 7px;border-radius:4px;cursor:pointer;color:#121322;font:inherit}
 .adm-ctl button:hover{background:#F1ECFD}
 .adm-ctl .lbl{padding:5px 6px;color:#9496A3}
+.adm-ctl .drag{cursor:grab;font-size:14px;color:#9496A3}
+.adm-drop{position:absolute;z-index:97;pointer-events:none;background:#8F5CF0;border-radius:2px}
+.adm-drop.side{background:rgba(143,92,240,.12);border:2px dashed #8F5CF0}
+.adm-dragging{opacity:.35}
 .adm-rs{position:absolute;z-index:98;width:8px;cursor:ew-resize;border-radius:4px;background:repeating-linear-gradient(#8F5CF0 0 2px,transparent 2px 5px);opacity:.35}
 .adm-rs:hover{opacity:1}
 .adm-link{position:absolute;z-index:100;display:flex;gap:4px;align-items:center;background:#fff;border:1px solid #E6E5EB;border-radius:8px;padding:6px;box-shadow:0 6px 20px rgba(18,19,34,.12);font:600 13px/1 system-ui}
@@ -206,7 +210,7 @@ function setupBlocks(d,main){
     target=el;if(!el){ctl.hidden=true;rs.hidden=true;return}
     el.classList.add("adm-hover");
     const isSec=el.tagName==="SECTION";
-    ctl.innerHTML='<span class="lbl">'+(isSec?"區塊":"段落")+'</span><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button>'+(isSec?'<button data-a="add" title="在下面新增區塊">＋</button>':'<button data-a="dup" title="複製">⧉</button><button data-a="side" title="標題：連同內容和下一個標題並排｜圖片：放到這個區塊上面全部內容的右邊｜清單：項目橫排｜段落：和下一段並排（再按一次取消）">並排</button>')+'<button data-a="del" title="刪除">✕</button>';
+    ctl.innerHTML=(isSec?"":'<button data-a="drag" class="drag" title="按住拖曳搬移｜拖到別段右半邊＝並排">⠿</button>')+'<span class="lbl">'+(isSec?"區塊":"段落")+'</span><button data-a="up" title="上移">↑</button><button data-a="down" title="下移">↓</button>'+(isSec?'<button data-a="add" title="在下面新增區塊">＋</button>':'<button data-a="dup" title="複製">⧉</button><button data-a="side" title="標題：連同內容和下一個標題並排｜圖片：放到這個區塊上面全部內容的右邊｜清單：項目橫排｜段落：和下一段並排（再按一次取消）">並排</button>')+'<button data-a="del" title="刪除">✕</button>';
     const r=el.getBoundingClientRect();
     ctl.hidden=false;
     ctl.style.top=(r.top+d.defaultView.scrollY-30)+"px";
@@ -256,6 +260,42 @@ function setupBlocks(d,main){
     renumber(main);place(el);
   });
   d.defaultView.addEventListener("scroll",()=>{if(target)place(target)},{passive:true});
+  // 拖曳搬移：按住 ⠿ 拖到別的段落上下＝移過去；拖到右半邊＝和它並排；拖到欄位空白處＝放進那一欄
+  const ind=d.createElement("div");ind.className="adm-drop";ind.hidden=true;d.body.appendChild(ind);
+  const grpOf=el=>{if(!/^H[2-4]$/.test(el.tagName))return [el];const L=+el.tagName[1],g=[el];let n=el.nextElementSibling;while(n&&!(/^H[2-4]$/.test(n.tagName)&&+n.tagName[1]<=L)){g.push(n);n=n.nextElementSibling}return g};
+  const tidy=()=>{main.querySelectorAll(".cols>.col").forEach(c=>{if(!c.children.length)c.remove()});
+    main.querySelectorAll(".cols").forEach(c=>{const ks=[...c.children];if(!ks.length)c.remove();else if(ks.length===1){const k=ks[0];c.replaceWith(...(k.matches(".col")?[...k.children]:[k]))}})};
+  ctl.addEventListener("mousedown",e=>{
+    if(!e.target.closest('[data-a="drag"]')||!target||target.tagName==="SECTION")return;
+    const items=grpOf(target),w=d.defaultView;let drop=null;
+    dragging=true;ctl.hidden=true;rs.hidden=true;target.classList.remove("adm-hover");
+    items.forEach(n=>n.classList.add("adm-dragging"));
+    const mv=ev=>{
+      ind.hidden=true;drop=null;
+      const t=d.elementFromPoint(ev.clientX,ev.clientY);if(!t||!main.contains(t))return;
+      const b=blockOf(t);if(!b||b.tagName==="SECTION"||b.matches(".sec-head"))return;
+      if(items.some(n=>n===b||n.contains(b)||b.contains(n)))return;
+      const r=b.getBoundingClientRect(),sx=w.scrollX,sy=w.scrollY;
+      const mode=b.matches(".col")?"in":(!b.closest(".cols")&&ev.clientX>r.left+r.width*0.6)?"side":(ev.clientY<r.top+r.height/2?"before":"after");
+      drop={b,mode};ind.className="adm-drop "+mode;ind.hidden=false;
+      const st=mode==="side"?{left:r.left+r.width*0.6,top:r.top,width:r.width*0.4,height:r.height}
+        :{left:r.left,top:(mode==="before"?r.top-6:r.bottom+3),width:r.width,height:3};
+      ind.style.left=(st.left+sx)+"px";ind.style.top=(st.top+sy)+"px";ind.style.width=st.width+"px";ind.style.height=st.height+"px";
+    };
+    const up=()=>{
+      d.removeEventListener("mousemove",mv);d.removeEventListener("mouseup",up);dragging=false;ind.hidden=true;
+      items.forEach(n=>n.classList.remove("adm-dragging"));
+      if(drop){const {b,mode}=drop;
+        if(mode==="before")b.before(...items);
+        else if(mode==="after")b.after(...items);
+        else if(mode==="in")b.append(...items);
+        else{const tg=grpOf(b),cw=d.createElement("div");cw.className="cols";tg[0].before(cw);
+          [tg,items].forEach(g=>{const c=d.createElement("div");c.className="col";c.append(...g);cw.append(c)})}
+        tidy();hist.push();renumber(main)}
+      place(null);
+    };
+    d.addEventListener("mousemove",mv);d.addEventListener("mouseup",up);
+  });
 }
 function newSection(d){
   const s=d.createElement("section");
@@ -279,7 +319,7 @@ function serialize(forPublish){
   main.querySelectorAll("[data-nokey]").forEach((n,i)=>{if(cur.nokey&&i<cur.nokey.length)n.innerHTML=cur.nokey[i]});
   main.querySelectorAll("[data-form] a.form-link").forEach(a=>{a.setAttribute("href","#");a.removeAttribute("target");a.removeAttribute("rel")});
   main.querySelectorAll(".today").forEach((n,i)=>{if(cur.today&&i<cur.today.length)n.innerHTML=cur.today[i]});
-  main.querySelectorAll(".adm-hover").forEach(n=>n.classList.remove("adm-hover"));
+  main.querySelectorAll(".adm-hover,.adm-dragging").forEach(n=>n.classList.remove("adm-hover","adm-dragging"));
   main.querySelectorAll("[class='']").forEach(n=>n.removeAttribute("class"));
   main.querySelectorAll("[contenteditable]").forEach(n=>n.removeAttribute("contenteditable"));
   main.removeAttribute("contenteditable");
