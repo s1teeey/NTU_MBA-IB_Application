@@ -160,6 +160,14 @@ function setupEditor(){
     if((e.metaKey||e.ctrlKey)&&e.key==="s"){e.preventDefault();doPreview()}
     if((e.metaKey||e.ctrlKey)&&(e.key==="z"||e.key==="Z")){e.preventDefault();hist.go(e.shiftKey?1:-1)}
     if((e.metaKey||e.ctrlKey)&&e.key==="y"){e.preventDefault();hist.go(1)}
+    if(e.key==="Tab"&&!e.shiftKey){ // 口試題目：按 Tab 在下面加一行回答
+      const sel=d.getSelection(),n=sel&&sel.anchorNode,el=n&&(n.nodeType===1?n:n.parentElement);
+      const li=el&&el.closest(".qa>li");if(!li)return;e.preventDefault();hist.push();
+      let ul=li.querySelector(":scope>ul.a");if(!ul){ul=d.createElement("ul");ul.className="a";li.appendChild(ul)}
+      const cur=el.closest("ul.a>li"),nl=d.createElement("li");nl.textContent="：";
+      if(cur&&cur.parentElement===ul)cur.after(nl);else ul.appendChild(nl);
+      const r=d.createRange();r.selectNodeContents(nl);r.collapse(false);sel.removeAllRanges();sel.addRange(r);
+    }
   });
   // 圖片預留位置：點一下換成圖片
   main.addEventListener("click",e=>{if(e.target.closest("#src")&&(SITE.lists||[]).length){e.preventDefault();openPage(SITE.lists[0][0]);return}});

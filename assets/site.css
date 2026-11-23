@@ -380,3 +380,4 @@ ol[data-check] li small,ul[data-check] li small,.files li small{display:block;co
 .prose blockquote.quote p{margin:0;font-style:italic;line-height:1.7}
 .prose blockquote.quote cite{display:block;margin-top:6px;font-style:normal;font-size:13px;color:var(--muted)}
 .prose blockquote.quote cite::before{content:"— "}
+.stage-h .who{margin-left:10px;color:var(--muted);font-weight:400;font-size:13.5px}
