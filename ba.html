@@ -7,7 +7,7 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="商研歷年面試官：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=20261123141232">
+<link rel="stylesheet" href="assets/site.css?v=20261123141537">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
@@ -21,7 +21,7 @@ table.tl{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
 .tl .who{font-weight:700}
 .tl .who.in{color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;background:none;border:0;padding:0;font:inherit;font-weight:700}
 .tl .who.out{color:var(--muted);font-weight:500}
-.tl .kind{display:block;font-size:12px;color:var(--muted)}
+.tl th small.kc{font-size:.92em;font-weight:400;color:var(--faint);margin-left:6px;letter-spacing:0}
 .tl .unk{color:var(--muted);opacity:.7}
 
 /* tabs */
@@ -77,6 +77,9 @@ ul.res{margin:0;padding-left:18px;display:grid;gap:2px}
 .who small.prof{font-size:.78em;font-weight:400;color:var(--muted);margin-left:3px;text-decoration:none;display:inline-block}
 .freq.cut li:nth-child(n+6){display:none}
 .freq-more{justify-self:start;background:none;border:0;padding:0;font:inherit;font-size:13.5px;color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.freq:not(.cut){display:block;columns:2;column-gap:56px}
+.freq:not(.cut) li{break-inside:avoid;margin-bottom:8px}
+@media (max-width:900px){.freq:not(.cut){columns:1}}
 .freq{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .freq li{display:grid;grid-template-columns:7.5em minmax(60px,180px) 3.5em minmax(0,1fr);gap:12px;align-items:center;font-size:14px}
 .freq .who{white-space:nowrap;justify-self:start}
@@ -264,18 +267,25 @@ const TL=[
 ];
 
 const $=s=>document.querySelector(s);
+/* 關卡類型只分三種：個人、英文、邏輯；各年順序以最新一年為準，舊年份依類型對到同一欄 */
+const CAT=k=>/英文/.test(k)?"英文":/個人|基本資料|生涯/.test(k)?"個人":"邏輯";
+const ORDER=TL[0].slice(1).map(([,k])=>CAT(k));
+const placeCells=cells=>{const out=new Array(ORDER.length).fill(null),rest=[];
+  cells.forEach(c=>{const i=ORDER.indexOf(CAT(c[1]));if(i>=0&&!out[i])out[i]=c;else rest.push(c)});
+  return out.map(c=>c||rest.shift()||["未知",""])};
 const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
 
 /* timeline */
 (function(){
   const t=$("#tl");
   const hr=t.createTHead().insertRow();
-  ["學年度","第 1 關","第 2 關","第 3 關"].forEach(h=>{const th=el("th",null,h);th.scope="col";hr.appendChild(th)});
+  {const th=el("th",null,"學年度");th.scope="col";hr.appendChild(th)}
+  ORDER.forEach((c,i)=>{const th=el("th",null,"第 "+(i+1)+" 關");th.appendChild(el("small","kc",c));th.scope="col";hr.appendChild(th)});
   const tb=t.createTBody();
   TL.forEach(([y,...cells])=>{
     const r=tb.insertRow();
     r.appendChild(el("td","yr",y+"（"+(y+1911-1)+"）"));
-    cells.forEach(([who,kind])=>{
+    placeCells(cells).forEach(([who])=>{
       const td=r.insertCell();
       who.split("、").forEach((w,i)=>{
         if(i)td.appendChild(document.createTextNode("、"));
@@ -283,7 +293,6 @@ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=
         else if(IN.has(w)){const b=el("button","who in",w);b.type="button";b.onclick=()=>jump(w);b.appendChild(el("small","prof","教授"));td.appendChild(b)}
         else{const o=el("span","who out",w);o.appendChild(el("small","prof","教授"));td.appendChild(o)}
       });
-      td.appendChild(el("span","kind",kind));
     });
   });
 })();
@@ -292,7 +301,7 @@ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=
 (function(){
   const box=$("#freq");const m={};let known=0,total=0;
   TL.forEach(([y,...cells])=>cells.forEach(([who,kind])=>{total++;if(who.includes("未知"))return;known++;
-    who.split("、").forEach(w=>{if(w.includes("未知"))return;const o=m[w]=m[w]||{n:0,ys:[],k:[]};o.n++;o.ys.push(y);if(!o.k.includes(kind))o.k.push(kind)})}));
+    who.split("、").forEach(w=>{if(w.includes("未知"))return;const o=m[w]=m[w]||{n:0,ys:[],k:[]};o.n++;o.ys.push(y);if(!o.k.includes(CAT(kind)))o.k.push(CAT(kind))})}));
   const list=Object.entries(m).sort((a,b)=>b[1].n-a[1].n||b[1].ys[0]-a[1].ys[0]);
   const max=list.length?list[0][1].n:1;
   const h=el("div");h.appendChild(el("h3",null,"不完全統計"));
@@ -366,7 +375,7 @@ function card(p){
     const list=el("div","iv-list");
     p.iv.forEach(i=>{
       const b=el("div","iv");const h=el("div","iv-head");
-      h.appendChild(el("span","iv-yr",i.y+" 學年度"));h.appendChild(el("span","iv-st","第 "+i.s+" 關"));h.appendChild(el("span","iv-kind",i.kind));
+      h.appendChild(el("span","iv-yr",i.y+" 學年度"));h.appendChild(el("span","iv-st","第 "+i.s+" 關"));h.appendChild(el("span","iv-kind",CAT(i.kind)));
       b.appendChild(h);
       if(i.y===116){const o=el("a",null,"本站口試紀錄 →");o.href="my.html#record";b.appendChild(o);list.appendChild(b);return}
       const s=el("a",null,"心得來源 ↗");s.href=SRC[i.y];s.target="_blank";s.rel="noopener";b.appendChild(s);
@@ -432,6 +441,6 @@ function follow(){const h=decodeURIComponent(location.hash.slice(1));
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=20261123141232"></script>
+<script src="assets/site.js?v=20261123141537"></script>
 </body>
 </html>

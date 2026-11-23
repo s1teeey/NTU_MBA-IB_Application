@@ -8,7 +8,7 @@
 <meta content="Royee Chu" name="author"/>
 <meta content="台大商研所、國企所推甄口試：面試題型、準備方式，以及 106–116 學年度心得文。" name="description"/>
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link href="assets/site.css?v=20261123141232" rel="stylesheet"/>
+<link href="assets/site.css?v=20261123141537" rel="stylesheet"/>
 <style>
 .fmt{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px 48px}
 .fmt h3{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:8px;border-bottom:2px solid var(--rule)}
@@ -38,6 +38,7 @@
 .more td.y{font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap}
 .more td small{display:block;color:var(--faint);font-size:12px}
 .more .unk{color:var(--faint)}
+.more th small.kc{font-weight:400;color:var(--faint);margin-left:4px}
 .more small.prof,.more td small.prof{display:inline;font-size:.8em;font-weight:400;color:var(--muted);margin-left:2px}
 .tips{list-style:none;margin:0;padding:0}
 .tips li{padding:18px 0;border-top:1px solid var(--line);display:grid;gap:4px}
@@ -189,10 +190,13 @@
         });
       }else{
         const t=mk("table");const hr=t.createTHead().insertRow();
-        ["學年度","第 1 關","第 2 關","第 3 關"].forEach(x=>hr.appendChild(mk("th",null,x)));
+        const CAT=k=>/英文/.test(k)?"英文":/個人|基本資料|生涯/.test(k)?"個人":"邏輯";
+        const ORDER=data.TL[0].slice(1).map(([,k])=>CAT(k));
+        const place=cells=>{const out=new Array(ORDER.length).fill(null),rest=[];cells.forEach(c=>{const i=ORDER.indexOf(CAT(c[1]));if(i>=0&&!out[i])out[i]=c;else rest.push(c)});return out.map(c=>c||rest.shift()||["未知",""])};
+        hr.appendChild(mk("th",null,"學年度"));ORDER.forEach((c,i)=>{const th=mk("th",null,"第 "+(i+1)+" 關");th.appendChild(mk("small","kc",c));hr.appendChild(th)});
         const tb=t.createTBody();
         data.TL.filter(([y])=>y>=112).forEach(([y,...cells])=>{const r=tb.insertRow();r.appendChild(mk("td","y",String(y)));
-          cells.forEach(([who,kind])=>{const c=r.insertCell();const nm=mk("span",who.includes("未知")?"unk":null);who.split("、").forEach((w,i)=>{if(i)nm.appendChild(document.createTextNode("、"));nm.appendChild(document.createTextNode(w));if(!w.includes("未知"))nm.appendChild(mk("small","prof","教授"))});c.appendChild(nm);c.appendChild(mk("small",null,kind))})});
+          place(cells).forEach(([who])=>{const c=r.insertCell();const nm=mk("span",who.includes("未知")?"unk":null);who.split("、").forEach((w,i)=>{if(i)nm.appendChild(document.createTextNode("、"));nm.appendChild(document.createTextNode(w));if(!w.includes("未知"))nm.appendChild(mk("small","prof","教授"))});c.appendChild(nm)})});
         body.appendChild(t);
       }
       det.dataset.done="1";
@@ -200,6 +204,6 @@
   }));
 })();
 </script>
-<script src="assets/site.js?v=20261123141232"></script>
+<script src="assets/site.js?v=20261123141537"></script>
 </body>
 </html>
