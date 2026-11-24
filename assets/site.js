@@ -97,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=1795510742";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=1795510833";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
@@ -210,3 +210,16 @@ function buildIndex(){
   });
 })();
 
+
+/* 點內文圖片放大看原圖；點任一處或按 Esc 關閉。後台編輯區不啟用。 */
+(function(){
+  if(window.frameElement&&window.frameElement.id==="ed")return;
+  let box=null;
+  const close=()=>{if(box){box.hidden=true;document.body.style.overflow=""}};
+  document.addEventListener("click",e=>{
+    const img=e.target.closest(".prose figure.shot img");if(!img||e.target.closest("a"))return;
+    if(!box){box=document.createElement("div");box.className="lbox";box.setAttribute("role","dialog");box.setAttribute("aria-label","原圖");box.appendChild(document.createElement("img"));box.onclick=close;document.body.appendChild(box)}
+    const b=box.querySelector("img");b.src=img.currentSrc||img.src;b.alt=img.alt||"";box.hidden=false;document.body.style.overflow="hidden";
+  });
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+})();
