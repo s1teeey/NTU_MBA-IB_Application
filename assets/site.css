@@ -394,8 +394,3 @@ ol[data-check] li small,ul[data-check] li small,.files li small{display:block;co
 .lidx .grp:hover .sub{display:grid}
 .lidx .sub a{display:block;border-left:0;padding:4px 0 4px 40px;font-size:13px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lidx .sub a:hover{color:var(--ink)}
-/* 文章版（書審頁）：左右都縮排，文字與圖片同寬 */
-body.article main>.page-head,body.article main>.stack{width:87%;margin-left:auto;margin-right:auto}
-body.article .prose>*{max-width:none}
-body.article .prose>figure.shot.wide,body.article .prose>.shots.pair{width:100%;max-width:none;justify-self:stretch}
-@media (max-width:760px){body.article main>.page-head,body.article main>.stack{width:auto}}
