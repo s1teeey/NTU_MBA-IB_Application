@@ -381,10 +381,16 @@ ol[data-check] li small,ul[data-check] li small,.files li small{display:block;co
 .prose blockquote.quote cite{display:block;margin-top:6px;font-style:normal;font-size:13px;color:var(--muted)}
 .prose blockquote.quote cite::before{content:"— "}
 .stage-h .who{margin-left:10px;color:var(--muted);font-weight:400;font-size:13.5px}
-.prose>figure.shot.wide,.prose>.shots.pair{max-width:87%}
+.prose>figure.shot.wide,.prose>.shots.pair{max-width:87%;width:87%;justify-self:center}
+.prose>figure.shot.wide figcaption{text-align:left}
 @media (max-width:760px){.prose>figure.shot.wide,.prose>.shots.pair{max-width:none}}
 .prose>figure.shot.wide img{width:100%}
 .shots.pair{flex-wrap:nowrap;align-items:flex-start}
 .shots.pair>figure.shot{margin:0;min-width:0}
 .shots.pair>figure.shot img{width:100%}
 @media (max-width:640px){.shots.pair{flex-wrap:wrap}.shots.pair>figure.shot{flex:1 1 100%!important}}
+.lidx .grp{display:grid}
+.lidx .sub{display:none;padding:2px 0 6px 0;border-left:2px solid var(--line)}
+.lidx .grp:hover .sub{display:grid}
+.lidx .sub a{display:block;border-left:0;padding:4px 0 4px 40px;font-size:13px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lidx .sub a:hover{color:var(--ink)}

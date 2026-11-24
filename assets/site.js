@@ -97,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=1795507531";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=1795507791";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
@@ -159,7 +159,14 @@ function buildIndex(){
     const t=hc.textContent.replace(no,"").replace(/\s+/g," ").trim();
     a.innerHTML='<span class="n">'+no+'</span><span class="t"></span>';a.querySelector(".t").textContent=t;
     a.onclick=e=>{e.preventDefault();sec.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})};
-    nav.appendChild(a);return [sec,a];
+    const g=document.createElement("div");g.className="grp";g.appendChild(a);
+    const subs=[...sec.querySelectorAll("h3")].filter(x=>!x.closest("aside,details,.rec"));
+    if(subs.length>1){const sb=document.createElement("div");sb.className="sub";
+      subs.forEach(x=>{const c=x.cloneNode(true);c.querySelectorAll("small,.who").forEach(y=>y.remove());
+        const s=document.createElement("a");s.href="#";s.textContent=c.textContent.replace(/\s+/g," ").trim();s.title=s.textContent;
+        s.onclick=e=>{e.preventDefault();scrollTo({top:x.getBoundingClientRect().top+scrollY-90,behavior:reduce?"auto":"smooth"})};sb.appendChild(s)});
+      g.appendChild(sb)}
+    nav.appendChild(g);return [sec,a];
   });
   document.body.appendChild(nav);
   const mark=()=>{
