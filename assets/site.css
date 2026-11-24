@@ -396,12 +396,12 @@ ol[data-check] li small,ul[data-check] li small,.files li small{display:block;co
 .lidx .sub a:hover{color:var(--ink)}
 /* 文章版（書審頁）：左右都縮排，文字與圖片同寬 */
 body.article main>.stack{margin-right:0}
-@media (min-width:1440px){body.article main>.stack{margin-right:-71px}}
 body.article .prose>*{max-width:none}
-body.article .prose>figure.shot.wide,body.article .prose>.shots.pair{width:80%;max-width:none;justify-self:center}
+body.article .prose>figure.shot.wide,body.article .prose>.shots.pair{width:48%;max-width:none;justify-self:center}
 @media (max-width:760px){body.article .prose>figure.shot.wide,body.article .prose>.shots.pair{width:100%}}
+@media (min-width:761px) and (max-width:1100px){body.article .prose>figure.shot.wide,body.article .prose>.shots.pair{width:72%}}
 /* 點圖看原圖 */
 .prose figure.shot img{cursor:zoom-in}
 .lbox{position:fixed;inset:0;z-index:200;background:rgba(15,12,25,.82);display:grid;place-items:center;padding:24px;cursor:zoom-out}
-.lbox img{max-width:100%;max-height:100%;object-fit:contain;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.lbox img{max-width:60%;max-height:60%;object-fit:contain;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.4)}
 .lbox[hidden]{display:none}
