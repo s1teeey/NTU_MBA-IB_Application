@@ -97,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=1795507791";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=1795508179";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
@@ -208,4 +208,14 @@ function buildIndex(){
     app.addEventListener("submit",e=>{e.preventDefault();const inp=app.querySelector(".ck-add input");const t=inp.value.trim();if(!t)return;st.items.push({h:esc(t),n:"",done:false});st.custom=true;save();draw();app.querySelector(".ck-add input").focus()});
     draw();
   });
+})();
+
+/* 書審頁的大圖：以整個視窗置中（不管左側目錄），不超出畫面。後台編輯區不啟用。 */
+(function(){
+  if(window.frameElement&&window.frameElement.id==="ed")return;
+  const els=[...document.querySelectorAll(".prose>figure.shot.wide,.prose>.shots.pair")];if(!els.length)return;
+  const fit=()=>{const vw=document.documentElement.clientWidth;
+    els.forEach(el=>{el.style.transform="";if(vw<=760)return;const r=el.getBoundingClientRect();
+      let dx=(vw-r.width)/2-r.left;dx=Math.max(16-r.left,Math.min(dx,vw-16-r.right));el.style.transform=dx?"translateX("+Math.round(dx)+"px)":""})};
+  fit();addEventListener("resize",fit);addEventListener("load",fit);
 })();
