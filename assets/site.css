@@ -408,3 +408,8 @@ body.article .page-head>.sw-t{grid-column:2;grid-row:3;align-self:center}
 .lbox{position:fixed;inset:0;z-index:200;background:rgba(15,12,25,.82);display:grid;place-items:center;padding:24px;cursor:zoom-out}
 .lbox img{max-width:60%;max-height:60%;object-fit:contain;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.4)}
 .lbox[hidden]{display:none}
+/* 個人心得：口試紀錄分系所小標 */
+.rec-dept{font-size:20px;margin-top:8px;padding-left:10px;border-left:4px solid var(--accent)}
+.rec-dept.d-ba{border-left-color:var(--ba)}
+.rec-dept.d-ib{border-left-color:var(--ib)}
+.rec+.rec-dept{margin-top:40px}

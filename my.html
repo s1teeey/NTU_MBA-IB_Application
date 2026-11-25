@@ -5,8 +5,8 @@
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <title>個人心得｜推甄分享｜台大商研、台大國企</title>
 <meta content="116 學年度台大商研、台大國企推甄：口試紀錄、口試與書審準備、推甄心得。" name="description"/>
-<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t;var r=localStorage.getItem("rec");document.documentElement.dataset.rec=r==="ib"?"ib":"ba"}catch(e){}</script>
-<link href="assets/site.css?v=1795594062" rel="stylesheet"/>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link href="assets/site.css?v=1795594890" rel="stylesheet"/>
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 </head>
@@ -32,9 +32,8 @@
 </section>
 
 <section id="record">
-  <div class="sec-head"><h2><span class="no">02</span>口試紀錄</h2>
-    <nav class="rec-switch" aria-label="切換系所"><button type="button" data-v="ba" class="d-ba">商研</button><button type="button" data-v="ib" class="d-ib">國企</button></nav>
-  </div>
+  <div class="sec-head"><h2><span class="no">02</span>口試紀錄</h2></div>
+  <h3 class="rec-dept d-ba">商研</h3>
   <div class="rec" data-rec="ba">
     <div class="prose">
     <p>口試共三關，各四分鐘。</p>
@@ -67,6 +66,7 @@
     <p class="after" style="max-width: 960px;">兩題追問都答得不太好，好像也根本沒有把 AI 當成主要的手段，就盡可能把我腦中思考的脈絡講出來。</p>
   </div>
   </div>
+  <h3 class="rec-dept d-ib">國企</h3>
   <div class="rec" data-rec="ib">
     <div class="prose">
     <p>口試共三關，各五分鐘。</p>
@@ -147,10 +147,6 @@
 </section>
 </div>
 </main>
-<script>
-/* 口試紀錄：商研／國企切換（狀態放在 html 上，不改正文） */
-document.querySelectorAll(".rec-switch button").forEach(b=>b.addEventListener("click",()=>{document.documentElement.dataset.rec=b.dataset.v;try{localStorage.setItem("rec",b.dataset.v)}catch(e){}}));
-</script>
-<script src="assets/site.js?v=1795594062"></script>
+<script src="assets/site.js?v=1795594890"></script>
 </body>
 </html>
