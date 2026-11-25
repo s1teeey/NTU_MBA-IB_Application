@@ -415,3 +415,5 @@ body.article .page-head>.sw-t{grid-column:2;grid-row:3;align-self:center}
 .rec+.rec-dept{margin-top:40px}
 /* 個人心得：推甄結果、個人背景不並排 */
 #result .profile,#bg .profile{grid-template-columns:1fr;gap:8px}
+/* 並排清單：每項在自己那一欄置中 */
+.prose ul.row.ctr>li{justify-self:center;margin-left:22px}

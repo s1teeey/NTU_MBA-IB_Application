@@ -96,7 +96,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=1795617492";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=1795617926";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
@@ -227,7 +227,7 @@ function buildIndex(){
    每排圖片的寬度＝上方最近一條小標分隔線的寬度（並排的等比例縮放）。後台編輯區不啟用。 */
 (function(){
   if(!document.body.classList.contains("article"))return;
-  let v="c";try{v=localStorage.getItem("lay")||"c"}catch(e){}
+  let v="l";try{v=localStorage.getItem("lay2")||"l"}catch(e){}
   const set=x=>{v=x;document.documentElement.dataset.lay=x;fit()};
   const rows=[...document.querySelectorAll(".prose>figure.shot.wide,.prose>.shots.pair")];
   // 同一節的圖片排都用「該節第一條小標分隔線」的寬度；緊鄰跨頁圖的兩欄，分隔線對齊圖中的兩段紫線
@@ -241,8 +241,8 @@ function buildIndex(){
   document.documentElement.dataset.lay=v;
   const h=document.querySelector(".page-head");
   if(h){const sw=document.createElement("button");sw.type="button";sw.className="sw-t";sw.setAttribute("role","switch");
-    sw.innerHTML='<span class="knob"></span>置中';sw.setAttribute("aria-checked",String(v==="c"));
-    sw.onclick=()=>{set(v==="c"?"l":"c");sw.setAttribute("aria-checked",String(v==="c"));try{localStorage.setItem("lay",v)}catch(e){}};
+    sw.innerHTML='<span class="knob"></span>文章置中';sw.setAttribute("aria-checked",String(v==="c"));
+    sw.onclick=()=>{set(v==="c"?"l":"c");sw.setAttribute("aria-checked",String(v==="c"));try{localStorage.setItem("lay2",v)}catch(e){}};
     h.appendChild(sw)}
   fit();addEventListener("resize",fit);addEventListener("load",fit);
 })();
