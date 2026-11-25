@@ -398,7 +398,6 @@ ol[data-check] li small,ul[data-check] li small,.files li small{display:block;co
 body.article .prose>*{max-width:960px}
 body.article .prose>figure.shot.wide,body.article .prose>.shots.pair{width:var(--rw,min(960px,100%));max-width:100%;justify-self:start}
 html[data-lay="c"] body.article main>.stack{max-width:760px;margin-left:auto;margin-right:auto}
-html[data-lay="c"] body.article .prose>figure.shot.wide,html[data-lay="c"] body.article .prose>.shots.pair{justify-self:center}
 body.article .page-head{grid-template-columns:1fr auto}
 body.article .page-head>*:not(.sw-t){grid-column:1}
 body.article .page-head>.sw-t{grid-column:2;grid-row:1;align-self:start}
