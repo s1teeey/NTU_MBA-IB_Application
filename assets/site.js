@@ -97,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=1795538371";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=1795578017";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
@@ -224,15 +224,21 @@ function buildIndex(){
   document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
 })();
 
-/* 書審頁：版面「靠左／置中」切換，記在訪客自己的瀏覽器。後台編輯區不加按鈕。 */
+/* 書審頁：「置中」開關（同歷年心得文的好讀版開關），記在訪客自己的瀏覽器；
+   每排圖片的寬度＝上方最近一條小標分隔線的寬度（並排的等比例縮放）。後台編輯區不啟用。 */
 (function(){
   if(!document.body.classList.contains("article"))return;
   let v="l";try{v=localStorage.getItem("lay")||"l"}catch(e){}
-  document.documentElement.dataset.lay=v;
+  const set=x=>{v=x;document.documentElement.dataset.lay=x;fit()};
+  const rows=[...document.querySelectorAll(".prose>figure.shot.wide,.prose>.shots.pair")];
+  const fit=()=>rows.forEach(r=>{let h=r.previousElementSibling;while(h&&h.tagName!=="H3")h=h.previousElementSibling;
+    r.style.removeProperty("--rw");if(h)r.style.setProperty("--rw",Math.round(h.getBoundingClientRect().width)+"px")});
   if(window.frameElement&&window.frameElement.id==="ed")return;
-  const h=document.querySelector(".page-head");if(!h)return;
-  const nav=document.createElement("nav");nav.className="lay-switch";nav.setAttribute("aria-label","版面");
-  nav.innerHTML='<button type="button" data-v="l">靠左</button><button type="button" data-v="c">置中</button>';
-  nav.onclick=e=>{const b=e.target.closest("button");if(!b)return;document.documentElement.dataset.lay=b.dataset.v;try{localStorage.setItem("lay",b.dataset.v)}catch(x){}};
-  h.appendChild(nav);
+  document.documentElement.dataset.lay=v;
+  const h=document.querySelector(".page-head");
+  if(h){const sw=document.createElement("button");sw.type="button";sw.className="sw-t";sw.setAttribute("role","switch");
+    sw.innerHTML='<span class="knob"></span>置中';sw.setAttribute("aria-checked",String(v==="c"));
+    sw.onclick=()=>{set(v==="c"?"l":"c");sw.setAttribute("aria-checked",String(v==="c"));try{localStorage.setItem("lay",v)}catch(e){}};
+    h.appendChild(sw)}
+  fit();addEventListener("resize",fit);addEventListener("load",fit);
 })();
