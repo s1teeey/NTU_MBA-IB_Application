@@ -97,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=1795579345";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=1795579533";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
@@ -228,7 +228,7 @@ function buildIndex(){
    每排圖片的寬度＝上方最近一條小標分隔線的寬度（並排的等比例縮放）。後台編輯區不啟用。 */
 (function(){
   if(!document.body.classList.contains("article"))return;
-  let v="l";try{v=localStorage.getItem("lay")||"l"}catch(e){}
+  let v="c";try{v=localStorage.getItem("lay")||"c"}catch(e){}
   const set=x=>{v=x;document.documentElement.dataset.lay=x;fit()};
   const rows=[...document.querySelectorAll(".prose>figure.shot.wide,.prose>.shots.pair")];
   // 同一節的圖片排都用「該節第一條小標分隔線」的寬度；緊鄰跨頁圖的兩欄，分隔線對齊圖中的兩段紫線

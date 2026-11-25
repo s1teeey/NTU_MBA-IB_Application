@@ -395,9 +395,10 @@ ol[data-check] li small,ul[data-check] li small,.files li small{display:block;co
 .lidx .sub a{display:block;border-left:0;padding:4px 0 4px 40px;font-size:13px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lidx .sub a:hover{color:var(--ink)}
 /* 文章版（書審頁）：預設靠左，內文與分隔線寬 960；圖片靠左。訪客可切換「置中」 */
-body.article .prose>*{max-width:960px}
-body.article .prose>figure.shot.wide,body.article .prose>.shots.pair{width:var(--rw,min(960px,100%));max-width:100%;justify-self:start}
-html[data-lay="c"] body.article main>.stack{max-width:760px;margin-left:auto;margin-right:auto}
+body.article main>.stack{max-width:770px}
+body.article .prose>*{max-width:none}
+body.article .prose>figure.shot.wide,body.article .prose>.shots.pair{width:100%;max-width:none;justify-self:stretch}
+html[data-lay="c"] body.article main>.stack{margin-left:auto;margin-right:auto}
 body.article .page-head{grid-template-columns:1fr auto}
 body.article .page-head>*:not(.sw-t){grid-column:1}
 body.article .page-head>.sw-t{grid-column:2;grid-row:1;align-self:start}
