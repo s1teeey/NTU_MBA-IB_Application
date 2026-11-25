@@ -401,7 +401,7 @@ body.article .prose>figure.shot.wide,body.article .prose>.shots.pair{width:100%;
 html[data-lay="c"] body.article main>.stack{margin-left:auto;margin-right:auto}
 body.article .page-head{grid-template-columns:1fr auto}
 body.article .page-head>*:not(.sw-t){grid-column:1}
-body.article .page-head>.sw-t{grid-column:2;grid-row:1;align-self:start}
+body.article .page-head>.sw-t{grid-column:2;grid-row:3;align-self:center}
 @media (max-width:760px){body.article .page-head>.sw-t{display:none}}
 /* 點圖看原圖 */
 .prose figure.shot img{cursor:zoom-in}
