@@ -97,7 +97,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=1795578158";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=1795579345";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */
@@ -231,8 +231,13 @@ function buildIndex(){
   let v="l";try{v=localStorage.getItem("lay")||"l"}catch(e){}
   const set=x=>{v=x;document.documentElement.dataset.lay=x;fit()};
   const rows=[...document.querySelectorAll(".prose>figure.shot.wide,.prose>.shots.pair")];
-  const fit=()=>rows.forEach(r=>{let h=r.previousElementSibling;while(h&&h.tagName!=="H3")h=h.previousElementSibling;
-    r.style.removeProperty("--rw");if(h)r.style.setProperty("--rw",Math.round(h.getBoundingClientRect().width)+"px")});
+  // 同一節的圖片排都用「該節第一條小標分隔線」的寬度；緊鄰跨頁圖的兩欄，分隔線對齊圖中的兩段紫線
+  const spreads=[...document.querySelectorAll(".prose>.cols")].filter(c=>{const n=c.nextElementSibling;return n&&n.matches("figure.shot.wide")&&/plan-\d/.test(n.querySelector("img")?.getAttribute("src")||"")});
+  const refW=el=>{const h=el.closest(".prose")?.querySelector(":scope>h3");return h?Math.round(h.getBoundingClientRect().width):null};
+  const fit=()=>{rows.forEach(r=>{r.style.removeProperty("--rw");const w=refW(r);if(w)r.style.setProperty("--rw",w+"px")});
+    spreads.forEach(c=>{["width","maxWidth","paddingLeft","paddingRight","columnGap","gridTemplateColumns"].forEach(k=>c.style[k]="");
+      const w=refW(c);if(!w||innerWidth<=760)return;c.style.width=w+"px";c.style.maxWidth="none";
+      c.style.paddingLeft=c.style.paddingRight=(w*.0178).toFixed(1)+"px";c.style.columnGap=(w*.0166).toFixed(1)+"px";c.style.gridTemplateColumns="1fr 1fr"})};
   if(window.frameElement&&window.frameElement.id==="ed")return;
   document.documentElement.dataset.lay=v;
   const h=document.querySelector(".page-head");
