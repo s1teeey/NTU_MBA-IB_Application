@@ -7,13 +7,14 @@
 <meta name="author" content="Royee Chu">
 <meta name="description" content="商研歷年面試官：研究領域、開課與歷年推甄面試官。">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=1795593775">
+<link rel="stylesheet" href="assets/site.css?v=1795594062">
 <style>
 .note{font-size:13px;color:var(--muted);margin:0}
 
 /* timeline */
 .tl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
-table.tl{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+table.tl{border-collapse:collapse;width:100%;min-width:620px;font-size:14px;table-layout:fixed}
+table.tl tr>:first-child{width:29%}
 .tl th,.tl td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 .tl tr:last-child td{border-bottom:0}
 .tl th{font-weight:500;color:var(--muted);font-size:12px;letter-spacing:.04em}
@@ -182,16 +183,16 @@ textarea:focus,textarea:focus-visible{outline:none;border-color:var(--accent);ba
   </header>
 
   <div class="tabs" role="tablist" aria-label="檢視">
-    <button class="tab" role="tab" id="tab-cards" aria-controls="panel-cards" aria-selected="true">教授卡片</button>
-    <button class="tab" role="tab" id="tab-tl" aria-controls="panel-tl" aria-selected="false">歷年面試官</button>
+    <button class="tab" role="tab" id="tab-tl" aria-controls="panel-tl" aria-selected="true">歷年面試官</button>
+    <button class="tab" role="tab" id="tab-cards" aria-controls="panel-cards" aria-selected="false">教授卡片</button>
   </div>
 
-  <section id="panel-tl" role="tabpanel" aria-labelledby="tab-tl" hidden>
+  <section id="panel-tl" role="tabpanel" aria-labelledby="tab-tl">
     <div class="own" id="freq" data-nokey></div>
     <div class="tl-scroll"><table class="tl" id="tl" data-nokey></table></div>
   </section>
 
-  <section id="panel-cards" role="tabpanel" aria-labelledby="tab-cards">
+  <section id="panel-cards" role="tabpanel" aria-labelledby="tab-cards" hidden>
     <div class="bar" role="group" aria-label="篩選">
       <button class="chip" id="f-all" data-f="all" aria-pressed="true">全部</button>
       <button class="chip" id="f-iv" data-f="iv" aria-pressed="false">曾任面試官</button>
@@ -402,13 +403,13 @@ function card(p){
   return c;
 }
 
-const TABS=["cards","tl"];
+const TABS=["tl","cards"];
 function showTab(which){
   TABS.forEach(t=>{$("#tab-"+t).setAttribute("aria-selected",String(t===which));$("#panel-"+t).hidden=t!==which});
-  store.set(DEPT+"-tab",which);
+  store.set(DEPT+"-tab2",which);
 }
 TABS.forEach(t=>$("#tab-"+t).onclick=()=>showTab(t));
-{const t=store.get(DEPT+"-tab");if(TABS.includes(t))showTab(t)}
+{const t=store.get(DEPT+"-tab2");if(TABS.includes(t))showTab(t)}
 
 function jump(name){
   showTab("cards");
@@ -441,6 +442,6 @@ function follow(){const h=decodeURIComponent(location.hash.slice(1));
 }
 follow();window.addEventListener("hashchange",follow);
 </script>
-<script src="assets/site.js?v=1795593775"></script>
+<script src="assets/site.js?v=1795594062"></script>
 </body>
 </html>
