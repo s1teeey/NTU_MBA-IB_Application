@@ -17,7 +17,6 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     ["推甄準備",[["docs.html","書審"],["interview.html","口試"]]],
     ["歷年考古",[["reviews.html","歷年心得文"],[lastDept,"歷年面試官",PROF]]],
     ["my.html","個人心得"],
-    ["faq.html","FAQ"],
   ];
   const CARET='<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const menuHTML=PAGES.map(([h,t],i)=>{
@@ -97,7 +96,7 @@ const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdNOxn6wqQEmNaLYmEl9rO9
     el.querySelectorAll("a.form-link").forEach(a=>{a.href=FORM_URL;a.target="_blank";a.rel="noopener"});
   });
   buildRail();buildIndex();
-  const sc=document.createElement("script");sc.src="assets/search.js?v=1795594890";document.body.appendChild(sc);
+  const sc=document.createElement("script");sc.src="assets/search.js?v=1795617492";document.body.appendChild(sc);
 })();
 
 /* Side outline: one dash per heading on the page; hover lists them, click jumps. */

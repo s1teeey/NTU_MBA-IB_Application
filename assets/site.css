@@ -413,3 +413,5 @@ body.article .page-head>.sw-t{grid-column:2;grid-row:3;align-self:center}
 .rec-dept.d-ba{border-left-color:var(--ba)}
 .rec-dept.d-ib{border-left-color:var(--ib)}
 .rec+.rec-dept{margin-top:40px}
+/* 個人心得：推甄結果、個人背景不並排 */
+#result .profile,#bg .profile{grid-template-columns:1fr;gap:8px}

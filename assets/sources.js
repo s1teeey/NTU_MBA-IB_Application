@@ -69,7 +69,7 @@ const DEPT_NAME={ba:"商研",ib:"國企"};
 /* opts: {dept:"ba"|"ib"|null}
    上方：收藏（訪客自己的，最多 5 則；預設＝清單裡 pin:1 的）。
    110 以後：一個學年度一列，連結在列內排兩欄。109 以前：最下方一張表。
-   標題可切換「原標題」／「統一標題」（s 欄，沒填就自動產生）。 */
+   標題可切換「原標題」／「好讀版」（s 欄，沒填就自動產生）。 */
 const FAV_MAX=5;
 function renderSources(box,opts){
   opts=opts||{};
@@ -100,7 +100,7 @@ function renderSources(box,opts){
     // 右上：標題切換
     const tools=mk("div","src-tools");
     const sw=mk("button","sw-t");sw.type="button";sw.setAttribute("role","switch");sw.setAttribute("aria-checked",String(uni));
-    sw.innerHTML='<span class="knob"></span>統一標題';sw.onclick=()=>{uni=!uni;set("src-short",uni);draw()};
+    sw.innerHTML='<span class="knob"></span>好讀版';sw.onclick=()=>{uni=!uni;set("src-short",uni);draw()};
     tools.appendChild(sw);box.appendChild(tools);
     // 收藏
     const fb=mk("div","src-year src-fav");

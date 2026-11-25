@@ -570,7 +570,7 @@ async function openList(path){
   if(dr){try{rows=JSON.parse(dr.html);cur.dirty=true;toast("已載入未發布的草稿")}catch(e){}}
   try{history.replaceState(null,"","#"+path)}catch(e){}
   $("#lst").innerHTML='<div class="lst-head"><h2>心得文清單</h2><p>面試準備頁「歷年心得文」和搜尋會用到。每列一篇。</p><button id="lst-add" type="button">＋新增一篇</button></div>'+
-    '<div class="lst-scroll"><table><thead><tr><th>學年度</th><th>系所</th><th>來源</th><th title="預設收藏">★</th><th>原標題</th><th>統一標題</th><th>網址</th><th>備註</th><th></th></tr></thead><tbody>'+rows.map(rowHTML).join("")+'</tbody></table></div>';
+    '<div class="lst-scroll"><table><thead><tr><th>學年度</th><th>系所</th><th>來源</th><th title="預設收藏">★</th><th>原標題</th><th>好讀版</th><th>網址</th><th>備註</th><th></th></tr></thead><tbody>'+rows.map(rowHTML).join("")+'</tbody></table></div>';
   const tb=$("#lst tbody");
   const dirty=()=>{cur.dirty=true;clearTimeout(dirty.t);dirty.t=setTimeout(()=>saveDraft(path,JSON.stringify(readRows()),cur.sha),300);setState()};
   $("#lst").oninput=dirty;
