@@ -118,6 +118,7 @@ textarea{width:100%;min-height:72px;margin-top:6px;font:inherit;font-size:14px;p
 .top{grid-template-columns:84px 1fr;gap:18px}
 .photo{width:84px;height:101px;border-radius:3px;border:0;background:var(--bg-soft);color:var(--faint);font-size:28px;font-weight:900}
 .name{font-size:23px;font-weight:900;letter-spacing:-.01em}
+.nrow{display:flex;align-items:baseline;gap:10px;flex-wrap:nowrap;white-space:nowrap}
 .tags{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;line-height:1.5}
 .tag{display:inline;background:none!important;border:0;padding:0;border-radius:0;font-size:13.5px;color:var(--muted);font-weight:600}
 .tag.cat{display:inline-block;font-size:12px;font-weight:800;line-height:1;padding:4px 8px;border-radius:4px;background:var(--bg-soft)!important;border:1px solid var(--line);color:var(--ink)}
@@ -366,11 +367,12 @@ function card(p){
   ph.appendChild(img);
   top.appendChild(ph);
   const id=el("div","id");
-  id.appendChild(el("h3","name",p.n));
+  const nr=el("div","nrow");nr.appendChild(el("h3","name",p.n));
+  if(p.iv.length)nr.appendChild(el("span","tag iv","面試官 ×"+p.iv.length));
+  id.appendChild(nr);
   const tags=el("div","tags");
   tags.appendChild(el("span","tag",p.t));
   tags.appendChild(el("span","tag cat",p.cat));
-  if(p.iv.length)tags.appendChild(el("span","tag iv","面試官 ×"+p.iv.length));
   id.appendChild(tags);
   const l=el("div","links");const a=el("a",null,"官方師資頁 ↗");a.href=T+p.sn;a.target="_blank";a.rel="noopener";l.appendChild(a);
   id.appendChild(l);
