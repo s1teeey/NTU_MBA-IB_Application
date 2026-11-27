@@ -142,6 +142,8 @@ function setupEditor(){
   d.execCommand("styleWithCSS",false,false);
   d.execCommand("defaultParagraphSeparator",false,"p");
   main.querySelectorAll("[data-nokey],.crumb").forEach(el=>el.contentEditable="false");
+  // 折疊區塊在後台一律展開，才能編輯裡面的字；存檔時還原
+  main.querySelectorAll("details:not([open])").forEach(el=>{el.open=true;el.dataset.admOpen="1"});
   d.addEventListener("click",e=>{
     const a=e.target.closest("a");if(!a)return;e.preventDefault();
     if(main.contains(a)&&!a.closest("[data-nokey]"))linkPop(a);
@@ -320,6 +322,7 @@ function serialize(forPublish){
   main.querySelectorAll(".adm-ctl,.adm-rs,.adm-link,.only-note").forEach(n=>n.remove());
   // 網頁執行時才加上的標記、瀏覽器外掛加的 class，不要存進檔案
   main.querySelectorAll("[data-done]").forEach(n=>n.removeAttribute("data-done"));
+  main.querySelectorAll("[data-adm-open]").forEach(n=>{n.removeAttribute("open");n.removeAttribute("data-adm-open")});
   main.querySelectorAll(".custom-cursor-on-hover").forEach(n=>{n.classList.remove("custom-cursor-on-hover");if(!n.getAttribute("class"))n.removeAttribute("class")});
   main.querySelectorAll(".ck-app").forEach(n=>n.remove());main.querySelectorAll("[data-check][hidden]").forEach(n=>n.removeAttribute("hidden"));
   // 還原網站程式在正文裡做的事：表格對齊包裝、今天日期、程式產生的清單
