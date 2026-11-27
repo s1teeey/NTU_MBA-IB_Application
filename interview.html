@@ -8,7 +8,7 @@
 <meta content="Royee Chu" name="author"/>
 <meta content="台大商研所、國企所推甄口試：面試題型、準備方式，以及 106–116 學年度心得文。" name="description"/>
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link href="assets/site.css?v=1795618161" rel="stylesheet"/>
+<link href="assets/site.css?v=1795760256" rel="stylesheet"/>
 <style>
 .fmt{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px 48px}
 .fmt h3{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:8px;border-bottom:2px solid var(--rule)}
@@ -21,6 +21,23 @@
 .fmt h3 .mins{color:var(--muted);font-size:13.5px;font-weight:700}
 .fmt [data-d="ba"] .stages li::before{color:var(--ba)}
 .fmt [data-d="ib"] .stages li::before{color:var(--ib)}
+.stages li>details{min-width:0}
+.stg summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto 18px;gap:12px;align-items:start}
+.stg summary::-webkit-details-marker{display:none}
+.stg summary::after{content:"+";font-size:20px;font-weight:400;line-height:1.2;color:var(--muted);text-align:right}
+.stg[open] summary::after{content:"−"}
+.fmt [data-d="ba"] .stg summary::after{color:var(--ba)}
+.fmt [data-d="ib"] .stg summary::after{color:var(--ib)}
+.stg .who{font-size:13.5px;font-weight:700;white-space:nowrap;padding-top:2px}
+.stg .who small{font-weight:400;color:var(--muted);margin-left:2px}
+.stg .body{margin-top:10px;padding:12px 14px;background:var(--bg-soft);border-radius:6px;font-size:14.5px;display:grid;gap:6px}
+.stg .body:empty{display:none}
+.stg .body .how{color:var(--muted);font-size:13.5px}
+.stg .body ol{margin:0;padding-left:20px;display:grid;gap:4px}
+.stg .body ol li{display:list-item;padding:0;border:0}
+.stg .body ol li::before{content:none}
+.stg:not(.has) summary{cursor:default}
+.stg:not(.has) summary::after{content:""}
 .more{border-bottom:1px solid var(--line)}
 .more summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:12px 0;font-weight:800}
 .more summary::-webkit-details-marker{display:none}
@@ -59,26 +76,24 @@
 <div class="stack">
 <section>
 <div class="sec-head"><h2><span class="no">01</span>題型<small>以 116 為例</small></h2></div>
-<div class="fmt" style="max-width: none;">
+<div class="fmt">
 <div data-d="ba">
-<h3><span class="hl-ba" data-k="interview.010">商研</span> <span class="mins" data-k="interview.011">每關 4 分鐘</span></h3>
+<h3><span class="hl-ba" data-k="interview.010">商研</span> <span class="mins" data-k="interview.011">三關・每關 4 分鐘</span></h3>
 <ol class="stages">
-<li><div><b data-k="interview.012">個人關</b><span data-k="interview.013">根據個人資料表提問，一分鐘自介、就讀動機、對系所的了解</span></div></li>
-<li><div><b data-k="interview.014">英文關</b><span data-k="interview.015">自行閱讀一分鐘，摘要後回答教授追問</span></div></li>
-<li><div><b data-k="interview.016">邏輯關</b><span data-k="interview.017">立場討論，自行思考一段時間後，選一個立場說明、教授追問</span></div></li>
+<li><details class="stg"><summary><div><b data-k="interview.012">個人關</b><span data-k="interview.013">一分鐘自介，再依個人資料表追問動機與對系所的了解</span></div><span class="who" data-nokey=""></span></summary><div class="body" data-nokey=""></div></details></li>
+<li><details class="stg"><summary><div><b data-k="interview.014">英文關</b><span data-k="interview.015">五題抽一，閱讀約一分鐘後摘要、回答追問</span></div><span class="who" data-nokey=""></span></summary><div class="body" data-nokey=""></div></details></li>
+<li><details class="stg"><summary><div><b data-k="interview.016">邏輯關</b><span data-k="interview.017">九題抽一，選一個立場說明，教授再追問</span></div><span class="who" data-nokey=""></span></summary><div class="body" data-nokey=""></div></details></li>
 </ol>
-<details class="more" data-src="ba" data-what="q116" open=""><summary data-k="interview.018">116 題目</summary><div class="body" data-nokey="">載入中…</div></details>
-<details class="more" data-src="ba" data-what="tl" open=""><summary data-k="interview.019">近五年面試官</summary><div class="body" data-nokey="">載入中…</div></details>
+<details class="more" data-src="ba" data-what="tl"><summary data-k="interview.019">近五年面試官</summary><div class="body" data-nokey="">載入中…</div></details>
 </div>
 <div data-d="ib">
-<h3><span class="hl-ib" data-k="interview.020">國企</span> <span class="mins" data-k="interview.021">每關 5 分鐘</span></h3>
+<h3><span class="hl-ib" data-k="interview.020">國企</span> <span class="mins" data-k="interview.021">三關・每關 5 分鐘</span></h3>
 <ol class="stages">
-<li><div><b data-k="interview.022">英文關</b><span data-k="interview.023">A4 單面文章讀 2.5 分鐘，摘要後回答教授追問</span></div></li>
-<li><div><b data-k="interview.024">邏輯關</b><span data-k="interview.025">個案分析，今年是針對公司財務虧損進行討論</span></div></li>
-<li><div><b data-k="interview.026">個人關</b><span data-k="interview.027">今年無自介，根據成績單和個人資料表提問</span></div></li>
+<li><details class="stg"><summary><div><b data-k="interview.022">英文關</b><span data-k="interview.023">閱讀 A4 單面文章 2.5 分鐘，摘要後討論</span></div><span class="who" data-nokey=""></span></summary><div class="body" data-nokey=""></div></details></li>
+<li><details class="stg"><summary><div><b data-k="interview.024">邏輯關</b><span data-k="interview.025">個案分析，116 是咖啡品牌的財報虧損</span></div><span class="who" data-nokey=""></span></summary><div class="body" data-nokey=""></div></details></li>
+<li><details class="stg"><summary><div><b data-k="interview.026">個人關</b><span data-k="interview.027">沒有自介，依成績單與個人資料表提問</span></div><span class="who" data-nokey=""></span></summary><div class="body" data-nokey=""></div></details></li>
 </ol>
-<details class="more" data-src="ib" data-what="q116" open=""><summary data-k="interview.028">116 題目</summary><div class="body" data-nokey="">載入中…</div></details>
-<details class="more" data-src="ib" data-what="tl" open=""><summary data-k="interview.029">近五年面試官</summary><div class="body" data-nokey="">載入中…</div></details>
+<details class="more" data-src="ib" data-what="tl"><summary data-k="interview.029">近五年面試官</summary><div class="body" data-nokey="">載入中…</div></details>
 </div>
 </div>
 </section>
@@ -164,6 +179,23 @@
     return new Function(code.slice(0,code.indexOf("const $="))+"\nreturn {Q116,TL};")();
   }));
   const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+  /* 每一關：摘要列顯示 116 面試官，點開看該關題目 */
+  const CATK=k=>/英文/.test(k)?"英文":/個人|基本資料|生涯/.test(k)?"個人":"邏輯";
+  if(!(window.frameElement&&window.frameElement.id==="ed"))document.querySelectorAll(".fmt [data-d]").forEach(async blk=>{
+    try{
+      const data=await load(blk.dataset.d);
+      blk.querySelectorAll("details.stg").forEach(det=>{
+        const st=data.Q116.stages.find(x=>CATK(x.kind)===CATK(det.querySelector("summary b").textContent));if(!st)return;
+        const w=det.querySelector(".who");w.textContent=st.who;if(!st.who.includes("未知"))w.appendChild(mk("small",null,"教授"));
+        const body=det.querySelector(".body");body.textContent="";
+        const how=mk("p","how",st.how);
+        if(st.topic){how.append(" 文章：");if(st.link){const a=mk("a",null,st.topic);a.href=st.link;a.target="_blank";a.rel="noopener";how.appendChild(a)}else how.append(st.topic)}
+        body.appendChild(how);
+        const ol=mk("ol");st.q.forEach(q=>ol.appendChild(mk("li",null,q)));body.appendChild(ol);det.classList.add("has");
+      });
+    }catch(e){}
+  });
+  document.querySelectorAll("details.stg").forEach(det=>det.querySelector("summary").addEventListener("click",e=>{if(!det.classList.contains("has"))e.preventDefault()}));
   document.querySelectorAll("details.more").forEach(det=>det.addEventListener("toggle",async()=>{
     if(!det.open||det.dataset.done)return;
     const body=det.querySelector(".body");
@@ -189,8 +221,9 @@
       det.dataset.done="1";
     }catch(e){body.textContent="載入失敗，請重新整理再試"}
   }));
+  document.querySelectorAll("details.more[open]").forEach(d=>d.dispatchEvent(new Event("toggle")));
 })();
 </script>
-<script src="assets/site.js?v=1795618161"></script>
+<script src="assets/site.js?v=1795760256"></script>
 </body>
 </html>

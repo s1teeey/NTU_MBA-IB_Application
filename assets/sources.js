@@ -81,6 +81,11 @@ function renderSources(box,opts){
   const short=s=>s.s||(s.y+" "+(s.site==="own"?"口試紀錄":"推甄分享")+"｜"+s.d.map(d=>"台大"+DEPT_NAME[d]).join("、"));
   let uni=get("src-short",false);
   let fav=get("src-fav",null);if(!Array.isArray(fav))fav=SOURCES.filter(s=>s.pin).map(s=>s.u);
+  /* 後台新勾選的預設書籤：已存過書籤的訪客也補上一次（之後訪客自己移除就不再加回） */
+  {const pins=SOURCES.filter(s=>s.pin).map(s=>s.u);let seen=get("src-pinseen",null);
+   if(!Array.isArray(seen))seen=fav.slice();
+   pins.filter(u=>!seen.includes(u)&&!fav.includes(u)).forEach(u=>fav.unshift(u));
+   set("src-pinseen",[...new Set(seen.concat(pins))]);set("src-fav",fav.slice(0,FAV_MAX))}
   fav=fav.filter(u=>SOURCES.some(s=>s.u===u)).slice(0,FAV_MAX);
 
   const item=s=>{
