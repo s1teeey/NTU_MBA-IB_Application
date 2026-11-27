@@ -106,7 +106,8 @@ function renderSources(box,opts){
     const tools=mk("div","src-tools");
     const sw=mk("button","sw-t");sw.type="button";sw.setAttribute("role","switch");sw.setAttribute("aria-checked",String(uni));
     sw.innerHTML='<span class="knob"></span>好讀版';sw.onclick=()=>{uni=!uni;set("src-short",uni);draw()};
-    tools.appendChild(sw);box.appendChild(tools);
+    tools.appendChild(sw);
+    if(opts.tools){opts.tools.querySelector(".src-tools")?.remove();opts.tools.appendChild(tools)}else box.appendChild(tools);
     // 收藏
     const fb=mk("div","src-year src-fav");
     const fh=mk("div","yr");fh.innerHTML='<svg class="bm" viewBox="0 0 24 24" aria-label="書籤" role="img"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>';fb.appendChild(fh);

@@ -319,7 +319,7 @@ function renumber(main){
 /* 序列化：清掉編輯用的東西 */
 function serialize(forPublish){
   const main=idoc().querySelector("main").cloneNode(true);
-  main.querySelectorAll(".adm-ctl,.adm-rs,.adm-link,.only-note").forEach(n=>n.remove());
+  main.querySelectorAll(".adm-ctl,.adm-rs,.adm-link,.only-note,.sec-head>.src-tools").forEach(n=>n.remove());
   // 網頁執行時才加上的標記、瀏覽器外掛加的 class，不要存進檔案
   main.querySelectorAll("[data-done]").forEach(n=>n.removeAttribute("data-done"));
   main.querySelectorAll("[data-adm-open]").forEach(n=>{n.removeAttribute("open");n.removeAttribute("data-adm-open")});

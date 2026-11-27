@@ -160,6 +160,8 @@ section{display:grid;gap:16px}
 /* 心得文 */
 #src-sec{position:relative}
 .src-tools{position:absolute;right:0;top:6px}
+#src-sec .sec-head:has(.src-tools){display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sec-head .src-tools{position:static}
 .sw-t{display:flex;align-items:center;gap:8px;font:inherit;font-size:13.5px;font-weight:700;color:var(--muted);background:none;border:0;cursor:pointer;white-space:nowrap;padding:4px 0}
 .sw-t .knob{width:30px;height:18px;border-radius:9px;background:var(--line);position:relative;transition:background .15s}
 .sw-t .knob::after{content:"";position:absolute;left:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .15s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
